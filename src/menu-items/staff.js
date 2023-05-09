@@ -1,25 +1,25 @@
 // assets
-import { IconCar } from "@tabler/icons";
+import { IconUsers } from "@tabler/icons";
 
 // constant
-const icons = { IconCar };
+const icons = { IconUsers };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
-const traffic = {
-  id: "traffic",
+const staff = {
+  id: "staff",
   // title: "Dashboard",
   type: "group",
   children: [
     {
-      id: "parking",
-      title: "Phương tiện",
+      id: "staff",
+      title: "Nhân viên",
       type: "item",
-      url: "/traffic",
-      icon: icons.IconCar,
+      url: "/staff",
+      icon: icons.IconUsers,
       breadcrumbs: false,
     },
   ],
 };
 
-export default traffic;
+export default staff;

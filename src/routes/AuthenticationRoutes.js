@@ -16,8 +16,28 @@ const AuthRegister = Loadable(
   lazy(() => import("views/pages/authentication/authentication/Register"))
 );
 
+const InputEmail = Loadable(
+  lazy(() =>
+    import("views/pages/authentication/forgot-password/Email/EmailInput")
+  )
+);
+
+const OTP = Loadable(
+  lazy(() => import("views/pages/authentication/forgot-password/OTP/Index"))
+);
+
+const NewPassword = Loadable(
+  lazy(() =>
+    import("views/pages/authentication/forgot-password/NewPassword/NewPassword")
+  )
+);
+
 const StepRegister = Loadable(
   lazy(() => import("views/register/RegisterForBus"))
+);
+
+const ModalBooking = Loadable(
+  lazy(() => import("ui-component/modal/ModalBooking"))
 );
 
 // const Layout = Loadable(lazy(() => import("ui-component/auth/layout")));
@@ -39,6 +59,22 @@ const AuthenticationRoutes = {
     {
       path: "register",
       element: <StepRegister />,
+    },
+    {
+      path: "input-email",
+      element: <InputEmail />,
+    },
+    {
+      path: "otp",
+      element: <OTP />,
+    },
+    {
+      path: "new-password",
+      element: <NewPassword />,
+    },
+    {
+      path: "modal",
+      element: <ModalBooking />,
     },
   ],
 };

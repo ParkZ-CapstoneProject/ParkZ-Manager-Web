@@ -1,61 +1,330 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
-// import { Grid } from "@mui/material";
 import SearchSection from "ui-component/search-section";
 import SubCard from "ui-component/cards/SubCard";
-import { Grid } from "@mui/material";
-import { gridSpacing } from "store/constant";
+import { Avatar, Button, Grid } from "@mui/material";
+import "./Booking.scss";
+import Menu from "ui-component/booking/Menu";
+
+const renderAvatarCell = (params) => {
+  return <Avatar src={params.value} alt="avatar" />;
+};
+
+const getCellValue = (params) => {
+  return params.value ? params.value : "-------";
+};
+
+const renderCellStatus = (params) => {
+  if (params.value === "Khởi tạo") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="inherit"
+        sx={{ borderRadius: "20px", fontSize: "12px" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+  if (params.value === "Thành công") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="success"
+        sx={{ borderRadius: "20px", fontSize: "12px", color: "#ffff" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+  if (params.value === "Đã duyệt") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="primary"
+        sx={{ borderRadius: "20px", fontSize: "12px" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+  if (params.value === "Vào bãi") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="secondary"
+        sx={{ borderRadius: "20px", fontSize: "12px" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+  if (params.value === "Ra bãi") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="warning"
+        sx={{ borderRadius: "20px", fontSize: "12px" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+  if (params.value === "Chờ thanh toán") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="info"
+        sx={{ borderRadius: "20px", fontSize: "11px" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+  if (params.value === "Hủy đơn") {
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        color="error"
+        sx={{ borderRadius: "20px", fontSize: "12px" }}
+      >
+        {params.value}
+      </Button>
+    );
+  }
+};
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
   {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
+    field: "avatar",
+    headerName: "Ảnh",
+    width: 80,
+    renderCell: renderAvatarCell,
+    sortable: false,
   },
   {
-    field: "fullName",
-    headerName: "Full name",
+    field: "name",
+    headerName: "Tên khách hàng",
     description: "This column has a value getter and is not sortable.",
     sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    width: 170,
+    valueGetter: (params) => `${params.row.name || ""}`,
+  },
+  { field: "position", headerName: "Vị trí", width: 100 },
+  { field: "startTime", headerName: "Thời gian", width: 100 },
+  {
+    field: "totalPrice",
+    headerName: "Giá",
+    // type: "number",
+    width: 100,
+  },
+  { field: "phone", headerName: "Số điện thoại", width: 130 },
+  { field: "licensePlate", headerName: "Biển số xe", width: 110 },
+  { field: "parkingName", headerName: "Bãi xe", width: 130 },
+  {
+    field: "checkInTime",
+    headerName: "Giờ vào",
+    width: 120,
+    valueGetter: getCellValue,
+  },
+  {
+    field: "checkOutTime",
+    headerName: "Giờ ra",
+    width: 120,
+    valueGetter: getCellValue,
+  },
+  {
+    field: "paymentMethod",
+    headerName: "Thanh toán",
+    width: 130,
+    valueGetter: getCellValue,
+  },
+  {
+    field: "guestName",
+    headerName: "Người đặt hộ",
+    width: 170,
+    valueGetter: getCellValue,
+  },
+  {
+    field: "guestPhone",
+    headerName: "SĐT đặt hộ",
+    width: 130,
+    valueGetter: getCellValue,
+  },
+  {
+    field: "status",
+    headerName: "Trạng thái",
+    width: 120,
+    valueGetter: getCellValue,
+    renderCell: renderCellStatus,
+    sortable: false,
+    disableColumnMenu: true,
+  },
+  {
+    field: "action",
+    headerName: "",
+    width: 70,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params) => <Menu value={params.value} id={params.id} />,
   },
 ];
 
 const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  {
+    id: 1,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Nguyễn Thị Minh Khai",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: null,
+    guestPhone: null,
+    status: "Khởi tạo",
+  },
+  {
+    id: 2,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Đỗ Anh Linh",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: "Nguyễn Thị Minh Khai",
+    guestPhone: null,
+    status: "Thành công",
+  },
+  {
+    id: 3,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Nguyễn Thị Minh Khai",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: null,
+    guestPhone: null,
+    status: "Đã duyệt",
+  },
+  {
+    id: 4,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Nguyễn Thị Minh Khai",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: null,
+    guestPhone: null,
+    status: "Vào bãi",
+  },
+  {
+    id: 5,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Nguyễn Thị Minh Khai",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: null,
+    guestPhone: null,
+    status: "Chờ thanh toán",
+  },
+  {
+    id: 6,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Nguyễn Thị Minh Khai",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: null,
+    guestPhone: null,
+    status: "Ra bãi",
+  },
+  {
+    id: 7,
+    avatar:
+      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    name: "Nguyễn Thị Minh Khai",
+    position: "A4",
+    startTime: "7 : 00 AM",
+    totalPrice: "20,000 vnđ",
+    phone: "012341234132",
+    licensePlate: "60A - 12345",
+    parkingName: "Hoàng Văn Thụ",
+    checkInTime: "7 AM",
+    checkOutTime: null,
+    paymentMethod: null,
+    guestName: null,
+    guestPhone: null,
+    status: "Hủy đơn",
+  },
 ];
 
 export default function DataTable() {
   return (
     <MainCard title={"Lịch đặt"}>
-      <Grid item xs={12} spacing={gridSpacing}>
+      <Grid item xs={12}>
         <SubCard>
           <SearchSection />
         </SubCard>
       </Grid>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: "500px", width: "100%" }}>
         <DataGrid
           rows={rows}
+          rowHeight={70}
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
+          pageSize={5}
+          rowsPerPageOptions={[4]}
           checkboxSelection
-          style={{ borderRadius: "8px", marginTop: "10px" }}
+          style={{ paddingTop: "12px" }}
         />
       </div>
     </MainCard>

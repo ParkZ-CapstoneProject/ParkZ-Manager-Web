@@ -2,22 +2,40 @@
 import { IconParking } from "@tabler/icons";
 
 // constant
-const icons = { IconParking };
+const icons = {
+  IconParking,
+};
 
-// ==============================|| DASHBOARD MENU ITEMS ||============================== //
+// ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const parking = {
   id: "parking",
-  // title: "Dashboard",
+  // title: "Pages",
+  // caption: "Pages Caption",
   type: "group",
   children: [
     {
       id: "parking",
       title: "Bãi xe",
-      type: "item",
-      url: "/parking",
+      type: "collapse",
       icon: icons.IconParking,
-      breadcrumbs: false,
+
+      children: [
+        {
+          id: "parking-all",
+          title: "Tất cả bãi xe",
+          type: "item",
+          url: "/parking-all",
+          target: true,
+        },
+        {
+          id: "parking-price",
+          title: "Bảng giá",
+          type: "item",
+          url: "/parking-price",
+          target: true,
+        },
+      ],
     },
   ],
 };

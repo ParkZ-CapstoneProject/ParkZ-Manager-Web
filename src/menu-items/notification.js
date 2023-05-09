@@ -12,7 +12,7 @@ const notification = {
   type: "group",
   children: [
     {
-      id: "default",
+      id: "notification",
       title: "Thông báo",
       type: "item",
       url: "/dashboard/default",

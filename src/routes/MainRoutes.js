@@ -9,23 +9,9 @@ const DashboardDefault = Loadable(
   lazy(() => import("views/dashboard/Default"))
 );
 
-// utilities routing
-
-// const UtilsTypography = Loadable(
-//   lazy(() => import("views/utilities/Typography"))
-// );
-// const UtilsColor = Loadable(lazy(() => import("views/utilities/Color")));
-// const UtilsShadow = Loadable(lazy(() => import("views/utilities/Shadow")));
-// const UtilsMaterialIcons = Loadable(
-//   lazy(() => import("views/utilities/MaterialIcons"))
-// );
-// const UtilsTablerIcons = Loadable(
-//   lazy(() => import("views/utilities/TablerIcons"))
-// );
-
-// // sample page routing
-// const SamplePage = Loadable(lazy(() => import("views/sample-page")));
 const Booking = Loadable(lazy(() => import("views/booking/Booking")));
+
+const Profile = Loadable(lazy(() => import("views/profile/Profile")));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -45,46 +31,10 @@ const MainRoutes = {
       path: "booking",
       element: <Booking />,
     },
-    // {
-    //   path: "utils",
-    //   children: [
-    //     {
-    //       path: "util-color",
-    //       element: <UtilsColor />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "utils",
-    //   children: [
-    //     {
-    //       path: "util-shadow",
-    //       element: <UtilsShadow />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "icons",
-    //   children: [
-    //     {
-    //       path: "tabler-icons",
-    //       element: <UtilsTablerIcons />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "icons",
-    //   children: [
-    //     {
-    //       path: "material-icons",
-    //       element: <UtilsMaterialIcons />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "sample-page",
-    //   element: <SamplePage />,
-    // },
+    {
+      path: "profile",
+      element: <Profile />,
+    },
   ],
 };
 

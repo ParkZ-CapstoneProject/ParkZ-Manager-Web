@@ -1,98 +1,90 @@
-import { UploadOutlined } from "@ant-design/icons";
-import { Upload, message } from "antd";
 import { useState } from "react";
-import { LoadingOutlined } from "@ant-design/icons";
+import axios from "axios";
+// import { CloudinaryContext, Image } from "cloudinary-react";
 import "./UploadFront.scss";
+import { BoxUpload, ImagePreview } from "./style";
+import FolderIcon from "./assets/FolderIcon.png";
+import CloseIcon from "./assets/CloseIcon.svg";
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-};
 const UploadBackSide = () => {
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
+  const [image, setImage] = useState("");
+  const [isUploaded, setIsUploaded] = useState(false);
+  // const clientId = "053414b7c8fa0c7";
+  function handleImageChange(e) {
+    if (e.target.files && e.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = async function (e) {
+        setImage(e.target.result);
+        setIsUploaded(true);
+        const blob = await fetch(e.target.result).then((res) => res.blob());
+        const formData = new FormData();
+        formData.append("file", blob, "filename.png");
+        console.log(formData);
+        axios
+          .post("https://parkzapi.azurewebsites.net/api/upload-image", formData)
+          .then((response) => {
+            console.log("link hinh mặt sau", response.data.link);
+          });
+      };
+      reader.readAsDataURL(e.target.files[0]);
     }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <UploadOutlined />}
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Tải ảnh mặt trước
-      </div>
-    </div>
-  );
+  }
+
   return (
     <>
-      <Upload
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-        // width="300px"
-      >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="avatar"
-            style={{
-              width: "100%",
-            }}
-          />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
-      {/* <Upload
-        name="avatar"
-        listType="picture-circle"
-        className="avatar-uploader"
-        showUploadList={false}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-      >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="avatar"
-            style={{
-              width: "100%",
-            }}
-          />
-        ) : (
-          uploadButton
-        )}
-      </Upload> */}
+      <BoxUpload>
+        <div className="image-upload">
+          {!isUploaded ? (
+            <>
+              <label htmlFor="upload-input">
+                <img
+                  src={FolderIcon}
+                  draggable={"false"}
+                  alt="placeholder"
+                  width={"100px"}
+                  height={"100px"}
+                />
+                <p style={{ color: "#444" }}>Tải ảnh mặt sau</p>
+              </label>
+              <input
+                id="upload-input"
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                onChange={handleImageChange}
+              />
+            </>
+          ) : (
+            <ImagePreview>
+              <img
+                className="close-icon"
+                src={CloseIcon}
+                alt="CloseIcon"
+                onClick={() => {
+                  setIsUploaded(false);
+                  setImage(null);
+                }}
+              />
+              <div
+                style={{
+                  width: "220px",
+                  height: "200px",
+                  objectFit: "cover",
+                }}
+              >
+                <img
+                  src={image}
+                  alt="uploaded-img"
+                  width={"100%"}
+                  height={"100%"}
+                  style={{ borderRadius: "20px" }}
+                  draggable={false}
+                />
+              </div>
+            </ImagePreview>
+          )}
+        </div>
+      </BoxUpload>
     </>
   );
 };

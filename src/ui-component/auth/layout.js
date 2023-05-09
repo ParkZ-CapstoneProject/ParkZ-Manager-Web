@@ -65,11 +65,11 @@ export const Layout = (props) => {
             >
               CHÀO MỪNG ĐẾN VỚI{" "}
               <Box component="a" sx={{ color: "#15B79E" }} target="_blank">
-                ParkZ
+                PARKZ
               </Box>
             </Typography>
-            <Typography align="center" sx={{ mb: 3 }} variant="subtitle1">
-              A professional kit that comes with ready-to-use MUI components.
+            <Typography align="center" sx={{ mb: 3 }} variant="subtitle2">
+              Ứng dụng đặt bãi gửi xe uy tín, chất lượng
             </Typography>
             <img alt="" src={image} />
           </Box>
