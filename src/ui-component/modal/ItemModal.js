@@ -1,13 +1,33 @@
 import { Avatar, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AcceptButton from "ui-component/buttons/accept-button/AcceptButton";
 import CancelButton from "ui-component/buttons/simple-cancel-button/CancelButton";
-// import SaveButton from "ui-component/buttons/save-button/SaveButton";
+import DialogBooking from "./Dialog";
+import { closeModal } from "store/modalReducer";
+import Loading from "ui-component/back-drop/Loading";
 
 const ItemModal = () => {
   const theme = useTheme();
+  const { accept, checkIn, checkOut, cancel } = useSelector(
+    (state) => state.modal
+  );
 
+  const dispatch = useDispatch();
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
+  };
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleOnCloseDialog = () => {
+    setOpenDialog(false);
+  };
   return (
     <>
       <Grid container direction="row">
@@ -150,19 +170,6 @@ const ItemModal = () => {
             <Grid item>
               <Typography color={theme.palette.common.black} variant="h4">
                 Ô tô
-              </Typography>
-            </Grid>
-          </Grid>
-
-          <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Màu xe
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Đen
               </Typography>
             </Grid>
           </Grid>
@@ -324,17 +331,38 @@ const ItemModal = () => {
       <Grid
         container
         direction="row"
-        justifyContent="space-around"
+        justifyContent="space-evenly"
         alignItems="flex-end"
-        sx={{ marginTop: "7%" }}
+        sx={{ marginTop: "10%" }}
       >
         <Grid item>
-          <CancelButton />
+          <CancelButton onClick={handleCloseModal} />
         </Grid>
         <Grid item>
-          <AcceptButton />
+          {accept === true ? (
+            <AcceptButton value="Chấp nhận" onClick={handleOpenDialog} />
+          ) : (
+            ""
+          )}
+          {checkIn === true ? (
+            <AcceptButton value="Check in" onClick={handleOpenDialog} />
+          ) : (
+            ""
+          )}
+          {checkOut === true ? (
+            <AcceptButton value="Check out" onClick={handleOpenDialog} />
+          ) : (
+            ""
+          )}
+          {cancel === true ? (
+            <AcceptButton value="Hủy đơn" onClick={handleOpenDialog} />
+          ) : (
+            ""
+          )}
         </Grid>
       </Grid>
+
+      <DialogBooking open={openDialog} onClose={handleOnCloseDialog} />
     </>
   );
 };

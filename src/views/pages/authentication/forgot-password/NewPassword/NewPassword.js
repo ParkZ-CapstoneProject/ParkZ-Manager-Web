@@ -112,10 +112,10 @@ const NewPassword = () => {
               marginTop="5%"
               spacing={3}
             >
-              <Grid item xs={6} alignItems="center">
+              <Grid item xs={5}>
                 <CancelButton />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={3}>
                 <SaveButton />
               </Grid>
             </Grid>

@@ -6,6 +6,10 @@ import SubCard from "ui-component/cards/SubCard";
 import { Avatar, Button, Grid } from "@mui/material";
 import "./Booking.scss";
 import Menu from "ui-component/booking/Menu";
+import { useDispatch } from "react-redux";
+import { openModal } from "store/modalReducer";
+import { useState } from "react";
+import Loading from "ui-component/back-drop/Loading";
 
 const renderAvatarCell = (params) => {
   return <Avatar src={params.value} alt="avatar" />;
@@ -19,10 +23,15 @@ const renderCellStatus = (params) => {
   if (params.value === "Khởi tạo") {
     return (
       <Button
+        disableTouchRipple
         variant="contained"
         size="small"
         color="inherit"
-        sx={{ borderRadius: "20px", fontSize: "12px" }}
+        sx={{
+          borderRadius: "20px",
+          fontSize: "12px",
+          "&:hover": {},
+        }}
       >
         {params.value}
       </Button>
@@ -82,7 +91,7 @@ const renderCellStatus = (params) => {
         variant="contained"
         size="small"
         color="info"
-        sx={{ borderRadius: "20px", fontSize: "11px" }}
+        sx={{ borderRadius: "20px", fontSize: "11px", "&:hover": {} }}
       >
         {params.value}
       </Button>
@@ -309,24 +318,33 @@ const rows = [
 ];
 
 export default function DataTable() {
+  // const [loading, setLoading] = useState(false);
+  // const [data, setData] = useState([]);
+
   return (
-    <MainCard title={"Lịch đặt"}>
-      <Grid item xs={12}>
-        <SubCard>
-          <SearchSection />
-        </SubCard>
-      </Grid>
-      <div style={{ height: "500px", width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          rowHeight={70}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[4]}
-          checkboxSelection
-          style={{ paddingTop: "12px" }}
-        />
-      </div>
-    </MainCard>
+    <>
+      {/* {loading ? (
+        <Loading />
+      ) : ( */}
+      <MainCard title={"Lịch đặt"}>
+        <Grid item xs={12}>
+          <SubCard>
+            <SearchSection />
+          </SubCard>
+        </Grid>
+        <div style={{ height: "500px", width: "100%" }}>
+          <DataGrid
+            rows={rows}
+            rowHeight={70}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[4]}
+            checkboxSelection
+            style={{ paddingTop: "12px" }}
+          />
+        </div>
+      </MainCard>
+      {/* )} */}
+    </>
   );
 }

@@ -89,7 +89,11 @@ export default function Profile() {
       >
         <AppBar
           position="static"
-          sx={{ borderRadius: "10px", backgroundColor: "background.paper" }}
+          sx={{
+            borderRadius: "10px",
+            backgroundColor: "background.paper",
+            boxShadow: "none",
+          }}
         >
           <Tabs
             value={value}
@@ -108,7 +112,7 @@ export default function Profile() {
             <Tab
               label="Cá nhân"
               {...a11yProps(0)}
-              sx={{ borderRight: "1px solid grey" }}
+              // sx={{ borderRight: "1px solid grey" }}
             />
             <Tab label="Doanh nghiệp" {...a11yProps(1)} />
           </Tabs>

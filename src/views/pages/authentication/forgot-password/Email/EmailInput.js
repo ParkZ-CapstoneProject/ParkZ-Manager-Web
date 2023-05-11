@@ -24,32 +24,32 @@ const EmailInput = () => {
         direction="column"
         marginTop="5%"
       >
-        <form>
-          <Grid item xs={12}>
-            <Stack
-              alignItems="center"
-              justifyContent="center"
-              spacing={1}
-              marginBottom="15%"
+        <Grid item xs={12}>
+          <Stack
+            alignItems="center"
+            justifyContent="center"
+            spacing={1}
+            marginBottom="15%"
+          >
+            <Typography
+              color={theme.palette.secondary.main}
+              gutterBottom
+              variant={matchDownSM ? "h2" : "h1"}
             >
-              <Typography
-                color={theme.palette.secondary.main}
-                gutterBottom
-                variant={matchDownSM ? "h2" : "h1"}
-              >
-                Nhập Email
-              </Typography>
-              <Typography
-                color={theme.palette.secondary.dark}
-                variant={matchDownSM ? "subtitle2" : "subtitle2"}
-              >
-                Nhập Email đã đăng ký vào hệ thống của chúng tôi
-              </Typography>
-            </Stack>
-          </Grid>
+              Nhập Email
+            </Typography>
+            <Typography
+              color={theme.palette.secondary.dark}
+              variant={matchDownSM ? "subtitle2" : "subtitle2"}
+            >
+              Nhập Email đã đăng ký vào hệ thống của chúng tôi
+            </Typography>
+          </Stack>
+        </Grid>
 
+        <form>
           <Grid item>
-            <Stack xs={12} justifyContent="center" spacing={1}>
+            <Stack justifyContent="center" spacing={1}>
               <Typography
                 color={theme.palette.secondary.dark}
                 gutterBottom
@@ -78,34 +78,13 @@ const EmailInput = () => {
                 // }
               />
             </Stack>
-
-            <Stack sx={{ marginTop: "8%" }}>
-              {/* <Button
-              fullWidth
-              size="large"
-              sx={{
-                mt: 3,
-                borderRadius: "7px",
-                backgroundColor: "#063970",
-                ":is(:hover, :focus)": {
-                  backgroundColor: "#478be9",
-                  outline: "3px solid #478be9",
-                  outlineOffset: "1px",
-                },
-              }}
-              type="submit"
-              variant="contained"
-              // onClick={handleNext}
-              // disabled={
-              //   userData.email === undefined ||
-              //   userData.password === undefined ||
-              //   userData.confirmPassword === undefined
-              // }
-            >
-              Tiếp theo
-            </Button> */}
-              <NextButton />
-            </Stack>
+          </Grid>
+          <Grid
+            item
+            justifyContent="center"
+            sx={{ marginTop: "8%", marginLeft: "33%" }}
+          >
+            <NextButton />
           </Grid>
         </form>
       </Grid>

@@ -24,17 +24,17 @@ const modalSlice = createSlice({
     setBookingId: (state, action) => {
       state.bookingId = action.payload;
     },
-    setAccept: (state) => {
-      state.accept = true;
+    setAccept: (state, action) => {
+      state.accept = action.payload;
     },
-    setCancel: (state) => {
-      state.cancel = true;
+    setCancel: (state, action) => {
+      state.cancel = action.payload;
     },
-    setCheckIn: (state) => {
-      state.checkIn = true;
+    setCheckIn: (state, action) => {
+      state.checkIn = action.payload;
     },
-    setCheckOut: (state) => {
-      state.checkOut = true;
+    setCheckOut: (state, action) => {
+      state.checkOut = action.payload;
     },
   },
 });

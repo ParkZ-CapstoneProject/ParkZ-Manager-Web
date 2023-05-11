@@ -93,41 +93,15 @@ const OTP = () => {
               alignItems="center"
               xs={12}
               marginTop="5%"
+              marginLeft="7%"
             >
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <BackButton />
               </Grid>
-              <Grid item xs={6} sx={{ marginTop: "-3%" }}>
+              <Grid item xs={5}>
                 <NextButton />
               </Grid>
             </Grid>
-
-            {/* <Stack sx={{ marginTop: "8%" }}>
-            <Button
-              fullWidth
-              size="large"
-              sx={{
-                mt: 3,
-                borderRadius: "7px",
-                backgroundColor: "#063970",
-                ":is(:hover, :focus)": {
-                  backgroundColor: "#478be9",
-                  outline: "3px solid #478be9",
-                  outlineOffset: "1px",
-                },
-              }}
-              type="submit"
-              variant="contained"
-              onClick={handleNext}
-              disabled={
-                userData.email === undefined ||
-                userData.password === undefined ||
-                userData.confirmPassword === undefined
-              }
-            >
-              Tiếp theo
-            </Button>
-          </Stack> */}
           </form>
         </Grid>
       </Grid>

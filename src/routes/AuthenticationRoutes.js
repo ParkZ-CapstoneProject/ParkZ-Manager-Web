@@ -40,6 +40,8 @@ const ModalBooking = Loadable(
   lazy(() => import("ui-component/modal/ModalBooking"))
 );
 
+const Loading = Loadable(lazy(() => import("ui-component/back-drop/Loading")));
+
 // const Layout = Loadable(lazy(() => import("ui-component/auth/layout")));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
@@ -75,6 +77,10 @@ const AuthenticationRoutes = {
     {
       path: "modal",
       element: <ModalBooking />,
+    },
+    {
+      path: "loading",
+      element: <Loading />,
     },
   ],
 };

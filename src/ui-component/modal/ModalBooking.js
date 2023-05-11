@@ -27,21 +27,21 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal() {
+export default function ModalBooking() {
   const theme = useTheme();
   const { isOpen } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
 
-  const handleOpen = () => {
-    dispatch(openModal());
-  };
+  // const handleOpen = () => {
+  //   dispatch(openModal());
+  // };
   const handleClose = () => {
     dispatch(closeModal());
   };
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

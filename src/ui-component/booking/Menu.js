@@ -5,35 +5,62 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal, openModal } from "store/modalReducer";
+import { useDispatch } from "react-redux";
+import {
+  openModal,
+  setAccept,
+  setBookingId,
+  setCancel,
+  setCheckIn,
+  setCheckOut,
+} from "store/modalReducer";
 import ModalBooking from "ui-component/modal/ModalBooking";
-// import { useTheme } from "@mui/material/styles";
 
 const Menu = ({ value, id }) => {
-  // const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
-  const isModalOpen = useSelector((state) => state.modal.isOpen);
-  // const { openModal } = useSelector((state) => state.modal.openModal);
   const dispatch = useDispatch();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    dispatch(setBookingId(id));
     console.log("id: ", id);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    // dispatch(openModal());
   };
 
-  const handleOpenModal = () => {
-    console.log("clicked");
-    console.log("isModalOpen", isModalOpen);
+  const handleOpenModalAccept = () => {
+    dispatch(setAccept(true));
+    dispatch(setCheckIn(false));
+    dispatch(setCheckOut(false));
+    dispatch(setCancel(false));
     dispatch(openModal());
   };
 
-  const handleCloseModal = () => {
-    dispatch(closeModal());
+  const handleOpenModalCheckIn = () => {
+    dispatch(setAccept(false));
+    dispatch(setCheckIn(true));
+    dispatch(setCheckOut(false));
+    dispatch(setCancel(false));
+    dispatch(openModal());
+  };
+
+  const handleOpenModalCheckOut = () => {
+    dispatch(setAccept(false));
+    dispatch(setCheckIn(false));
+    dispatch(setCheckOut(true));
+    dispatch(setCancel(false));
+    dispatch(openModal());
+  };
+
+  const handleOpenModalCancel = () => {
+    dispatch(setAccept(false));
+    dispatch(setCheckIn(false));
+    dispatch(setCheckOut(false));
+    dispatch(setCancel(true));
+    dispatch(openModal());
   };
 
   return (
@@ -55,25 +82,25 @@ const Menu = ({ value, id }) => {
         }}
       >
         <List sx={{ width: "130px" }}>
-          <ListItem onClick={handleOpenModal}>
+          <ListItem onClick={handleOpenModalAccept}>
             <CheckIcon sx={{ marginRight: "3%", color: "#2196f3" }} />
             <Typography color="primary" variant="subtitle1">
               Xác nhận
             </Typography>
           </ListItem>
-          <ListItem onClick={() => console.log("clicked")}>
+          <ListItem onClick={handleOpenModalCheckIn}>
             <CheckCircleIcon sx={{ marginRight: "3%", color: "#673ab7" }} />
             <Typography color="secondary" variant="subtitle1">
               Check in
             </Typography>
           </ListItem>
-          <ListItem onClick={() => console.log("clicked")}>
+          <ListItem onClick={handleOpenModalCheckOut}>
             <ExitToAppIcon sx={{ marginRight: "3%", color: "#ffc107" }} />
             <Typography color="#ffc107" variant="subtitle1">
               Check out
             </Typography>
           </ListItem>
-          <ListItem onClick={() => console.log("clicked")}>
+          <ListItem onClick={handleOpenModalCancel}>
             <CancelIcon sx={{ marginRight: "3%", color: "#f44336" }} />
             <Typography color="error" variant="subtitle1">
               Hủy
@@ -81,6 +108,8 @@ const Menu = ({ value, id }) => {
           </ListItem>
         </List>
       </Popover>
+
+      <ModalBooking />
     </>
   );
 };
