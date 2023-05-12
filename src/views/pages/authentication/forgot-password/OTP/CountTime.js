@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material/styles";
 const CountTime = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const [timeRemaining, setTimeRemaining] = useState(30);
+  const [timeRemaining, setTimeRemaining] = useState(60);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -25,14 +25,32 @@ const CountTime = () => {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   }
 
+  function handleHello() {
+    console.log("Hello world");
+  }
+
   return (
     <div>
-      <Typography
-        color={theme.palette.secondary.dark}
-        variant={matchDownSM ? "subtitle2" : "subtitle2"}
-      >
-        Gửi lại({formatTime(timeRemaining)})
-      </Typography>
+      <div>
+        {timeRemaining <= 0 ? (
+          <Typography
+            component="a"
+            href="#"
+            color={theme.palette.secondary.dark}
+            variant={matchDownSM ? "subtitle2" : "subtitle2"}
+            onClick={handleHello}
+          >
+            Gửi lại
+          </Typography>
+        ) : (
+          <Typography
+            color={theme.palette.secondary.dark}
+            variant={matchDownSM ? "subtitle2" : "subtitle2"}
+          >
+            Gửi lại({formatTime(timeRemaining)})
+          </Typography>
+        )}
+      </div>
     </div>
   );
 };

@@ -27,10 +27,34 @@ const EmailInput = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log("data", data);
-    navigate("/otp", { state: { formData: data.email } });
+    let otpEntity = { email: email };
+    fetch("https://parkzapi.azurewebsites.net/api/otp-management", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(otpEntity),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.statusCode !== 201) {
+          console.log("Message", data.message);
+        } else {
+          const formData = new FormData(event.target);
+          const data2 = Object.fromEntries(formData.entries());
+          // console.log("data2", data2);
+          navigate("/otp", { state: { formData: data2.email } });
+        }
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error(error);
+      });
     // navigate("/otp", { state: { formData: data } });
   };
 

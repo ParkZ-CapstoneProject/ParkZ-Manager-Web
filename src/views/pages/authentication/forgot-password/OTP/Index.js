@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Grid,
@@ -13,15 +13,52 @@ import NextButton from "ui-component/buttons/next-button/NextButton";
 import BackButton from "ui-component/buttons/back-button/BackButton";
 import CountTime from "./CountTime";
 import { useLocation } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 
 const OTP = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [otp, setOTP] = useState();
   const location = useLocation();
   const { formData } = location.state;
-  // console.log("data", data);
-  console.log(formData);
+  // console.log(formData);
+  const navigate = useNavigate();
+  const handleInputOTP = (e) => {
+    setOTP(e.target.value);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    let verifyEntity = { email: formData, otpCode: otp };
+    fetch("https://parkzapi.azurewebsites.net/api/otp-management/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(verifyEntity),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((dataRes) => {
+        if (dataRes.statusCode !== 201) {
+          console.log("Message", dataRes.message);
+        } else {
+          // const formData = new FormData(event.target);
+          // const data= Object.fromEntries(formData.entries());
+          // console.log("data2", data2);
+          navigate("/new-password", { state: { formData: formData } });
+        }
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error(error);
+      });
+    // navigate("/otp", { state: { formData: data } });
+  };
 
   return (
     <Layout>
@@ -57,7 +94,7 @@ const OTP = () => {
         </Grid>
 
         <Grid item>
-          <form>
+          <form onSubmit={handleSubmit} method="post">
             <Stack xs={12} justifyContent="center" spacing={1}>
               <Typography
                 color={theme.palette.secondary.dark}
@@ -76,7 +113,7 @@ const OTP = () => {
                 // value={userData["email"]}
                 label="OTP"
                 color="secondary"
-                // onChange={handleInputEmail}
+                onChange={handleInputOTP}
                 // error={errorEmail || spaceInput}
                 // helperText={
                 //   spaceInput

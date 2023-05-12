@@ -7,15 +7,58 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useState } from "react";
 import { Layout } from "ui-component/auth/layout";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 // import NextButton from "ui-component/buttons/next-button/NextButton";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
+import { useLocation } from "react-router";
 
 const NewPassword = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+  const location = useLocation();
+  const { formData } = location.state;
+  console.log(formData);
+  const [newMk, setNewMk] = useState();
+  const handleInputNewPassword = (e) => {
+    setNewMk(e.target.value);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    let passwordEntity = { email: formData, newPassword: newMk };
+    console.log("Email:", passwordEntity.email);
+    fetch(
+      "https://parkzapi.azurewebsites.net/api/password-management/forgot-password",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(passwordEntity),
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.status;
+      })
+      .then((data) => {
+        if (data === 204) {
+          console.log("Thành công");
+        } else {
+          console.log(data);
+        }
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error(error);
+      });
+    // navigate("/otp", { state: { formData: data } });
+  };
+
   return (
     <Layout>
       <Grid
@@ -25,7 +68,7 @@ const NewPassword = () => {
         direction="column"
         marginTop="2%"
       >
-        <form>
+        <form onSubmit={handleSubmit} method="post">
           <Grid item xs={12}>
             <Stack
               alignItems="center"
@@ -67,6 +110,7 @@ const NewPassword = () => {
                 name="password"
                 label="Mật khẩu"
                 color="secondary"
+                onChange={handleInputNewPassword}
                 //     value={userData["password"]}
                 //     error={spaceInput}
                 //     onChange={handlePasswordChange}
