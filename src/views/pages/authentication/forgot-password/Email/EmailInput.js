@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
-  Button,
   Grid,
   Stack,
   TextField,
@@ -11,10 +10,30 @@ import {
 
 import { Layout } from "ui-component/auth/layout";
 import NextButton from "ui-component/buttons/next-button/NextButton";
+import { Link, useNavigate } from "react-router-dom";
 
 const EmailInput = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [email, setEmail] = useState();
+
+  const navigate = useNavigate();
+
+  const handleInputEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    console.log("data", data);
+    navigate(`/otp?param1=${data.email}`);
+    // navigate("/otp", { state: { formData: data } });
+  };
+
   return (
     <Layout>
       <Grid
@@ -47,7 +66,7 @@ const EmailInput = () => {
           </Stack>
         </Grid>
 
-        <form>
+        <form onSubmit={handleSubmit} method="post">
           <Grid item>
             <Stack justifyContent="center" spacing={1}>
               <Typography
@@ -64,10 +83,10 @@ const EmailInput = () => {
                 inputProps={{ maxLength: 100 }}
                 type="email"
                 name="email"
-                // value={userData["email"]}
+                value={email}
                 label="Email"
                 color="secondary"
-                // onChange={handleInputEmail}
+                onChange={handleInputEmail}
                 // error={errorEmail || spaceInput}
                 // helperText={
                 //   spaceInput

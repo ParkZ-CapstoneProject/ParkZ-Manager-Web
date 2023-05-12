@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { openModal } from "store/modalReducer";
 import { useState } from "react";
 import Loading from "ui-component/back-drop/Loading";
+import QRScan from "ui-component/buttons/qrscan-button/QRScan";
 
 const renderAvatarCell = (params) => {
   return <Avatar src={params.value} alt="avatar" />;
@@ -345,6 +346,7 @@ export default function DataTable() {
         </div>
       </MainCard>
       {/* )} */}
+      <QRScan />
     </>
   );
 }

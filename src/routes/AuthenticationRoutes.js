@@ -40,7 +40,9 @@ const ModalBooking = Loadable(
   lazy(() => import("ui-component/modal/ModalBooking"))
 );
 
-const Loading = Loadable(lazy(() => import("ui-component/back-drop/Loading")));
+const QrCodeScan = Loadable(
+  lazy(() => import("ui-component/qr-scan-code/QRRScanCode"))
+);
 
 // const Layout = Loadable(lazy(() => import("ui-component/auth/layout")));
 
@@ -79,8 +81,8 @@ const AuthenticationRoutes = {
       element: <ModalBooking />,
     },
     {
-      path: "loading",
-      element: <Loading />,
+      path: "qr",
+      element: <QrCodeScan />,
     },
   ],
 };

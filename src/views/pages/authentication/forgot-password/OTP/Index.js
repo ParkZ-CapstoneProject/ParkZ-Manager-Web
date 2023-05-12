@@ -12,10 +12,20 @@ import { Layout } from "ui-component/auth/layout";
 import NextButton from "ui-component/buttons/next-button/NextButton";
 import BackButton from "ui-component/buttons/back-button/BackButton";
 import CountTime from "./CountTime";
+import { useLocation } from "react-router";
 
 const OTP = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const formData = {
+    param1: queryParams.get("param1"),
+  };
+  // console.log("data", data);
+  console.log(formData.param1);
+
   return (
     <Layout>
       <Grid
