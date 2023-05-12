@@ -16,7 +16,7 @@ import {
 // import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from "../../../../ui-component/auth/layout";
 import LoginButton from "ui-component/buttons/login-button/LoginButton";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 // import Header from "layout/MainLayout/Header";
 
 const Page = () => {
