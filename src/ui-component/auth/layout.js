@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 import Logo from "../Logo";
 import image from "../../assets/3.svg";
+import { useTheme } from "@mui/material/styles";
+
 import "./layout.scss";
 
 // TODO: Change subtitle text
 
 export const Layout = (props) => {
+  const theme = useTheme();
   const { children } = props;
   const width = "230vw";
   const height = "230vh";
@@ -68,7 +71,12 @@ export const Layout = (props) => {
                 PARKZ
               </Box>
             </Typography>
-            <Typography align="center" sx={{ mb: 3 }} variant="subtitle2">
+            <Typography
+              align="center"
+              sx={{ mb: 3 }}
+              color={theme.palette.secondary.light}
+              variant="subtitle1"
+            >
               Ứng dụng đặt bãi gửi xe uy tín, chất lượng
             </Typography>
             <img alt="" src={image} />
