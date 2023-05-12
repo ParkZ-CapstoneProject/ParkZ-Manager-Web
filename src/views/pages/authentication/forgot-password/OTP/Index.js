@@ -19,12 +19,9 @@ const OTP = () => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const formData = {
-    param1: queryParams.get("param1"),
-  };
+  const { formData } = location.state;
   // console.log("data", data);
-  console.log(formData.param1);
+  console.log(formData);
 
   return (
     <Layout>

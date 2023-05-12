@@ -30,7 +30,7 @@ const EmailInput = () => {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
     console.log("data", data);
-    navigate(`/otp?param1=${data.email}`);
+    navigate("/otp", { state: { formData: data.email } });
     // navigate("/otp", { state: { formData: data } });
   };
 

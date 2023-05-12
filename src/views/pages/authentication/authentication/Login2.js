@@ -15,11 +15,14 @@ import {
 } from "@mui/material";
 // import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from "../../../../ui-component/auth/layout";
+import LoginButton from "ui-component/buttons/login-button/LoginButton";
+import { useNavigate } from "react-router";
 // import Header from "layout/MainLayout/Header";
 
 const Page = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+
   //   const router = useRouter();
   //   const auth = useAuth();
   // const [method, setMethod] = useState("email");
@@ -52,23 +55,8 @@ const Page = () => {
   //     }
   //   });
 
-  // const handleMethodChange = useCallback((event, value) => {
-  //   setMethod(value);
-  // }, []);
-
-  //   const handleSkip = useCallback(
-  //     () => {
-  //       auth.skip();
-  //       router.push('/');
-  //     },
-  //     [auth, router]
-  //   );
-
   return (
     <AuthLayout>
-      {/* <Head>
-        <title>Login | Devias Kit</title>
-      </Head> */}
       <Box
         sx={{
           backgroundColor: "background.paper",
@@ -108,10 +96,10 @@ const Page = () => {
               </Typography> */}
             </Stack>
             <form
-              noValidate
-              // onSubmit={formik.handleSubmit}
+            // noValidate
+            // onSubmit={formik.handleSubmit}
             >
-              <Stack spacing={3}>
+              <Stack spacing={1}>
                 <TextField
                   sx={{ borderRadius: "5px" }}
                   // error={!!(formik.touched.email && formik.errors.email)}
@@ -124,6 +112,16 @@ const Page = () => {
                   type="email"
                   // value={formik.values.email}
                 />
+                <Typography
+                  color={theme.palette.secondary.dark}
+                  variant="subtitle2"
+                  sx={{
+                    cursor: "pointer",
+                    textAlign: "end",
+                  }}
+                >
+                  <a href="/input-email">Bạn quên mật khẩu?</a>
+                </Typography>
                 <TextField
                   // error={!!(formik.touched.password && formik.errors.password)}
                   fullWidth
@@ -148,7 +146,7 @@ const Page = () => {
                     {formik.errors.submit}
                   </Typography>
                 )} */}
-              <Button
+              {/* <Button
                 fullWidth
                 size="large"
                 sx={{
@@ -165,21 +163,19 @@ const Page = () => {
                 variant="contained"
               >
                 Đăng nhập
-              </Button>
-              {/* <Button
-                  fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  //   onClick={handleSkip}
+              </Button> */}
+              <Stack sx={{ marginTop: "5%" }}>
+                <LoginButton />
+              </Stack>
+
+              <Stack sx={{ textAlign: "center", marginTop: "2%" }}>
+                <Typography
+                  color={theme.palette.secondary.main}
+                  variant="subtitle1"
                 >
-                  Skip authentication
-                </Button> */}
-              {/* <Alert color="primary" severity="info" sx={{ mt: 3 }}>
-                  <div>
-                    You can use <b>demo@devias.io</b> and password{" "}
-                    <b>Password123!</b>
-                  </div>
-                </Alert> */}
+                  Bạn chưa có tài khoản? <a href="/register">Đăng ký tại đây</a>
+                </Typography>
+              </Stack>
             </form>
           </div>
         </Box>
