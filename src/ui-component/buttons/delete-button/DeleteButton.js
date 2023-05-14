@@ -1,10 +1,12 @@
 import React from "react";
 import "./DeleteButton.scss";
 
-const DeleteButton = () => {
+const DeleteButton = (props) => {
+  const { onClick } = props;
+
   return (
     <>
-      <button class="btn-delete" type="button">
+      <button class="btn-delete" type="button" onClick={onClick}>
         <span class="btn-delete__text">Xóa</span>
         <span class="btn-delete__icon">
           <svg
@@ -18,11 +20,22 @@ const DeleteButton = () => {
             <path
               d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
               // eslint-disable-next-line react/style-prop-object
-              style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+              style={{
+                fill: "none",
+                stroke: "#fff",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
             ></path>
             <line
               // eslint-disable-next-line react/style-prop-object
-              style="stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+              style={{
+                stroke: "#fff",
+                strokeLinecap: "round",
+                strokeMiterlimit: 10,
+                strokeWidth: "32px",
+              }}
               x1="80"
               x2="432"
               y1="112"
@@ -31,11 +44,23 @@ const DeleteButton = () => {
             <path
               d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40"
               // eslint-disable-next-line react/style-prop-object
-              style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+              style={{
+                fill: "none",
+                stroke: "#fff",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
             ></path>
             <line
               // eslint-disable-next-line react/style-prop-object
-              style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+              style={{
+                fill: "none",
+                stroke: "#fff",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
               x1="256"
               x2="256"
               y1="176"
@@ -43,7 +68,13 @@ const DeleteButton = () => {
             ></line>
             <line
               // eslint-disable-next-line react/style-prop-object
-              style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+              style={{
+                fill: "none",
+                stroke: "#fff",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
               x1="184"
               x2="192"
               y1="176"
@@ -51,7 +82,13 @@ const DeleteButton = () => {
             ></line>
             <line
               // eslint-disable-next-line react/style-prop-object
-              style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+              style={{
+                fill: "none",
+                stroke: "#fff",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
               x1="328"
               x2="320"
               y1="176"

@@ -1,10 +1,11 @@
 import React from "react";
 import "./CancelButton.scss";
 
-const CancelButton = () => {
+const CancelButton = (props) => {
+  const { onClick } = props;
   return (
     <>
-      <button class="btn-cancel">
+      <button class="btn-cancel" onClick={onClick}>
         <span>Hủy</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"

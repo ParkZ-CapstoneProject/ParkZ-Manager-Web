@@ -4,11 +4,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AcceptButton from "ui-component/buttons/accept-button/AcceptButton";
 import CancelButton from "ui-component/buttons/simple-cancel-button/CancelButton";
-import DialogBooking from "./Dialog";
+import DialogBooking from "../booking/Dialog";
 import { closeModal } from "store/modalReducer";
-import Loading from "ui-component/back-drop/Loading";
 
-const ItemModal = () => {
+const ItemModal = ({ modalType }) => {
   const theme = useTheme();
   const { accept, checkIn, checkOut, cancel } = useSelector(
     (state) => state.modal
@@ -17,7 +16,7 @@ const ItemModal = () => {
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
-    dispatch(closeModal());
+    dispatch(closeModal(modalType));
   };
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -38,7 +37,6 @@ const ItemModal = () => {
           direction="column"
           spacing={2}
           justifyContent="center"
-          //   alignItems="center"
           sx={{ marginLeft: "1%", marginTop: "4%" }}
         >
           <Grid item sx={{ textAlign: "center" }}>

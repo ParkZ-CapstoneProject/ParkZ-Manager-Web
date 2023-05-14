@@ -6,11 +6,11 @@ import SubCard from "ui-component/cards/SubCard";
 import { Avatar, Button, Grid } from "@mui/material";
 import "./Booking.scss";
 import Menu from "ui-component/booking/Menu";
-import { useDispatch } from "react-redux";
-import { openModal } from "store/modalReducer";
-import { useState } from "react";
-import Loading from "ui-component/back-drop/Loading";
-import QRScan from "ui-component/buttons/qrscan-button/QRScan";
+// import { useDispatch } from "react-redux";
+// import { openModal } from "store/modalReducer";
+// import { useState } from "react";
+// import Loading from "ui-component/back-drop/Loading";
+// import QRScan from "ui-component/buttons/qrscan-button/QRScan";
 
 const renderAvatarCell = (params) => {
   return <Avatar src={params.value} alt="avatar" />;
@@ -338,15 +338,19 @@ export default function DataTable() {
             rows={rows}
             rowHeight={70}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[4]}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
+              },
+            }}
+            pageSizeOptions={[5, 10, 25]}
             checkboxSelection
             style={{ paddingTop: "12px" }}
           />
         </div>
       </MainCard>
       {/* )} */}
-      <QRScan />
+      {/* <QRScan /> */}
     </>
   );
 }

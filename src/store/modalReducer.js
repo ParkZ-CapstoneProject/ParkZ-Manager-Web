@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  modals: [],
   bookingId: null,
-  isOpen: false,
+  staffId: null,
   accept: false,
   cancel: false,
   checkIn: false,
@@ -13,12 +14,14 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    openModal: (state) => {
-      state.isOpen = true;
+    openModal: (state, action) => {
+      state.modals.push(action.payload);
       //   state.id = action.payload.id;
     },
-    closeModal: (state) => {
-      state.isOpen = false;
+    closeModal: (state, action) => {
+      state.modals = state.modals.filter(
+        (modalType) => modalType !== action.payload
+      );
       //   state.id = null;
     },
     setBookingId: (state, action) => {
@@ -36,6 +39,9 @@ const modalSlice = createSlice({
     setCheckOut: (state, action) => {
       state.checkOut = action.payload;
     },
+    setStaffId: (state, action) => {
+      state.staffId = action.payload;
+    },
   },
 });
 
@@ -47,6 +53,7 @@ export const {
   setCancel,
   setCheckIn,
   setCheckOut,
+  setStaffId,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

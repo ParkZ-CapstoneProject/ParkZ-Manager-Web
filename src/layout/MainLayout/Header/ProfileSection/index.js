@@ -169,7 +169,7 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Good Morning,</Typography>
+                        <Typography variant="h4">Chào mừng,</Typography>
                         <Typography
                           component="span"
                           variant="h4"
@@ -178,9 +178,9 @@ const ProfileSection = () => {
                           Johne Doe
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Project Admin</Typography>
+                      <Typography variant="subtitle2">Quản lý</Typography>
                     </Stack>
-                    <OutlinedInput
+                    {/* <OutlinedInput
                       sx={{ width: "100%", pr: 1, pl: 2, my: 2 }}
                       id="input-search-profile"
                       value={value}
@@ -199,8 +199,8 @@ const ProfileSection = () => {
                       inputProps={{
                         "aria-label": "weight",
                       }}
-                    />
-                    <Divider />
+                    /> */}
+                    {/* <Divider /> */}
                   </Box>
                   <PerfectScrollbar
                     style={{
@@ -210,7 +210,7 @@ const ProfileSection = () => {
                     }}
                   >
                     <Box sx={{ p: 2 }}>
-                      <UpgradePlanCard />
+                      {/* <UpgradePlanCard />
                       <Divider />
                       <Card
                         sx={{
@@ -269,7 +269,7 @@ const ProfileSection = () => {
                             </Grid>
                           </Grid>
                         </CardContent>
-                      </Card>
+                      </Card> */}
                       <Divider />
                       <List
                         component="nav"
@@ -305,9 +305,7 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Typography variant="body2">
-                                Account Settings
-                              </Typography>
+                              <Typography variant="body2">Cài đặt</Typography>
                             }
                           />
                         </ListItemButton>
@@ -335,9 +333,7 @@ const ProfileSection = () => {
                                 justifyContent="space-between"
                               >
                                 <Grid item>
-                                  <Typography variant="body2">
-                                    Social Profile
-                                  </Typography>
+                                  <Typography variant="body2">Hồ sơ</Typography>
                                 </Grid>
                                 <Grid item>
                                   <Chip
@@ -365,7 +361,7 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Typography variant="body2">Logout</Typography>
+                              <Typography variant="body2">Đăng xuất</Typography>
                             }
                           />
                         </ListItemButton>

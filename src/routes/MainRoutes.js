@@ -3,6 +3,7 @@ import { lazy } from "react";
 // project imports
 import MainLayout from "layout/MainLayout";
 import Loadable from "ui-component/Loadable";
+// import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
 
 // dashboard routing
 const DashboardDefault = Loadable(
@@ -12,6 +13,12 @@ const DashboardDefault = Loadable(
 const Booking = Loadable(lazy(() => import("views/booking/Booking")));
 
 const Profile = Loadable(lazy(() => import("views/profile/Profile")));
+const Staff = Loadable(lazy(() => import("views/staff/Staff")));
+const ModalCreate = Loadable(
+  lazy(() =>
+    import("ui-component/modal/staff-modal/create-modal/CreateModalStaff")
+  )
+);
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -34,6 +41,14 @@ const MainRoutes = {
     {
       path: "profile",
       element: <Profile />,
+    },
+    {
+      path: "staff",
+      element: <Staff />,
+    },
+    {
+      path: "create-modal",
+      element: <ModalCreate />,
     },
   ],
 };

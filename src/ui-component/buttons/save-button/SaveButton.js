@@ -1,10 +1,12 @@
 import React from "react";
 import "./SaveButton.scss";
 
-const SaveButton = () => {
+const SaveButton = (props) => {
+  const { onClick } = props;
+
   return (
     <>
-      <button className="btn-save">
+      <button className="btn-save" type="submit" onClick={onClick}>
         <span>Lưu</span>
         <svg
           height="35"

@@ -18,7 +18,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "50%",
+  width: "40%",
   height: "90%",
   bgcolor: "background.paper",
   // border: "1px solid #000",
@@ -27,21 +27,21 @@ const style = {
   p: 4,
 };
 
-export default function ModalBooking() {
+export default function EditModalStaff({ modalType }) {
   const theme = useTheme();
-  const { isOpen } = useSelector((state) => state.modal);
+  const isOpen = useSelector((state) => state.modal.modals.includes(modalType));
   const dispatch = useDispatch();
 
-  // const handleOpen = () => {
-  //   dispatch(openModal());
+  // const handleOpen = (modalType) => {
+  //   dispatch(openModal(modalType));
   // };
   const handleClose = () => {
-    dispatch(closeModal());
+    dispatch(closeModal(modalType));
   };
 
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      {/* <Button onClick={() => handleOpen("createModalStaff")}>Open modal</Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -54,6 +54,7 @@ export default function ModalBooking() {
             timeout: 500,
           },
         }}
+        sx={{ border: "none" }}
       >
         <Fade in={isOpen}>
           <Box sx={style}>
@@ -72,9 +73,6 @@ export default function ModalBooking() {
                 right: 1,
                 color: theme.palette.grey[500],
                 backgroundColor: theme.palette.grey[100],
-                "&:hover": {
-                  backgroundColor: theme.palette.grey[500],
-                },
               }}
             >
               <CloseIcon />
@@ -85,7 +83,7 @@ export default function ModalBooking() {
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
             </Typography> */}
-            <ItemModal />
+            <ItemModal modalType={modalType} />
           </Box>
         </Fade>
       </Modal>

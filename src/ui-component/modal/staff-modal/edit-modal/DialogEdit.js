@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DialogBooking = (props) => {
+const DialogEdit = (props) => {
   const { open, onClose } = props;
 
   const theme = useTheme();
@@ -44,7 +44,7 @@ const DialogBooking = (props) => {
         </DialogTitle>
         <DialogContent>
           <Typography color={theme.palette.secondary.dark} variant="subtitle1">
-            Bạn có chắc chắn muốn thay đổi
+            Bạn có chắc chắn muốn lưu thay đổi
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -59,4 +59,4 @@ const DialogBooking = (props) => {
   );
 };
 
-export default DialogBooking;
+export default DialogEdit;
