@@ -6,6 +6,10 @@ import SubCard from "ui-component/cards/SubCard";
 import { Avatar, Button, Grid } from "@mui/material";
 import "./Booking.scss";
 import Menu from "ui-component/booking/Menu";
+import FloatingButton from "ui-component/buttons/qr-button-drag/FloatingButton";
+import QRScanCode from "ui-component/qr-scan-code/QRScanCode";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 // import { useDispatch } from "react-redux";
 // import { openModal } from "store/modalReducer";
 // import { useState } from "react";
@@ -321,6 +325,17 @@ const rows = [
 export default function DataTable() {
   // const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  // const [openScanner, setOpenScanner] = useState(false);
+
+  const handleOpenScanner = () => {
+    navigate("/qr");
+    // setOpenScanner(true);
+  };
+
+  // const handleCloseScanner = () => {
+  //   setOpenScanner(false);
+  // };
 
   return (
     <>
@@ -349,6 +364,8 @@ export default function DataTable() {
           />
         </div>
       </MainCard>
+      <FloatingButton handleOpenScanner={handleOpenScanner} />
+      {/* <QRScanCode openScanner={openScanner} closeScanner={handleCloseScanner} /> */}
       {/* )} */}
       {/* <QRScan /> */}
     </>

@@ -22,7 +22,7 @@ const AccountInfor = () => {
   const userData = useSelector((state) => state.multiStep.userData);
 
   const [email, setEmail] = useState("");
-  const [spaceInput, setSpaceInput] = useState(false);
+  // const [spaceInput, setSpaceInput] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,21 +34,21 @@ const AccountInfor = () => {
 
   const handleInputEmail = (event) => {
     const newEmail = event.target.value;
-    setSpaceInput(newEmail.trim().length === 0);
+    // setSpaceInput(newEmail.trim().length === 0);
     setEmail(newEmail);
     dispatch(setUserData({ ...userData, email: newEmail }));
     setErrorEmail(!validator.isEmail(newEmail));
   };
 
   const handlePasswordChange = (event) => {
-    setSpaceInput(event.target.value.trim() === 0);
+    // setSpaceInput(event.target.value.trim() === 0);
     setPassword(event.target.value);
     dispatch(setUserData({ ...userData, password: event.target.value }));
     setPasswordsMatch(event.target.value === confirmPassword);
   };
 
   const handleConfirmPasswordChange = (event) => {
-    setSpaceInput(event.target.value.trim() === 0);
+    // setSpaceInput(event.target.value.trim() === 0);
     setConfirmPassword(event.target.value);
     dispatch(setUserData({ ...userData, confirmPassword: event.target.value }));
     setPasswordsMatch(event.target.value === password);
@@ -99,14 +99,8 @@ const AccountInfor = () => {
             label="Email"
             color="secondary"
             onChange={handleInputEmail}
-            error={errorEmail || spaceInput}
-            helperText={
-              spaceInput
-                ? "Không nhập khoảng cách"
-                : errorEmail
-                ? "Vui lòng nhập đúng email"
-                : ""
-            }
+            error={errorEmail}
+            helperText={errorEmail ? "Vui lòng nhập đúng email" : ""}
           />
         </Stack>
         <Stack spacing={1}>
@@ -126,9 +120,7 @@ const AccountInfor = () => {
             label="Mật khẩu"
             color="secondary"
             value={userData["password"]}
-            error={spaceInput}
             onChange={handlePasswordChange}
-            helperText={spaceInput ? "Vui lòng không nhập khoảng trống" : ""}
           />
         </Stack>
         <Stack spacing={1}>
@@ -149,14 +141,8 @@ const AccountInfor = () => {
             color="secondary"
             value={userData["confirmPassword"]}
             onChange={handleConfirmPasswordChange}
-            error={!passwordsMatch || spaceInput}
-            helperText={
-              !passwordsMatch
-                ? "Mật khẩu không khớp"
-                : spaceInput
-                ? "Vui lòng không nhập khoảng trống"
-                : ""
-            }
+            error={!passwordsMatch}
+            helperText={!passwordsMatch ? "Mật khẩu không khớp" : ""}
           />
         </Stack>
         <Stack sx={{ marginTop: "8%" }}>
@@ -165,7 +151,7 @@ const AccountInfor = () => {
             size="large"
             sx={{
               mt: 3,
-              borderRadius: "7px",
+              borderRadius: "10px",
               backgroundColor: "#063970",
               ":is(:hover, :focus)": {
                 backgroundColor: "#478be9",

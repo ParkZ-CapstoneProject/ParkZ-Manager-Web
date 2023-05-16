@@ -135,18 +135,18 @@ const PersonalInfor = () => {
             direction="row"
             alignContent="center"
             justifyContent="center"
-            sx={{ marginTop: "5%" }}
+            sx={{ marginTop: "3%" }}
             xs={5}
-            spacing={2}
+            spacing={4}
           >
             <Grid item>
               <Typography
                 color={theme.palette.secondary.dark}
                 gutterBottom
                 variant={matchDownSM ? "h5" : "h4"}
-                marginTop="8%"
+                // marginTop="8%"
               >
-                Mặt trước
+                Mặt trước CCCD
               </Typography>
               <UploadFront />
             </Grid>
@@ -155,17 +155,36 @@ const PersonalInfor = () => {
                 color={theme.palette.secondary.dark}
                 gutterBottom
                 variant={matchDownSM ? "h5" : "h4"}
-                marginTop="8%"
+                // marginTop="8%"
               >
-                Mặt sau
+                Mặt sau CCCD
               </Typography>
               <UploadBackSide />
             </Grid>
           </Grid>
         </Grid>
 
-        <Grid item xs={5}>
-          <UploadAvatar />
+        <Grid
+          item
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          xs={5}
+        >
+          <Grid item>
+            <Typography
+              color={theme.palette.secondary.dark}
+              gutterBottom
+              variant={matchDownSM ? "h5" : "h4"}
+              marginTop="8%"
+            >
+              Ảnh đại diện
+            </Typography>
+          </Grid>
+          <Grid item>
+            <UploadAvatar />
+          </Grid>
           {/* components 2 */}
         </Grid>
       </Grid>
@@ -176,7 +195,7 @@ const PersonalInfor = () => {
         alignItems="center"
         direction="row"
         spacing={4}
-        style={{ marginTop: "1%", marginLeft: "7%" }}
+        style={{ marginLeft: "7%" }}
         xs={10}
       >
         <Grid item>
@@ -186,7 +205,7 @@ const PersonalInfor = () => {
             // style={{ backgroundColor: "#cb4e18", width: "250px" }}
             sx={{
               mt: 3,
-              borderRadius: "7px",
+              borderRadius: "10px",
               backgroundColor: "#cb4e18",
               width: "250px",
               ":is(:hover, :focus)": {
@@ -208,7 +227,7 @@ const PersonalInfor = () => {
             size="large"
             sx={{
               mt: 3,
-              borderRadius: "7px",
+              borderRadius: "10px",
               backgroundColor: "#063970",
               ":is(:hover, :focus)": {
                 backgroundColor: "#478be9",

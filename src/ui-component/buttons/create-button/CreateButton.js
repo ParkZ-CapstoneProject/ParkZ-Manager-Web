@@ -1,10 +1,12 @@
 import React from "react";
 import "./CreateButton.scss";
 
-const CreateButton = () => {
+const CreateButton = (props) => {
+  const { onClick } = props;
+
   return (
     <>
-      <button class="btn-create">
+      <button class="btn-create" onClick={onClick}>
         Thêm mới
         <div class="icon">
           <svg

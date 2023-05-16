@@ -8,6 +8,9 @@ import "./Staff.scss";
 import Menu from "ui-component/staff/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
+import { useDispatch } from "react-redux";
+import { openModal } from "store/modalReducer";
+import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
 // import { useDispatch } from "react-redux";
 // import { openModal } from "store/modalReducer";
 // import { useState } from "react";
@@ -161,6 +164,11 @@ const rows = [
 export default function Staff() {
   // const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+
+  const handleOpenModalCreate = (modalType) => {
+    dispatch(openModal(modalType));
+  };
 
   return (
     <>
@@ -171,7 +179,11 @@ export default function Staff() {
         <Grid item xs={12}>
           <SubCardStaff
             startComponent={<SearchSection />}
-            endComponent={<CreateButton />}
+            endComponent={
+              <CreateButton
+                onClick={() => handleOpenModalCreate("createModalStaff")}
+              />
+            }
           >
             {/* <SearchSection /> */}
           </SubCardStaff>
@@ -193,6 +205,8 @@ export default function Staff() {
           />
         </div>
       </MainCard>
+
+      <CreateModalStaff modalType="createModalStaff" />
     </>
   );
 }

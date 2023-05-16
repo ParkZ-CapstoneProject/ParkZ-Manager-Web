@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AccountInfor from "ui-component/register-step/step1/AccountInfor";
 import PersonalInfor from "ui-component/register-step/step2/PersonalInfor";
 import BusinessInfor from "ui-component/register-step/step3/BusinessInfor";
+import Done from "ui-component/register-step/done/Done";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -133,7 +134,13 @@ export default function RegisterForBus() {
           </Step>
         ))}
       </Stepper>
-      {showStep(currentStep)}
+      {currentStep === steps.length + 1 ? (
+        <>
+          <Done />
+        </>
+      ) : (
+        showStep(currentStep)
+      )}
     </Stack>
   );
 }

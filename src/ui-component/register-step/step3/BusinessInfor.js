@@ -35,14 +35,14 @@ const BusinessInfor = () => {
       alignItems="center"
       justifyContent="center"
       direction="column"
-      marginTop="5%"
+      marginTop="2%"
     >
       <Grid item xs={12}>
         <Stack
           alignItems="center"
           justifyContent="center"
           spacing={1}
-          marginBottom="15%"
+          marginBottom="8%"
         >
           <Typography
             color={theme.palette.secondary.main}
@@ -76,7 +76,7 @@ const BusinessInfor = () => {
             color={theme.palette.secondary.dark}
             gutterBottom
             variant={matchDownSM ? "h5" : "h4"}
-            marginTop="8%"
+            marginTop="5%"
           >
             Địa chỉ văn phòng(Optional)
           </Typography>
@@ -90,12 +90,36 @@ const BusinessInfor = () => {
             color="secondary"
           />
         </Stack>
+
+        <Grid
+          item
+          container
+          style={{ marginTop: "1%" }}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item xs={0.8}>
+            <Checkbox />
+          </Grid>
+          <Grid item xs={11}>
+            <Typography
+              color={theme.palette.secondary.dark}
+              gutterBottom
+              variant={matchDownSM ? "h6" : "h5"}
+              marginTop="2%"
+            >
+              Hộ kinh doanh gia đình
+            </Typography>
+          </Grid>
+        </Grid>
+
         <Stack spacing={1}>
           <Typography
             color={theme.palette.secondary.dark}
             gutterBottom
             variant={matchDownSM ? "h5" : "h4"}
-            marginTop="8%"
+            marginTop="2%"
           >
             Giấy phép kinh doanh
           </Typography>
@@ -138,7 +162,7 @@ const BusinessInfor = () => {
               style={{ backgroundColor: "#cb4e18" }}
               sx={{
                 mt: 3,
-                borderRadius: "7px",
+                borderRadius: "10px",
                 width: "220px",
                 ":is(:hover, :focus)": {
                   backgroundColor: "#cb4e18",
@@ -159,7 +183,7 @@ const BusinessInfor = () => {
               size="large"
               sx={{
                 mt: 3,
-                borderRadius: "7px",
+                borderRadius: "10px",
                 width: "220px",
                 backgroundColor: "#063970",
                 ":is(:hover, :focus)": {

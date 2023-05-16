@@ -29,6 +29,10 @@ const ItemModal = ({ modalType }) => {
     setOpenDialog(false);
   };
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
   const handleCloseModal = () => {
     dispatch(closeModal(modalType));
   };
@@ -215,7 +219,7 @@ const ItemModal = ({ modalType }) => {
             <CancelButton onClick={handleCloseModal} />
           </Grid>
           <Grid item>
-            <SaveButton />
+            <SaveButton onClick={handleOpenDialog} />
           </Grid>
         </Grid>
       </Grid>

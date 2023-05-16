@@ -3,12 +3,12 @@ import styled from "styled-components";
 export const BoxUpload = styled.div`
   box-sizing: content-box;
   height: 200px;
-  width: 220px;
+  width: 230px;
   display: grid;
   place-items: center;
   border: 1px dashed #799cd9;
   padding: 36px 48px;
-  border-radius: 20px;
+  border-radius: 160px;
   background: #fbfbff;
 
   .image-upload {

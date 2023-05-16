@@ -7,9 +7,10 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 
 const QRScanCode = () => {
+  // const { openScanner, closeScanner } = props;
   const theme = useTheme();
   const [scanResultWebCam, setScanResultWebCam] = useState("");
-  const [openScanner, setOpenScanner] = useState(false);
+  const [openScanner, setOpenScanner] = useState(true);
 
   const navigate = useNavigate();
 
@@ -24,19 +25,20 @@ const QRScanCode = () => {
     }
   };
 
-  const openScannerOnClick = () => {
-    setOpenScanner(true);
-  };
+  // const openScannerOnClick = () => {
+  //   setOpenScanner(true);
+  // };
 
   const closeScanner = () => {
     setOpenScanner(false);
+    navigate("/booking");
   };
 
   console.log("scanResultWebCam", scanResultWebCam);
 
   return (
     <div>
-      <button onClick={openScannerOnClick}>Open Scanner</button>
+      {/* <button onClick={openScannerOnClick}>Open Scanner</button> */}
       {openScanner && (
         <div
           style={{

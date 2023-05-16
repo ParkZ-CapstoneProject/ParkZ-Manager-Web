@@ -2,10 +2,12 @@
 import React from "react";
 import "./BackButton.scss";
 
-const BackButton = () => {
+const BackButton = (props) => {
+  const { onClick } = props;
+
   return (
     <>
-      <button className="btn-back">
+      <button className="btn-back" onClick={onClick}>
         <svg
           width="34"
           height="34"

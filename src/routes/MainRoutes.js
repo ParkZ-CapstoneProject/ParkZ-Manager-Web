@@ -14,10 +14,8 @@ const Booking = Loadable(lazy(() => import("views/booking/Booking")));
 
 const Profile = Loadable(lazy(() => import("views/profile/Profile")));
 const Staff = Loadable(lazy(() => import("views/staff/Staff")));
-const ModalCreate = Loadable(
-  lazy(() =>
-    import("ui-component/modal/staff-modal/create-modal/CreateModalStaff")
-  )
+const ButtonDrag = Loadable(
+  lazy(() => import("ui-component/buttons/qr-button-drag/FloatingButton"))
 );
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -47,8 +45,8 @@ const MainRoutes = {
       element: <Staff />,
     },
     {
-      path: "create-modal",
-      element: <ModalCreate />,
+      path: "button",
+      element: <ButtonDrag />,
     },
   ],
 };
