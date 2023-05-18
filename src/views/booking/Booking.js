@@ -7,14 +7,7 @@ import { Avatar, Button, Grid } from "@mui/material";
 import "./Booking.scss";
 import Menu from "ui-component/booking/Menu";
 import FloatingButton from "ui-component/buttons/qr-button-drag/FloatingButton";
-import QRScanCode from "ui-component/qr-scan-code/QRScanCode";
-import { useState } from "react";
 import { useNavigate } from "react-router";
-// import { useDispatch } from "react-redux";
-// import { openModal } from "store/modalReducer";
-// import { useState } from "react";
-// import Loading from "ui-component/back-drop/Loading";
-// import QRScan from "ui-component/buttons/qrscan-button/QRScan";
 
 const renderAvatarCell = (params) => {
   return <Avatar src={params.value} alt="avatar" />;
@@ -25,95 +18,32 @@ const getCellValue = (params) => {
 };
 
 const renderCellStatus = (params) => {
-  if (params.value === "Khởi tạo") {
-    return (
-      <Button
-        disableTouchRipple
-        variant="contained"
-        size="small"
-        color="inherit"
-        sx={{
-          borderRadius: "20px",
-          fontSize: "12px",
-          "&:hover": {},
-        }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
-  if (params.value === "Thành công") {
-    return (
-      <Button
-        variant="contained"
-        size="small"
-        color="success"
-        sx={{ borderRadius: "20px", fontSize: "12px", color: "#ffff" }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
-  if (params.value === "Đã duyệt") {
-    return (
-      <Button
-        variant="contained"
-        size="small"
-        color="primary"
-        sx={{ borderRadius: "20px", fontSize: "12px" }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
-  if (params.value === "Vào bãi") {
-    return (
-      <Button
-        variant="contained"
-        size="small"
-        color="secondary"
-        sx={{ borderRadius: "20px", fontSize: "12px" }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
-  if (params.value === "Ra bãi") {
-    return (
-      <Button
-        variant="contained"
-        size="small"
-        color="warning"
-        sx={{ borderRadius: "20px", fontSize: "12px" }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
-  if (params.value === "Chờ thanh toán") {
-    return (
-      <Button
-        variant="contained"
-        size="small"
-        color="info"
-        sx={{ borderRadius: "20px", fontSize: "11px", "&:hover": {} }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
-  if (params.value === "Hủy đơn") {
-    return (
-      <Button
-        variant="contained"
-        size="small"
-        color="error"
-        sx={{ borderRadius: "20px", fontSize: "12px" }}
-      >
-        {params.value}
-      </Button>
-    );
-  }
+  const statusMap = {
+    "Khởi tạo": { color: "inherit", bgColor: "inherit" },
+    "Thành công": { color: "#fff", bgColor: "success" },
+    "Đã duyệt": { color: "#fff", bgColor: "primary" },
+    "Vào bãi": { color: "#fff", bgColor: "secondary" },
+    "Ra bãi": { color: "#000", bgColor: "warning" },
+    "Chờ thanh toán": { color: "#fff", bgColor: "info" },
+    "Hủy đơn": { color: "#fff", bgColor: "error" },
+  };
+
+  const { value } = params;
+  const statusStyle = statusMap[value] || {
+    color: "inherit",
+    bgColor: "inherit",
+  };
+
+  return (
+    <Button
+      variant="contained"
+      size="small"
+      color={statusStyle.bgColor}
+      sx={{ borderRadius: "20px", fontSize: "12px", color: statusStyle.color }}
+    >
+      {value}
+    </Button>
+  );
 };
 
 const columns = [
@@ -193,155 +123,16 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: null,
-    guestPhone: null,
-    status: "Khởi tạo",
-  },
-  {
-    id: 2,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Đỗ Anh Linh",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: "Nguyễn Thị Minh Khai",
-    guestPhone: null,
-    status: "Thành công",
-  },
-  {
-    id: 3,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: null,
-    guestPhone: null,
-    status: "Đã duyệt",
-  },
-  {
-    id: 4,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: null,
-    guestPhone: null,
-    status: "Vào bãi",
-  },
-  {
-    id: 5,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: null,
-    guestPhone: null,
-    status: "Chờ thanh toán",
-  },
-  {
-    id: 6,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: null,
-    guestPhone: null,
-    status: "Ra bãi",
-  },
-  {
-    id: 7,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    position: "A4",
-    startTime: "7 : 00 AM",
-    totalPrice: "20,000 vnđ",
-    phone: "012341234132",
-    licensePlate: "60A - 12345",
-    parkingName: "Hoàng Văn Thụ",
-    checkInTime: "7 AM",
-    checkOutTime: null,
-    paymentMethod: null,
-    guestName: null,
-    guestPhone: null,
-    status: "Hủy đơn",
-  },
-];
-
-export default function DataTable() {
-  // const [loading, setLoading] = useState(false);
-  // const [data, setData] = useState([]);
+export default function DataTable(props) {
+  const { rows } = props;
   const navigate = useNavigate();
-  // const [openScanner, setOpenScanner] = useState(false);
 
   const handleOpenScanner = () => {
     navigate("/qr");
-    // setOpenScanner(true);
   };
-
-  // const handleCloseScanner = () => {
-  //   setOpenScanner(false);
-  // };
 
   return (
     <>
-      {/* {loading ? (
-        <Loading />
-      ) : ( */}
       <MainCard title={"Lịch đặt"}>
         <Grid item xs={12}>
           <SubCard>
@@ -365,9 +156,6 @@ export default function DataTable() {
         </div>
       </MainCard>
       <FloatingButton handleOpenScanner={handleOpenScanner} />
-      {/* <QRScanCode openScanner={openScanner} closeScanner={handleCloseScanner} /> */}
-      {/* )} */}
-      {/* <QRScan /> */}
     </>
   );
 }

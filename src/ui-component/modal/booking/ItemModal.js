@@ -6,6 +6,7 @@ import AcceptButton from "ui-component/buttons/accept-button/AcceptButton";
 import CancelButton from "ui-component/buttons/simple-cancel-button/CancelButton";
 import DialogBooking from "../booking/Dialog";
 import { closeModal } from "store/modalReducer";
+import GridItem from "./GridItem";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
@@ -20,13 +21,13 @@ const ItemModal = ({ modalType }) => {
   };
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const handleOpenDialog = (e) => {
+    e.preventDefault();
+    if (!openDialog) {
+      setOpenDialog(true);
+    }
   };
 
-  const handleOnCloseDialog = () => {
-    setOpenDialog(false);
-  };
   return (
     <>
       <Grid container direction="row">
@@ -44,23 +45,8 @@ const ItemModal = ({ modalType }) => {
               Thông tin chi tiết
             </Typography>
           </Grid>
-          <Grid
-            item
-            container
-            direction="row"
-            // spacing={4}
-            justifyContent="space-between"
-          >
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Mã
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                123
-              </Typography>
-            </Grid>
+          <Grid item container direction="row" justifyContent="space-between">
+            <GridItem title="Mã" value="123" />
           </Grid>
 
           <Grid item sx={{ marginTop: "2%" }}>
@@ -70,29 +56,11 @@ const ItemModal = ({ modalType }) => {
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Người đặt
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Ngọc Hương
-              </Typography>
-            </Grid>
+            <GridItem title="Người đặt" value="Ngọc Hương" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                SĐT
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                0234125123
-              </Typography>
-            </Grid>
+            <GridItem title="SĐT" value="0234125123" />
           </Grid>
 
           <Grid item sx={{ marginTop: "2%" }}>
@@ -102,29 +70,11 @@ const ItemModal = ({ modalType }) => {
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Tên KH
-              </Typography>
-            </Grid>
-
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Ngọc Hương
-              </Typography>
-            </Grid>
+            <GridItem title="Tên KH" value="Ngọc Hương" />
           </Grid>
+
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                SĐT
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                0234125123
-              </Typography>
-            </Grid>
+            <GridItem title="SĐT" value="0234125123" />
           </Grid>
 
           <Grid item sx={{ marginTop: "2%" }}>
@@ -134,55 +84,19 @@ const ItemModal = ({ modalType }) => {
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Phương tiện
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Mercedes-Benz SUV
-              </Typography>
-            </Grid>
+            <GridItem title="Phương tiện" value="Mercedes-Benz SUV" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Biển số xe
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                60A - 12345
-              </Typography>
-            </Grid>
+            <GridItem title="Biển số xe" value="60A - 12345" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Loại xe
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Ô tô
-              </Typography>
-            </Grid>
+            <GridItem title="Loại xe" value="Ô tô" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Màu xe
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Đen
-              </Typography>
-            </Grid>
+            <GridItem title="Màu xe" value="Đen" />
           </Grid>
 
           <Grid
@@ -230,7 +144,6 @@ const ItemModal = ({ modalType }) => {
               sx={{
                 width: "250px",
                 height: "250px",
-                // marginLeft: "5%",
                 marginTop: "5%",
                 borderRadius: "15px",
               }}
@@ -247,81 +160,27 @@ const ItemModal = ({ modalType }) => {
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Bãi xe
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                Bãi xe Hoàng Văn Thụ
-              </Typography>
-            </Grid>
+            <GridItem title="Bãi xe" value="Bãi xe Hoàng Văn Thụ" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Ngày đặt
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                11-04-2023
-              </Typography>
-            </Grid>
+            <GridItem title="Ngày đặt" value="11-04-2023" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Giờ vào
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                7:00 AM
-              </Typography>
-            </Grid>
+            <GridItem title="Giờ vào" value="7:00 AM" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Giờ ra
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                10:00 AM
-              </Typography>
-            </Grid>
+            <GridItem title="Giờ ra" value="10:00 AM" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Vị trí
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                A1
-              </Typography>
-            </Grid>
+            <GridItem title="Vị trí" value="A1" />
           </Grid>
 
           <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
-              <Typography color={theme.palette.secondary.main} variant="h4">
-                Tầng
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography color={theme.palette.common.black} variant="h4">
-                1
-              </Typography>
-            </Grid>
+            <GridItem title="Tầng" value="1" />
           </Grid>
         </Grid>
       </Grid>
@@ -337,30 +196,22 @@ const ItemModal = ({ modalType }) => {
           <CancelButton onClick={handleCloseModal} />
         </Grid>
         <Grid item>
-          {accept === true ? (
+          {accept === true && (
             <AcceptButton value="Chấp nhận" onClick={handleOpenDialog} />
-          ) : (
-            ""
           )}
-          {checkIn === true ? (
+          {checkIn === true && (
             <AcceptButton value="Check in" onClick={handleOpenDialog} />
-          ) : (
-            ""
           )}
-          {checkOut === true ? (
+          {checkOut === true && (
             <AcceptButton value="Check out" onClick={handleOpenDialog} />
-          ) : (
-            ""
           )}
-          {cancel === true ? (
+          {cancel === true && (
             <AcceptButton value="Hủy đơn" onClick={handleOpenDialog} />
-          ) : (
-            ""
           )}
         </Grid>
       </Grid>
 
-      <DialogBooking open={openDialog} onClose={handleOnCloseDialog} />
+      <DialogBooking open={openDialog} modalType={modalType} />
     </>
   );
 };

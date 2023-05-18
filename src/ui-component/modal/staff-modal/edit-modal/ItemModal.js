@@ -224,7 +224,7 @@ const ItemModal = ({ modalType }) => {
         </Grid>
       </Grid>
 
-      <DialogEdit open={openDialog} onClose={handleOnCloseDialog} />
+      <DialogEdit open={openDialog} modalType={modalType} />
     </>
   );
 };

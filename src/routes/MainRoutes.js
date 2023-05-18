@@ -10,10 +10,13 @@ const DashboardDefault = Loadable(
   lazy(() => import("views/dashboard/Default"))
 );
 
-const Booking = Loadable(lazy(() => import("views/booking/Booking")));
+const Booking = Loadable(lazy(() => import("views/booking/Index")));
 
 const Profile = Loadable(lazy(() => import("views/profile/Profile")));
 const Staff = Loadable(lazy(() => import("views/staff/Staff")));
+const ParkingAll = Loadable(
+  lazy(() => import("views/parking/parking-all/Index"))
+);
 const ButtonDrag = Loadable(
   lazy(() => import("ui-component/buttons/qr-button-drag/FloatingButton"))
 );
@@ -47,6 +50,10 @@ const MainRoutes = {
     {
       path: "button",
       element: <ButtonDrag />,
+    },
+    {
+      path: "parking-all",
+      element: <ParkingAll />,
     },
   ],
 };
