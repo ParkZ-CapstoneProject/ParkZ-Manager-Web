@@ -1,62 +1,50 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Slide,
-  Typography,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import React from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { closeModal } from "store/modalReducer";
+import Swal from "sweetalert2";
 // import { useDispatch } from "react-redux";
 // import { closeModal } from "store/modalReducer";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 const DialogEdit = (props) => {
-  const { open, onClose } = props;
+  const { open, modalType } = props;
+  const dispatch = useDispatch();
 
-  const theme = useTheme();
-  // const dispatch = useDispatch();
-  const handleClose = () => {
-    if (onClose) {
-      onClose();
-      // dispatch(closeModal());
-    }
+  const handleConfirm = () => {
+    Swal.fire({
+      title: "Xác nhận?",
+      text: "Bạn có chắc chắn muốn thay đổi!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Hủy",
+      confirmButtonText: "Xác nhận!",
+      customClass: {
+        container: "swal-custom", // Apply the custom class to the Swal container
+      },
+    }).then((result) => {
+      // Handle SweetAlert2 dialog result
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Thành công!",
+          text: "Trạng thái cập nhật thành công.",
+          icon: "success",
+          customClass: {
+            container: "swal-custom", // Apply the custom class to the Swal container
+          },
+        });
+        dispatch(closeModal(modalType));
+      }
+    });
   };
 
-  return (
-    <>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle sx={{ justifyContent: "center" }}>
-          <Typography color={theme.palette.primary.main} variant="h3">
-            Xác nhận hành động
-          </Typography>
-        </DialogTitle>
-        <DialogContent>
-          <Typography color={theme.palette.secondary.dark} variant="subtitle1">
-            Bạn có chắc chắn muốn lưu thay đổi
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="error">
-            Hủy
-          </Button>
-          {/* <Button color="secondary">Delete</Button> */}
-          <Button color="primary">OK</Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
+  useEffect(() => {
+    if (open) {
+      handleConfirm();
+    }
+  }, [open]);
+
+  return null;
 };
 
 export default DialogEdit;
