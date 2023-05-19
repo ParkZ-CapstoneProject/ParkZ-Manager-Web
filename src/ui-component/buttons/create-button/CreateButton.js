@@ -6,9 +6,9 @@ const CreateButton = (props) => {
 
   return (
     <>
-      <button class="btn-create" onClick={onClick}>
+      <button className="btn-create" onClick={onClick}>
         Thêm mới
-        <div class="icon">
+        <div className="icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

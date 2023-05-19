@@ -5,7 +5,7 @@ const CancelButton = (props) => {
   const { onClick } = props;
   return (
     <>
-      <button class="btn-cancel" onClick={onClick}>
+      <button className="btn-cancel" onClick={onClick}>
         <span>Hủy</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"

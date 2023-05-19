@@ -4,12 +4,12 @@ import "./EditButton.scss";
 const EditButton = () => {
   return (
     <>
-      <button class="cssbuttons-io-button">
+      <button className="cssbuttons-io-button">
         {" "}
         Chỉnh sửa
-        <div class="icon">
+        <div className="icon">
           <svg
-            class="svg-icon"
+            className="svg-icon"
             fill="none"
             height="24"
             viewBox="0 0 24 24"

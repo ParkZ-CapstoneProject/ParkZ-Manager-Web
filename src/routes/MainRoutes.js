@@ -17,6 +17,9 @@ const Staff = Loadable(lazy(() => import("views/staff/Staff")));
 const ParkingAll = Loadable(
   lazy(() => import("views/parking/parking-all/Index"))
 );
+const ParkingPrice = Loadable(
+  lazy(() => import("views/parking/parking-price/Index"))
+);
 const ButtonDrag = Loadable(
   lazy(() => import("ui-component/buttons/qr-button-drag/FloatingButton"))
 );
@@ -54,6 +57,10 @@ const MainRoutes = {
     {
       path: "parking-all",
       element: <ParkingAll />,
+    },
+    {
+      path: "parking-price",
+      element: <ParkingPrice />,
     },
   ],
 };

@@ -21,8 +21,27 @@ const NewPassword = () => {
   const { formData } = location.state;
   console.log(formData);
   const [newMk, setNewMk] = useState();
-  const handleInputNewPassword = (e) => {
-    setNewMk(e.target.value);
+  const [errorNewMk, setErrorNewMk] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const handleInputNewPassword = (event) => {
+    const { value } = event.target;
+
+    // Remove any spaces from the input value
+    if (!value.includes(" ")) {
+      setNewMk(value);
+      setErrorNewMk(false);
+      // setPasswordsMatch(event.target.value === confirmPassword);
+    } else {
+      setErrorNewMk(true);
+    }
+    // setSpaceInput(event.target.value.trim() === 0);
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    // setSpaceInput(event.target.value.trim() === 0);
+    // setConfirmPassword(event.target.value);
+    setPasswordsMatch(event.target.value === newMk);
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -111,10 +130,11 @@ const NewPassword = () => {
                 label="Mật khẩu"
                 color="secondary"
                 onChange={handleInputNewPassword}
-                //     value={userData["password"]}
-                //     error={spaceInput}
-                //     onChange={handlePasswordChange}
-                //     helperText={spaceInput ? "Vui lòng không nhập khoảng trống" : ""}
+                value={newMk}
+                error={errorNewMk}
+                helperText={
+                  errorNewMk ? "Vui lòng không nhập khoảng trống" : ""
+                }
               />
             </Stack>
             <Stack spacing={1}>
@@ -134,16 +154,9 @@ const NewPassword = () => {
                 name="confirmPassword"
                 label="Nhập lại mật khẩu"
                 color="secondary"
-                // value={userData["confirmPassword"]}
-                // onChange={handleConfirmPasswordChange}
-                // error={!passwordsMatch || spaceInput}
-                // helperText={
-                //   !passwordsMatch
-                //     ? "Mật khẩu không khớp"
-                //     : spaceInput
-                //     ? "Vui lòng không nhập khoảng trống"
-                //     : ""
-                // }
+                onChange={handleConfirmPasswordChange}
+                error={!passwordsMatch}
+                helperText={!passwordsMatch ? "Mật khẩu không khớp" : ""}
               />
             </Stack>
 
@@ -163,34 +176,6 @@ const NewPassword = () => {
                 <SaveButton />
               </Grid>
             </Grid>
-
-            {/* <Stack sx={{ marginTop: "8%" }}>
-            <Button
-              fullWidth
-              size="large"
-              sx={{
-                mt: 3,
-                borderRadius: "7px",
-                backgroundColor: "#063970",
-                ":is(:hover, :focus)": {
-                  backgroundColor: "#478be9",
-                  outline: "3px solid #478be9",
-                  outlineOffset: "1px",
-                },
-              }}
-              type="submit"
-              variant="contained"
-              onClick={handleNext}
-              disabled={
-                userData.email === undefined ||
-                userData.password === undefined ||
-                userData.confirmPassword === undefined
-              }
-            >
-              Tiếp theo
-            </Button>
-            <NextButton />
-          </Stack> */}
           </Grid>
         </form>
       </Grid>

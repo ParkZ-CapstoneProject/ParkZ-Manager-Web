@@ -6,11 +6,11 @@ const DeleteButton = (props) => {
 
   return (
     <>
-      <button class="btn-delete" type="button" onClick={onClick}>
-        <span class="btn-delete__text">Xóa</span>
-        <span class="btn-delete__icon">
+      <button className="btn-delete" type="button" onClick={onClick}>
+        <span className="btn-delete__text">Xóa</span>
+        <span className="btn-delete__icon">
           <svg
-            class="svg"
+            className="svg"
             height="512"
             viewBox="0 0 512 512"
             width="512"

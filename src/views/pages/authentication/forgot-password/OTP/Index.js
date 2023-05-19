@@ -14,6 +14,7 @@ import BackButton from "ui-component/buttons/back-button/BackButton";
 import CountTime from "./CountTime";
 import { useLocation } from "react-router";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const OTP = () => {
   const theme = useTheme();
@@ -46,6 +47,11 @@ const OTP = () => {
       .then((dataRes) => {
         if (dataRes.statusCode !== 201) {
           console.log("Message", dataRes.message);
+          Swal.fire({
+            icon: "error",
+            title: "Không đúng",
+            text: `${dataRes.message}`,
+          });
         } else {
           // const formData = new FormData(event.target);
           // const data= Object.fromEntries(formData.entries());

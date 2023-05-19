@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -11,7 +11,7 @@ import { Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import UploadBusinessLicense from "ui-component/upload-file/UploadBusinessLicense";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentStep } from "store/stepReducer";
+import { setCurrentStep, setUserData } from "store/stepReducer";
 
 const BusinessInfor = () => {
   const theme = useTheme();
@@ -21,12 +21,28 @@ const BusinessInfor = () => {
   const currentStep = useSelector((state) => state.multiStep.currentStep);
   const userData = useSelector((state) => state.multiStep.userData);
 
+  const [errorBusinessName, setErrorBusinessName] = useState(false);
+
   const handleNext = () => {
     dispatch(setCurrentStep(currentStep + 1));
   };
 
   const handleBack = () => {
     dispatch(setCurrentStep(currentStep - 1));
+  };
+
+  const handleInputBusinessName = (event) => {
+    const { value } = event.target;
+
+    const startsWithSpace = /^\s/.test(value);
+
+    if (startsWithSpace) {
+      setErrorBusinessName(true);
+      return;
+    } else {
+      setErrorBusinessName(false);
+      dispatch(setUserData({ ...userData, businessName: value }));
+    }
   };
 
   return (
@@ -64,11 +80,18 @@ const BusinessInfor = () => {
           </Typography>
           <TextField
             fullWidth
+            required
             sx={{ width: "500px" }}
             type="text"
             name="businessName"
             label="Tên doanh nghiệp"
             color="secondary"
+            onChange={handleInputBusinessName}
+            value={userData["businessName"]}
+            error={errorBusinessName}
+            helperText={
+              errorBusinessName ? "Không nhập bát đầu bàng khoảng trắng" : ""
+            }
           />
         </Stack>
         <Stack spacing={1}>
@@ -82,11 +105,12 @@ const BusinessInfor = () => {
           </Typography>
           <TextField
             fullWidth
+            required
             multiline
             rows={2}
             type="text"
             name="address"
-            label="Địa chỉ"
+            label="Địa chỉ(Số, đường, quận, TP Hô Chí Minh)"
             color="secondary"
           />
         </Stack>
@@ -141,7 +165,7 @@ const BusinessInfor = () => {
               color={theme.palette.secondary.dark}
               gutterBottom
               variant={matchDownSM ? "h6" : "h5"}
-              marginTop="1%"
+              marginTop="2%"
             >
               Tôi đã đọc và đồng ý với <a href="#">chính sách phí</a> và{" "}
               <a href="#">hợp đồng cung cấp dịch vụ</a>

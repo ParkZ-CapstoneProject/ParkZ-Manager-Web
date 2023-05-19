@@ -10,18 +10,32 @@ import {
 
 import { Layout } from "ui-component/auth/layout";
 import NextButton from "ui-component/buttons/next-button/NextButton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import validator from "validator";
+import Swal from "sweetalert2";
+// import "./Email.scss";
 
 const EmailInput = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const [email, setEmail] = useState();
+  const [errorEmail, setErrorEmail] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleInputEmail = (e) => {
-    setEmail(e.target.value);
+  const handleInputEmail = (event) => {
+    const { value } = event.target;
+
+    const startsWithSpace = /^\s/.test(value);
+    // Remove any spaces from the input value
+    if (!startsWithSpace) {
+      setEmail(value);
+      setErrorEmail(!validator.isEmail(value));
+    } else {
+      setErrorEmail(true);
+    }
+    // setSpaceInput(newEmail.trim().length === 0);
   };
 
   const handleSubmit = (event) => {
@@ -44,6 +58,11 @@ const EmailInput = () => {
       .then((data) => {
         if (data.statusCode !== 201) {
           console.log("Message", data.message);
+          Swal.fire({
+            icon: "error",
+            title: "Không tìm thấy",
+            text: `${data.message}`,
+          });
         } else {
           const formData = new FormData(event.target);
           const data2 = Object.fromEntries(formData.entries());
@@ -111,14 +130,8 @@ const EmailInput = () => {
                 label="Email"
                 color="secondary"
                 onChange={handleInputEmail}
-                // error={errorEmail || spaceInput}
-                // helperText={
-                //   spaceInput
-                //     ? "Không nhập khoảng cách"
-                //     : errorEmail
-                //     ? "Vui lòng nhập đúng email"
-                //     : ""
-                // }
+                error={errorEmail}
+                helperText={errorEmail ? "Vui lòng nhập đúng email" : ""}
               />
             </Stack>
           </Grid>
@@ -130,6 +143,8 @@ const EmailInput = () => {
             <NextButton />
           </Grid>
         </form>
+
+        <div id="swal-container"></div>
       </Grid>
     </Layout>
   );

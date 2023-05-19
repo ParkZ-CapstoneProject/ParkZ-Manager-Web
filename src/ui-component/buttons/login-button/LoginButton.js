@@ -4,7 +4,7 @@ import "./LoginButton.scss";
 const LoginButton = () => {
   return (
     <>
-      <button class="cssbuttons-io" type="submit">
+      <button className="cssbuttons-io" type="submit">
         <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"

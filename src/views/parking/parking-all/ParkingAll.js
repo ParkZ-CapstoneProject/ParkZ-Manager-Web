@@ -5,7 +5,7 @@ import SearchSection from "ui-component/search-section";
 // import SubCard from "ui-component/cards/SubCard";
 import { Avatar, Button, Grid, Switch } from "@mui/material";
 import "./ParkingAll.scss";
-import Menu from "ui-component/staff/Menu";
+import Menu from "ui-component/parking/parking-all/Menu";
 // import CreateButton from "ui-component/buttons/create-button/CreateButton";
 // import SubCardStaff from "ui-component/cards/SubCardStaff";
 // import { useDispatch } from "react-redux";

@@ -5,7 +5,7 @@ const CancelButton = (props) => {
   const { onClick } = props;
   return (
     <div>
-      <button class="btn-cancel" onClick={onClick}>
+      <button className="btn-cancel" onClick={onClick}>
         Hủy
       </button>
     </div>

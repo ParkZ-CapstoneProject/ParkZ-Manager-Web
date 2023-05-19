@@ -25,10 +25,6 @@ const ItemModal = ({ modalType }) => {
   const [gender, setGender] = useState("nam");
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleOnCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };

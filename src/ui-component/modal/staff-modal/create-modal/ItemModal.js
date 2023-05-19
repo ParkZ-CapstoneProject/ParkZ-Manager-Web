@@ -21,13 +21,26 @@ const ItemModal = ({ modalType }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  const [selectedTime, setSelectedTime] = useState("");
+
+  const handleTimeChange = (e) => {
+    const inputTime = e.target.value;
+    const formattedTime = formatTime(inputTime);
+    setSelectedTime(formattedTime);
+  };
+
+  const formatTime = (time) => {
+    // Assuming the input format is "HH:mm"
+    const [hours, minutes] = time.split(":");
+    const formattedTime = `${hours}:${minutes}:00`;
+    return formattedTime;
+  };
+
+  console.log("selectedTime", selectedTime);
+
   const [gender, setGender] = useState("nam");
 
   const [openDialog, setOpenDialog] = useState(false);
-
-  const handleOnCloseDialog = () => {
-    setOpenDialog(false);
-  };
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -81,7 +94,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth type="date" />
+            <TextField
+              fullWidth
+              type="time"
+              value={selectedTime}
+              onChange={handleTimeChange}
+              // inputProps={{ step: 1 }}
+            />
           </Grid>
         </Grid>
         <Grid
