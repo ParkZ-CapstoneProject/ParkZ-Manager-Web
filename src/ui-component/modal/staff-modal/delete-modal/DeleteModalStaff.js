@@ -3,15 +3,16 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@material-ui/core/IconButton";
 import { useTheme } from "@mui/material/styles";
 // import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal, openModal } from "store/modalReducer";
+import { closeModal } from "store/modalReducer";
 // import { Grid } from "@mui/material";
 import ItemModal from "./ItemModal";
+import "./DeleteModal.scss";
 
 const style = {
   position: "absolute",
@@ -32,9 +33,6 @@ export default function DeleteModalStaff({ modalType }) {
   const isOpen = useSelector((state) => state.modal.modals.includes(modalType));
   const dispatch = useDispatch();
 
-  // const handleOpen = (modalType) => {
-  //   dispatch(openModal(modalType));
-  // };
   const handleClose = () => {
     dispatch(closeModal(modalType));
   };
@@ -77,12 +75,6 @@ export default function DeleteModalStaff({ modalType }) {
             >
               <CloseIcon />
             </IconButton>
-            {/* <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography> */}
             <ItemModal modalType={modalType} />
           </Box>
         </Fade>

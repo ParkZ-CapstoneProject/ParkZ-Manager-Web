@@ -23,6 +23,13 @@ const ParkingPrice = Loadable(
 const ButtonDrag = Loadable(
   lazy(() => import("ui-component/buttons/qr-button-drag/FloatingButton"))
 );
+const CreateNewParking = Loadable(
+  lazy(() => import("ui-component/parking/parking-all/step1/CreateNewParking"))
+);
+
+// const Maps = Loadable(
+//   lazy(() => import("ui-component/parking/parking-all/step2/Index"))
+// );
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -62,6 +69,14 @@ const MainRoutes = {
       path: "parking-price",
       element: <ParkingPrice />,
     },
+    {
+      path: "new-parking",
+      element: <CreateNewParking />,
+    },
+    // {
+    //   path: "maps",
+    //   element: <Maps />,
+    // },
   ],
 };
 

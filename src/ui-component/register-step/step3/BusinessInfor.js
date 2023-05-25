@@ -107,7 +107,7 @@ const BusinessInfor = () => {
             fullWidth
             required
             multiline
-            rows={2}
+            rows={3}
             type="text"
             name="address"
             label="Địa chỉ(Số, đường, quận, TP Hô Chí Minh)"

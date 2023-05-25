@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
 // import SubCard from "ui-component/cards/SubCard";
-import { Avatar, Button, Grid, Switch } from "@mui/material";
+import { Grid, Switch } from "@mui/material";
 import "./ParkingAll.scss";
 import Menu from "ui-component/parking/parking-all/Menu";
 // import CreateButton from "ui-component/buttons/create-button/CreateButton";
@@ -13,6 +13,8 @@ import Menu from "ui-component/parking/parking-all/Menu";
 // import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
 import SubCard from "ui-component/cards/SubCard";
 import Swal from "sweetalert2";
+import SubCardStaff from "ui-component/cards/SubCardStaff";
+import CreateButton from "ui-component/buttons/create-button/CreateButton";
 // import { useDispatch } from "react-redux";
 // import { openModal } from "store/modalReducer";
 // import { useState } from "react";
@@ -152,9 +154,12 @@ export default function MyParkingAll(props) {
       ) : ( */}
       <MainCard title={"Tất cả bãi"}>
         <Grid item xs={12}>
-          <SubCard>
-            <SearchSection />
-          </SubCard>
+          <SubCardStaff
+            startComponent={<SearchSection />}
+            endComponent={<CreateButton onClick={() => console.log("first")} />}
+          >
+            {/* <SearchSection /> */}
+          </SubCardStaff>
         </Grid>
 
         <div style={{ height: "500px", width: "100%" }}>
