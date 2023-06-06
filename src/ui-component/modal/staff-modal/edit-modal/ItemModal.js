@@ -111,7 +111,7 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="SĐT" />
+            <TextField fullWidth type="number" label="SĐT" />
           </Grid>
         </Grid>
         <Grid

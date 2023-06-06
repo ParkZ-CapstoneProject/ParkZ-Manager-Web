@@ -43,6 +43,10 @@ const QrCodeScan = Loadable(
 const Maps = Loadable(
   lazy(() => import("ui-component/parking/parking-all/step2/Index"))
 );
+
+const Modal = Loadable(
+  lazy(() => import("ui-component/parking/parking-modal/Index"))
+);
 // const Layout = Loadable(lazy(() => import("ui-component/auth/layout")));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
@@ -82,6 +86,10 @@ const AuthenticationRoutes = {
     {
       path: "maps",
       element: <Maps />,
+    },
+    {
+      path: "modal",
+      element: <Modal />,
     },
   ],
 };

@@ -1,4 +1,4 @@
-.btn-cancel {
+.btn-simple-cancel {
   --color: #00a97f;
   padding: 0.8em 1.7em;
   background-color: #03fc3d;
@@ -19,8 +19,8 @@
   justify-content: center;
 }
 
-.btn-cancel::before,
-.btn-cancel::after {
+.btn-simple-cancel::before,
+.btn-simple-cancel::after {
   content: "";
   display: block;
   width: 50px;
@@ -33,26 +33,26 @@
   transition: 1s ease;
 }
 
-.btn-cancel::before {
+.btn-simple-cancel::before {
   top: -1em;
   left: -1em;
 }
 
-.btn-cancel::after {
+.btn-simple-cancel::after {
   left: calc(100% + 1em);
   top: calc(100% + 1em);
 }
 
-.btn-cancel:hover::before,
-.btn-cancel:hover::after {
+.btn-simple-cancel:hover::before,
+.btn-simple-cancel:hover::after {
   height: 410px;
   width: 410px;
 }
 
-.btn-cancel:hover {
+.btn-simple-cancel:hover {
   color: rgb(10, 25, 30);
 }
 
-.btn-cancel:active {
+.btn-simple-cancel:active {
   filter: brightness(0.8);
 }
