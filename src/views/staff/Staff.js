@@ -2,20 +2,13 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-// import SubCard from "ui-component/cards/SubCard";
-import { Avatar, Button, Grid } from "@mui/material";
-import "./Staff.scss";
+import { Avatar, Button, Chip, Grid } from "@mui/material";
 import Menu from "ui-component/staff/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
 import { useDispatch } from "react-redux";
 import { openModal } from "store/modalReducer";
 import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
-// import { useDispatch } from "react-redux";
-// import { openModal } from "store/modalReducer";
-// import { useState } from "react";
-// import Loading from "ui-component/back-drop/Loading";
-// import QRScan from "ui-component/buttons/qrscan-button/QRScan";
 
 const renderAvatarCell = (params) => {
   return <Avatar src={params.value} alt="avatar" />;
@@ -28,26 +21,20 @@ const getCellValue = (params) => {
 const renderCellStatus = (params) => {
   if (params.value === "true") {
     return (
-      <Button
-        variant="contained"
-        size="small"
+      <Chip
         color="success"
-        sx={{ borderRadius: "20px", fontSize: "12px", color: "#ffff" }}
-      >
-        {params.value}
-      </Button>
+        label={params.value}
+        sx={{ padding: "10px", color: "#fff" }}
+      />
     );
   }
   if (params.value === "false") {
     return (
-      <Button
-        variant="contained"
-        size="small"
+      <Chip
         color="secondary"
-        sx={{ borderRadius: "20px", fontSize: "12px" }}
-      >
-        {params.value}
-      </Button>
+        label={params.value}
+        sx={{ padding: "10px", color: "#fff" }}
+      />
     );
   }
 };

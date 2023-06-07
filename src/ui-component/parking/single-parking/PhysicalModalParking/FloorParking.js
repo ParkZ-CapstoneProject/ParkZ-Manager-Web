@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Tabs, Tab, Grid } from "@mui/material";
-import ParkingModal from "./ParkingModal";
-import { useDispatch, useSelector } from "react-redux";
+import { Grid, Tab, Tabs } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { initializeFloors } from "store/parkingModalSlice";
-import { loadState, saveState } from "utils/localStorageParkingModal";
+import { saveState } from "utils/localStorageParkingModal";
+import SinglePhysicalModal from "./SinglePhysicalModal";
+import EditButton from "ui-component/buttons/edit-button/EditButton";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
 
-const ParkingModalInFloor = () => {
+const FloorParking = () => {
   const [currentFloor, setCurrentFloor] = useState(0);
+  const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
   const [floors, setFloors] = useState(() => {
@@ -60,26 +62,29 @@ const ParkingModalInFloor = () => {
     setCurrentFloor(newValue);
   };
 
-  const data = useSelector((state) => state.parkingModal);
+  const handleEdit = (e) => {
+    e.preventDefault();
 
-  const handleSave = () => {
-    data.forEach((floor) => {
-      console.log("floor", floor);
-      floor.carSlots.forEach((slot) => {
-        const body = {
-          name: slot.name,
-          rowIndex: slot.row,
-          columnIndex: slot.column,
-          trafficId: slot.trafficId,
-          floorId: floor.floor,
-        };
-        return body;
-      });
-    });
+    setEdit(true);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+
+    setEdit(false);
   };
 
   return (
     <div>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{ marginTop: "25px" }}
+      >
+        <EditButton onClick={handleEdit} />
+      </Grid>
       <Tabs
         value={currentFloor}
         onChange={handleTabChange}
@@ -90,19 +95,20 @@ const ParkingModalInFloor = () => {
           <Tab key={index} label={`Tầng ${floor.floor}`} />
         ))}
       </Tabs>
-      <ParkingModal floorIndex={currentFloor} />
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        xs={11.7}
-        sx={{ marginTop: "25px" }}
-      >
-        <SaveButton onClick={handleSave} />
-      </Grid>
+      <SinglePhysicalModal floorIndex={currentFloor} edit={edit} />
+      {edit && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ marginTop: "25px" }}
+        >
+          <SaveButton onClick={handleSave} />
+        </Grid>
+      )}
     </div>
   );
 };
 
-export default ParkingModalInFloor;
+export default FloorParking;

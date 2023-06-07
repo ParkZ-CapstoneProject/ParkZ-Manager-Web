@@ -12,6 +12,7 @@ import { store } from "./store";
 // style + assets
 import "assets/scss/style.scss";
 import config from "./config";
+// import "./index.css";
 // import StepContext from "context/StepContext";
 
 // ==============================|| REACT DOM RENDER  ||============================== //

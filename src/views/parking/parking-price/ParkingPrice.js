@@ -3,8 +3,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
 // import SubCard from "ui-component/cards/SubCard";
-import { Avatar, Button, Grid } from "@mui/material";
-import "./ParkingPrice.scss";
+import { Avatar, Button, Chip, Grid } from "@mui/material";
+// import "./ParkingPrice.scss";
 import Menu from "ui-component/parking/parking-price/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
@@ -34,26 +34,20 @@ export default function MyParkingPrice(props) {
   const renderCellStatus = (params) => {
     if (params.value === "true") {
       return (
-        <Button
-          variant="contained"
-          size="small"
+        <Chip
           color="success"
-          sx={{ borderRadius: "20px", fontSize: "12px", color: "#ffff" }}
-        >
-          {params.value}
-        </Button>
+          label={params.value}
+          sx={{ padding: "10px", color: "#fff" }}
+        />
       );
     }
     if (params.value === "false") {
       return (
-        <Button
-          variant="contained"
-          size="small"
+        <Chip
           color="secondary"
-          sx={{ borderRadius: "20px", fontSize: "12px" }}
-        >
-          {params.value}
-        </Button>
+          label={params.value}
+          sx={{ padding: "10px", color: "#fff" }}
+        />
       );
     }
   };
@@ -63,14 +57,9 @@ export default function MyParkingPrice(props) {
 
     if (parking === null) {
       return (
-        <Button
-          variant="contained"
-          size="small"
-          color="primary"
-          sx={{ borderRadius: "20px", fontSize: "12px" }}
-        >
-          Apply
-        </Button>
+        <button class="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+          Áp dụng
+        </button>
       );
     } else {
       return null; // Return null if parking field is null
@@ -113,7 +102,7 @@ export default function MyParkingPrice(props) {
     {
       field: "apply",
       headerName: "",
-      width: 70,
+      width: 90,
       sortable: false,
       disableColumnMenu: true,
       renderCell: renderCellApply,

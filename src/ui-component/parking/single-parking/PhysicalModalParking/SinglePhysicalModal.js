@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Fragment } from "react";
-import { Stage, Layer, Rect, Text, Image } from "react-konva";
-import carIcon from "../../../assets/images/Car.svg";
-import motorbikeIcon from "../../../assets/images/Motor.svg";
-import { useEffect } from "react";
-import { useState } from "react";
-import Swal from "sweetalert2";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import carIcon from "../../../../assets/images/Car.svg";
+import motorbikeIcon from "../../../../assets/images/Motor.svg";
 import { setCarSlots, setMotorbikeSlots } from "store/parkingModalSlice";
 import FormInput from "./FormInput";
+import { Image, Layer, Rect, Stage, Text } from "react-konva";
+import Swal from "sweetalert2";
 
-const ParkingModal = ({ floorIndex }) => {
+const SinglePhysicalModal = ({ floorIndex, edit }) => {
   const [draggingType, setDraggingType] = useState(null);
   const dispatch = useDispatch();
   const slotWidth = 150;
@@ -285,10 +283,10 @@ const ParkingModal = ({ floorIndex }) => {
   return (
     <div className="scrollable-container">
       <div className="stage-container">
-        <FormInput floorIndex={floorIndex} />
+        {edit && <FormInput floorIndex={floorIndex} />}
 
         <div className="scrollable-stage">
-          <Stage width={stageWidth} height={stageHeight} draggable>
+          <Stage width={stageWidth} height={stageHeight} draggable={edit}>
             <Layer>
               {carSlots?.map((slot) => (
                 <Fragment key={slot.id}>
@@ -300,7 +298,7 @@ const ParkingModal = ({ floorIndex }) => {
                     fill={slot.isDragging ? "red" : "lightblue"}
                     stroke="black"
                     strokeWidth={1}
-                    draggable={!slot.isDragging}
+                    draggable={!slot.isDragging && edit}
                     onDragStart={() => handleDragStart(slot.id)}
                     onDragEnd={(e) => handleDragEnd(e, slot.id)}
                     dash={[5, 5]}
@@ -326,7 +324,7 @@ const ParkingModal = ({ floorIndex }) => {
                       y={slot.y + 55} // Adjust the position as needed
                       width={slotWidth - 75} // Adjust the size as needed
                       height={slotHeight - 75} // Adjust the size as needed
-                      draggable
+                      draggable={edit}
                       dash={[5, 5]}
                       onDragStart={() => handleDragStart(slot.id)}
                       onDragEnd={(e) => handleDragEnd(e, slot.id)}
@@ -391,4 +389,4 @@ const ParkingModal = ({ floorIndex }) => {
   );
 };
 
-export default React.memo(ParkingModal);
+export default SinglePhysicalModal;

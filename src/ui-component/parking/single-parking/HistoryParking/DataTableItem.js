@@ -1,13 +1,8 @@
-import * as React from "react";
+import { Avatar, Chip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import MainCard from "ui-component/cards/MainCard";
-import SearchSection from "ui-component/search-section";
-import SubCard from "ui-component/cards/SubCard";
-import { Avatar, Chip, Grid } from "@mui/material";
+import React from "react";
 import Menu from "ui-component/booking/Menu";
-import FloatingButton from "ui-component/buttons/qr-button-drag/FloatingButton";
-import { useNavigate } from "react-router";
-// import Loading from "ui-component/back-drop/Loading";
+import MainCard from "ui-component/cards/MainCard";
 
 const renderAvatarCell = (params) => {
   return <Avatar src={params.value} alt="avatar" />;
@@ -64,6 +59,7 @@ const columns = [
     valueGetter: (params) => `${params.row.name || ""}`,
   },
   { field: "position", headerName: "Vị trí", width: 100 },
+  { field: "floor", headerName: "Tầng", width: 120 },
   { field: "startTime", headerName: "Thời gian", width: 100 },
   {
     field: "totalPrice",
@@ -123,40 +119,28 @@ const columns = [
   },
 ];
 
-export default function DataTable(props) {
+const DataTableItem = (props) => {
   const { rows } = props;
-  const navigate = useNavigate();
-
-  const handleOpenScanner = () => {
-    navigate("/qr");
-  };
 
   return (
     <>
-      <MainCard title={"Lịch đặt"}>
-        <Grid item xs={12}>
-          <SubCard>
-            <SearchSection />
-          </SubCard>
-        </Grid>
-        <div style={{ height: "500px", width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            rowHeight={70}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            checkboxSelection
-            style={{ paddingTop: "12px" }}
-          />
-        </div>
-      </MainCard>
-      <FloatingButton handleOpenScanner={handleOpenScanner} />
-      {/* <Loading /> */}
+      <div style={{ height: "500px", width: "100%", marginTop: "15px" }}>
+        <DataGrid
+          rows={rows}
+          rowHeight={70}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 25]}
+          checkboxSelection
+          style={{ paddingTop: "12px" }}
+        />
+      </div>
     </>
   );
-}
+};
+
+export default DataTableItem;

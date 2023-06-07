@@ -27,6 +27,14 @@ const CreateNewParking = Loadable(
   lazy(() => import("ui-component/parking/parking-all/step1/CreateNewParking"))
 );
 
+const ImageParking = Loadable(
+  lazy(() => import("views/parking/single-parking/parking-images/Index"))
+);
+
+const ParkingDetail = Loadable(
+  lazy(() => import("views/parking/single-parking/Index"))
+);
+
 // const Maps = Loadable(
 //   lazy(() => import("ui-component/parking/parking-all/step2/Index"))
 // );
@@ -72,6 +80,14 @@ const MainRoutes = {
     {
       path: "new-parking",
       element: <CreateNewParking />,
+    },
+    {
+      path: "/parking-image",
+      element: <ImageParking />,
+    },
+    {
+      path: `/parking-detail`,
+      element: <ParkingDetail />,
     },
     // {
     //   path: "maps",
