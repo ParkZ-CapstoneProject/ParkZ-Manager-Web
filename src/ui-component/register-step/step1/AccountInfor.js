@@ -11,6 +11,8 @@ import { Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { setCurrentStep, setUserData } from "store/stepReducer";
 import validator from "validator";
+import ContinueButton from "ui-component/buttons/continue-button-register/ContinueButton";
+import Swal from "sweetalert2";
 
 const AccountInfor = () => {
   const theme = useTheme();
@@ -26,6 +28,20 @@ const AccountInfor = () => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handleNext = () => {
+    // if (
+    //   userData.email === undefined ||
+    //   userData.password === undefined ||
+    //   userData.confirmPassword === undefined
+    // ) {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Nhập tất cả",
+    //     text: "Bạn phải nhập hết tất cả các ô nhập",
+    //   });
+    // } else {
+    //   dispatch(setCurrentStep(currentStep + 1));
+    // }
+
     dispatch(setCurrentStep(currentStep + 1));
   };
 
@@ -162,7 +178,7 @@ const AccountInfor = () => {
               />
             </Stack>
             <Stack sx={{ marginTop: "8%" }}>
-              <Button
+              {/* <Button
                 fullWidth
                 size="large"
                 sx={{
@@ -185,7 +201,12 @@ const AccountInfor = () => {
                 }
               >
                 Tiếp theo
-              </Button>
+              </Button> */}
+              <ContinueButton
+                width="100%"
+                disable="true"
+                onClick={handleNext}
+              />
             </Stack>
           </Grid>
         </Grid>

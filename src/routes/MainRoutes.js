@@ -27,6 +27,14 @@ const CreateNewParking = Loadable(
   lazy(() => import("ui-component/parking/parking-all/step1/CreateNewParking"))
 );
 
+const CreateNewImage = Loadable(
+  lazy(() => import("ui-component/parking/parking-images/NewImageCustom"))
+);
+
+const CreateNewPrice = Loadable(
+  lazy(() => import("ui-component/parking/parking-price/CreateNewPrice"))
+);
+
 const ImageParking = Loadable(
   lazy(() => import("views/parking/single-parking/parking-images/Index"))
 );
@@ -34,10 +42,6 @@ const ImageParking = Loadable(
 const ParkingDetail = Loadable(
   lazy(() => import("views/parking/single-parking/Index"))
 );
-
-// const Maps = Loadable(
-//   lazy(() => import("ui-component/parking/parking-all/step2/Index"))
-// );
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -86,13 +90,17 @@ const MainRoutes = {
       element: <ImageParking />,
     },
     {
-      path: `/parking-detail`,
+      path: `/parking-detail/:id`,
       element: <ParkingDetail />,
     },
-    // {
-    //   path: "maps",
-    //   element: <Maps />,
-    // },
+    {
+      path: "/create-image",
+      element: <CreateNewImage />,
+    },
+    {
+      path: "create-new-price",
+      element: <CreateNewPrice />,
+    },
   ],
 };
 

@@ -2,6 +2,7 @@ import { Button, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom/dist";
+import ContinueLogin from "ui-component/buttons/continue-login/ContinueLogin";
 
 const Done = () => {
   const theme = useTheme();
@@ -43,26 +44,8 @@ const Done = () => {
             Vui lòng kiểm tra Email để lấy tài khoản
           </Typography>
         </Grid>
-        <Stack>
-          <Button
-            fullWidth
-            size="large"
-            sx={{
-              mt: 3,
-              borderRadius: "10px",
-              backgroundColor: "#063970",
-              ":is(:hover, :focus)": {
-                backgroundColor: "#478be9",
-                outline: "3px solid #478be9",
-                outlineOffset: "1px",
-              },
-            }}
-            type="submit"
-            variant="contained"
-            onClick={handleOnclick}
-          >
-            Tiếp tục đăng nhập
-          </Button>
+        <Stack sx={{ marginTop: "6px" }}>
+          <ContinueLogin onClick={handleOnclick} />
         </Stack>
       </Grid>
     </>

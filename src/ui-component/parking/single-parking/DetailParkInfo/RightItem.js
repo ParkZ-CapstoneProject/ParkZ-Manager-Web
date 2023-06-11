@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { Box, Grid, Rating, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { Box, Grid, Rating, Typography } from "@mui/material";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
-
-const ratingBoxStyle = {
-  "& > legend": { mt: 2 },
-};
+import { useTheme } from "@mui/material/styles";
 
 const GridItem = ({ leftText, rightText, color, active }) => {
   const theme = useTheme();

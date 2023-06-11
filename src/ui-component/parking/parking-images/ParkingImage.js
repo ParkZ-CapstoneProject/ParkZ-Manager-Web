@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import React, { useState } from "react";
 import {
   BsChevronCompactLeft,
@@ -5,6 +6,7 @@ import {
   BsTrash,
 } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
+import CreateButton from "ui-component/buttons/create-button/CreateButton";
 // import "../../../index.css";
 
 const ParkingImage = () => {
@@ -73,59 +75,64 @@ const ParkingImage = () => {
   };
 
   return (
-    <div
-      className="max-w-[1400px] h-[780px] w-full m-auto py-4 px-4 relative group"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <>
+      <Grid container direction="row" justifyContent="flex-end">
+        <CreateButton />
+      </Grid>
       <div
-        style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-        className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
+        className="max-w-[1400px] h-[780px] w-full m-auto py-4 px-4 relative group"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {isHovered && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div
+          style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+          className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
+        >
+          {isHovered && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div
+                onMouseEnter={handleTrashMouseEnter}
+                onMouseLeave={handleTrashMouseLeave}
+                className={`cursor-pointer ${
+                  isTrashHovered ? "cursor-pointer" : ""
+                }`}
+              >
+                <BsTrash
+                  style={{ color: "#dad9d4" }}
+                  size={40}
+                  onClick={() => handleDelete(slides[currentIndex].id)}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Left Arrow */}
+        <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
+          <BsChevronCompactLeft onClick={prevSlide} size={30} />
+        </div>
+        {/* Right Arrow */}
+        <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
+          <BsChevronCompactRight onClick={nextSlide} size={30} />
+        </div>
+        <div className="flex top-4 justify-center py-2">
+          {slides.map((slide, slideIndex) => (
             <div
-              onMouseEnter={handleTrashMouseEnter}
-              onMouseLeave={handleTrashMouseLeave}
-              className={`cursor-pointer ${
-                isTrashHovered ? "cursor-pointer" : ""
+              key={slideIndex}
+              onClick={() => goToSlide(slideIndex)}
+              className={`text-2xl cursor-pointer ${
+                slideIndex === currentIndex ? "text-white" : ""
               }`}
             >
-              <BsTrash
-                style={{ color: "#dad9d4" }}
-                size={40}
-                onClick={() => handleDelete(slides[currentIndex].id)}
-              />
+              {slideIndex === currentIndex ? (
+                <RxDotFilled sx={{ color: "red" }} />
+              ) : (
+                <RxDotFilled />
+              )}
             </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
-      {/* Left Arrow */}
-      <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-        <BsChevronCompactLeft onClick={prevSlide} size={30} />
-      </div>
-      {/* Right Arrow */}
-      <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-        <BsChevronCompactRight onClick={nextSlide} size={30} />
-      </div>
-      <div className="flex top-4 justify-center py-2">
-        {slides.map((slide, slideIndex) => (
-          <div
-            key={slideIndex}
-            onClick={() => goToSlide(slideIndex)}
-            className={`text-2xl cursor-pointer ${
-              slideIndex === currentIndex ? "text-white" : ""
-            }`}
-          >
-            {slideIndex === currentIndex ? (
-              <RxDotFilled sx={{ color: "red" }} />
-            ) : (
-              <RxDotFilled />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -9,11 +9,15 @@ import {
 import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 // import UploadFile from "../step3/UploadFile";
-import UploadFront from "ui-component/upload-file/UploadFront";
-import UploadBackSide from "ui-component/upload-file/UploadBackSide";
-import UploadAvatar from "ui-component/upload-file/UploadAvatar";
+// import UploadFront from "ui-component/upload-file/UploadFront";
+// import UploadBackSide from "ui-component/upload-file/UploadBackSide";
+// import UploadAvatar from "ui-component/upload-file/UploadAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep, setUserData } from "store/stepReducer";
+import ContinueButton from "ui-component/buttons/continue-button-register/ContinueButton";
+import BackButtonRegister from "ui-component/buttons/back-button/BackButtonRegister";
+import UploadCCCD from "ui-component/upload-file-antd/UploadCCCD";
+import UploadAvatar from "ui-component/upload-file-antd/UploadAvatar";
 
 const PersonalInfor = () => {
   const theme = useTheme();
@@ -163,37 +167,20 @@ const PersonalInfor = () => {
                   />
                 </Grid>
               </Grid>
-              <Grid
-                item
-                container
-                direction="row"
-                alignContent="center"
-                justifyContent="center"
-                sx={{ marginTop: "3%" }}
-                xs={5}
-                spacing={4}
-              >
+              <Grid item xs={5}>
+                <Typography
+                  color={theme.palette.secondary.dark}
+                  gutterBottom
+                  variant={matchDownSM ? "h5" : "h4"}
+                  marginLeft="17%"
+                  marginTop="3%"
+                >
+                  Mặt trước và sau CCCD
+                </Typography>
+              </Grid>
+              <Grid item container direction="row" justifyContent="center">
                 <Grid item>
-                  <Typography
-                    color={theme.palette.secondary.dark}
-                    gutterBottom
-                    variant={matchDownSM ? "h5" : "h4"}
-                    // marginTop="8%"
-                  >
-                    Mặt trước CCCD
-                  </Typography>
-                  <UploadFront />
-                </Grid>
-                <Grid item>
-                  <Typography
-                    color={theme.palette.secondary.dark}
-                    gutterBottom
-                    variant={matchDownSM ? "h5" : "h4"}
-                    // marginTop="8%"
-                  >
-                    Mặt sau CCCD
-                  </Typography>
-                  <UploadBackSide />
+                  <UploadCCCD />
                 </Grid>
               </Grid>
             </Grid>
@@ -202,21 +189,21 @@ const PersonalInfor = () => {
               item
               container
               direction="column"
-              justifyContent="center"
-              alignItems="center"
+              justifyContent="flex-start"
+              alignItems="baseline"
               xs={5}
+              sx={{ marginTop: "-5%" }}
             >
-              <Grid item>
+              <Grid item sx={{ marginLeft: "-30%" }}>
                 <Typography
                   color={theme.palette.secondary.dark}
                   gutterBottom
                   variant={matchDownSM ? "h5" : "h4"}
-                  marginTop="8%"
                 >
                   Ảnh đại diện
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid item sx={{ marginRight: "30%" }}>
                 <UploadAvatar />
               </Grid>
               {/* components 2 */}
@@ -229,53 +216,14 @@ const PersonalInfor = () => {
             alignItems="center"
             direction="row"
             spacing={4}
-            style={{ marginLeft: "7%" }}
+            style={{ marginLeft: "7%", marginTop: "20px" }}
             xs={10}
           >
-            <Grid item>
-              <Button
-                fullWidth
-                size="large"
-                // style={{ backgroundColor: "#cb4e18", width: "250px" }}
-                sx={{
-                  mt: 3,
-                  borderRadius: "10px",
-                  backgroundColor: "#cb4e18",
-                  width: "250px",
-                  ":is(:hover, :focus)": {
-                    backgroundColor: "#cb4e18",
-                    outline: "3px solid #cb4e18",
-                    outlineOffset: "1px",
-                  },
-                }}
-                type="submit"
-                variant="contained"
-                onClick={handleBack}
-              >
-                Trở lại
-              </Button>
+            <Grid item xs={3}>
+              <BackButtonRegister width="100%" onClick={handleBack} />
             </Grid>
-            <Grid item>
-              <Button
-                fullWidth
-                size="large"
-                sx={{
-                  mt: 3,
-                  borderRadius: "10px",
-                  backgroundColor: "#063970",
-                  ":is(:hover, :focus)": {
-                    backgroundColor: "#478be9",
-                    outline: "3px solid #478be9",
-                    outlineOffset: "1px",
-                  },
-                  width: "250px",
-                }}
-                type="submit"
-                variant="contained"
-                onClick={handleNext}
-              >
-                Tiếp theo
-              </Button>
+            <Grid item xs={3}>
+              <ContinueButton width="100%" onClick={handleNext} />
             </Grid>
           </Grid>
         </Grid>

@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
 import SubCard from "ui-component/cards/SubCard";
-import { Avatar, Chip, Grid } from "@mui/material";
+import { Avatar, Chip, Grid, Skeleton } from "@mui/material";
 import Menu from "ui-component/booking/Menu";
 import FloatingButton from "ui-component/buttons/qr-button-drag/FloatingButton";
 import { useNavigate } from "react-router";
@@ -124,12 +124,33 @@ const columns = [
 ];
 
 export default function DataTable(props) {
-  const { rows } = props;
+  const { rows, loading } = props;
   const navigate = useNavigate();
 
   const handleOpenScanner = () => {
     navigate("/qr");
   };
+
+  if (loading) {
+    // Render the Skeleton components or any other loading indicator
+    return (
+      <>
+        <MainCard title={"Lịch đặt"}>
+          <Grid item xs={12}>
+            <SubCard>
+              {/* Render the Skeleton components for the search section */}
+              <Skeleton animation="wave" height={40} width={200} />
+            </SubCard>
+          </Grid>
+          <div style={{ height: "500px", width: "100%" }}>
+            {/* Render the Skeleton components for the data grid */}
+            <Skeleton animation="wave" height={400} />
+          </div>
+        </MainCard>
+        {/* <Loading /> */}
+      </>
+    );
+  }
 
   return (
     <>
@@ -156,7 +177,6 @@ export default function DataTable(props) {
         </div>
       </MainCard>
       <FloatingButton handleOpenScanner={handleOpenScanner} />
-      {/* <Loading /> */}
     </>
   );
 }

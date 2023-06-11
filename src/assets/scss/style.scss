@@ -195,7 +195,8 @@
   background-color: none !important;
 }
 
-button {
+.ant-modal-content button,
+.ant-modal-content [type="button"] {
   background-color: none !important;
 }
 
@@ -236,4 +237,38 @@ button {
 canvas {
   background: rgba(211, 211, 211, 0.655) !important;
   border-radius: 10px !important;
+}
+
+// .ant-modal-content {
+//   margin-top: 15%;
+// }
+.ant-btn-primary {
+  background-color: #3d8bd9 !important;
+  border-radius: 20px;
+}
+
+.ant-btn-default {
+  background-color: #21bb16 !important;
+  border-radius: 20px;
+  color: #fff;
+}
+
+// .ant-upload-list-item-error {
+//   width: 150px !important;
+//   height: 170px !important;
+//   :last-child {
+//     margin-left: 100px !important;
+//   }
+// }
+
+// .ant-upload-list-item-container::after {
+//   margin-right: -40px;
+// }
+// .ant-upload-list-item-error {
+//   width: 150px !important;
+//   height: 150px !important;
+// }
+.reactEasyCrop_CropArea {
+  width: 300px !important;
+  height: 350px !important;
 }

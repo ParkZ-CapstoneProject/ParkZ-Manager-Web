@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import {
   Button,
@@ -9,9 +10,12 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
-import UploadBusinessLicense from "ui-component/upload-file/UploadBusinessLicense";
+// import UploadBusinessLicense from "ui-component/upload-file/UploadBusinessLicense";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep, setUserData } from "store/stepReducer";
+import BackButtonRegister from "ui-component/buttons/back-button/BackButtonRegister";
+import ContinueButton from "ui-component/buttons/continue-button-register/ContinueButton";
+import UploadBusinessLicense from "ui-component/upload-file-antd/UploadBusinessLicense";
 
 const BusinessInfor = () => {
   const theme = useTheme();
@@ -70,7 +74,7 @@ const BusinessInfor = () => {
         </Stack>
       </Grid>
       <Grid item xs={12}>
-        <Stack item xs={12} justifyContent="center" spacing={1}>
+        <Stack xs={12} justifyContent="center" spacing={1}>
           <Typography
             color={theme.palette.secondary.dark}
             gutterBottom
@@ -118,12 +122,12 @@ const BusinessInfor = () => {
         <Grid
           item
           container
-          style={{ marginTop: "1%" }}
+          style={{ marginTop: "1%", marginLeft: "-6px" }}
           direction="row"
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item xs={0.8}>
+          <Grid item xs={1}>
             <Checkbox />
           </Grid>
           <Grid item xs={11}>
@@ -179,49 +183,11 @@ const BusinessInfor = () => {
           direction="row"
           spacing={4}
         >
-          <Grid item>
-            <Button
-              fullWidth
-              size="large"
-              style={{ backgroundColor: "#cb4e18" }}
-              sx={{
-                mt: 3,
-                borderRadius: "10px",
-                width: "220px",
-                ":is(:hover, :focus)": {
-                  backgroundColor: "#cb4e18",
-                  outline: "3px solid #cb4e18",
-                  outlineOffset: "1px",
-                },
-              }}
-              type="submit"
-              variant="contained"
-              onClick={handleBack}
-            >
-              Trở lại
-            </Button>
+          <Grid item xs={6}>
+            <BackButtonRegister width="100%" onClick={handleBack} />
           </Grid>
-          <Grid item>
-            <Button
-              fullWidth
-              size="large"
-              sx={{
-                mt: 3,
-                borderRadius: "10px",
-                width: "220px",
-                backgroundColor: "#063970",
-                ":is(:hover, :focus)": {
-                  backgroundColor: "#478be9",
-                  outline: "3px solid #478be9",
-                  outlineOffset: "1px",
-                },
-              }}
-              type="submit"
-              variant="contained"
-              onClick={handleNext}
-            >
-              Tiếp theo
-            </Button>
+          <Grid item xs={6}>
+            <ContinueButton width="100%" onClick={handleNext} />
           </Grid>
         </Grid>
       </Grid>
