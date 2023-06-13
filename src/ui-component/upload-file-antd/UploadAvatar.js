@@ -8,11 +8,11 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const UploadAvatar = () => {
+const UploadAvatar = (props) => {
+  const { avatarFile, setAvatarFile } = props;
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -24,7 +24,11 @@ const UploadAvatar = () => {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    // Convert each file to base64 and update the fileList.
+    setAvatarFile(newFileList);
+  };
+
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -43,12 +47,10 @@ const UploadAvatar = () => {
         name="avatar"
         listType="picture-circle"
         className="avatar-uploader"
-        fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
-        style={{ height: "200px" }}
       >
-        {fileList.length >= 1 ? null : uploadButton}
+        {avatarFile.length >= 1 ? null : uploadButton}
       </Upload>
       <Modal
         open={previewOpen}

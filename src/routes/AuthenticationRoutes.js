@@ -64,7 +64,7 @@ const AuthenticationRoutes = {
     //   element: <AuthLogin />,
     // },
     {
-      path: "login",
+      path: "",
       element: <AuthLogin />,
     },
     {
@@ -96,7 +96,7 @@ const AuthenticationRoutes = {
       element: <Modal />,
     },
     {
-      path: "not-found",
+      path: "*",
       element: <NotFound />,
     },
   ],

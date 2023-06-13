@@ -8,11 +8,12 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const UploadCCCD = () => {
+const UploadCCCD = (props) => {
+  const { fileList, setFileList, setCccdFile } = props;
+
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -26,6 +27,7 @@ const UploadCCCD = () => {
   };
   const handleChange = ({ fileList: newFileList }) => {
     // Convert each file to base64 and update the fileList.
+    setCccdFile(newFileList);
     Promise.all(newFileList.map((file) => getBase64(file.originFileObj)))
       .then((base64List) =>
         newFileList.map((file, index) => ({
@@ -35,8 +37,6 @@ const UploadCCCD = () => {
       )
       .then((newFileListWithBase64) => setFileList(newFileListWithBase64));
   };
-
-  console.log("fileList", fileList);
 
   const uploadButton = (
     <div>
@@ -54,10 +54,8 @@ const UploadCCCD = () => {
     <>
       <Upload
         listType="picture-card"
-        // fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
-        multiple
       >
         {fileList.length >= 2 ? null : uploadButton}
       </Upload>

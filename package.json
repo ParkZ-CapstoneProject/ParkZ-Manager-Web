@@ -28,6 +28,7 @@
     "date-fns": "^2.30.0",
     "formik": "^2.2.9",
     "framer-motion": "^10.8.5",
+    "jsonwebtoken": "^9.0.0",
     "konva": "^9.0.2",
     "leaflet": "^1.9.4",
     "material-ui-popup-state": "^5.0.8",

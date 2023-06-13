@@ -28,19 +28,19 @@ const AccountInfor = () => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handleNext = () => {
-    // if (
-    //   userData.email === undefined ||
-    //   userData.password === undefined ||
-    //   userData.confirmPassword === undefined
-    // ) {
-    //   Swal.fire({
-    //     icon: "warning",
-    //     title: "Nhập tất cả",
-    //     text: "Bạn phải nhập hết tất cả các ô nhập",
-    //   });
-    // } else {
-    //   dispatch(setCurrentStep(currentStep + 1));
-    // }
+    if (
+      userData.email === undefined ||
+      userData.password === undefined ||
+      userData.confirmPassword === undefined
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Nhập tất cả",
+        text: "Bạn phải nhập hết tất cả các ô nhập",
+      });
+    } else {
+      dispatch(setCurrentStep(currentStep + 1));
+    }
 
     dispatch(setCurrentStep(currentStep + 1));
   };

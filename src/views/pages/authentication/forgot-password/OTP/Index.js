@@ -29,9 +29,10 @@ const OTP = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
 
     let verifyEntity = { email: formData, otpCode: otp };
-    fetch("https://parkzapi.azurewebsites.net/api/otp-management/verify", {
+    fetch(`${apiLink}/otp-management/verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

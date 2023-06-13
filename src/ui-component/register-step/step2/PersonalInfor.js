@@ -1,23 +1,20 @@
+import React, { useState } from "react";
+import { setCurrentStep, setUserData } from "store/stepReducer";
 import {
-  Button,
   Grid,
   Stack,
   TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
-// import UploadFile from "../step3/UploadFile";
-// import UploadFront from "ui-component/upload-file/UploadFront";
-// import UploadBackSide from "ui-component/upload-file/UploadBackSide";
-// import UploadAvatar from "ui-component/upload-file/UploadAvatar";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentStep, setUserData } from "store/stepReducer";
 import ContinueButton from "ui-component/buttons/continue-button-register/ContinueButton";
 import BackButtonRegister from "ui-component/buttons/back-button/BackButtonRegister";
 import UploadCCCD from "ui-component/upload-file-antd/UploadCCCD";
 import UploadAvatar from "ui-component/upload-file-antd/UploadAvatar";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const PersonalInfor = () => {
   const theme = useTheme();
@@ -28,11 +25,143 @@ const PersonalInfor = () => {
   const userData = useSelector((state) => state.multiStep.userData);
 
   const [errorNumberLength, setErrorNumberLength] = useState(false);
-  const [errorPhone, setErrorPhone] = useState(false);
   const [errorName, setErrorName] = useState(false);
+  const [fileList, setFileList] = useState([]);
+  const [cccdFile, setCccdFile] = useState([]);
+  const [avatarFile, setAvatarFile] = useState([]);
+  // const [loading, setLoading] = useState(false);
 
-  const handleNext = () => {
-    dispatch(setCurrentStep(currentStep + 1));
+  const apiUpload = process.env.REACT_APP_BASE_URL_API_APP;
+
+  const urlAPICheck = "https://api-uat.unicloud.ai/ekyc/kyc-documents-sides";
+  const username = "sst-tester";
+  const password = "be0b966de533";
+  const data = {
+    image1: fileList[0]?.base64,
+    name1: "CCCD front",
+    image2: fileList[1]?.base64,
+    name2: "CCCD back",
+  };
+
+  const handleNext = async (e) => {
+    e.preventDefault();
+
+    if (
+      userData.name === undefined ||
+      userData.phone === undefined ||
+      fileList.length === 0
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Điền tất cả",
+        text: "Bạn phải nhập và tuyền vào tất cả các ô nhập và hình ảnh CCCD",
+      });
+    } else {
+      Swal.fire({
+        icon: "question",
+        title: "Đang kiểm tra thông tin...",
+        text: "Vui lòng chờ trong giây lát!",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      try {
+        const response = await fetch(urlAPICheck, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+          },
+          body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const responseData = await response.json();
+
+        if (
+          responseData.recognized_data.document !== "CMND" &&
+          responseData.recognized_data.document !== "CCCD" &&
+          responseData.recognized_data.document !== "CHIP ID"
+        ) {
+          Swal.close();
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: "Hình ảnh CCCD không hợp lệ. Vui lòng kiểm tra lại hoặc chụp lại hình khác rõ hơn.",
+          });
+        } else {
+          const avatarUrl = await handleUploadAvatar();
+          const imageUrls = await handleUploadCCCD();
+
+          dispatch(
+            setUserData({
+              ...userData,
+              avatar: avatarUrl.link,
+              frontSide: imageUrls[0],
+              backSide: imageUrls[1],
+            })
+          );
+          Swal.close();
+          dispatch(setCurrentStep(currentStep + 1));
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  };
+
+  const handleUploadCCCD = () => {
+    return new Promise((resolve, reject) => {
+      const uploadPromises = cccdFile.map((file, index) => {
+        return new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("file", file.originFileObj, file.name);
+
+          axios
+            .post(`${apiUpload}/upload-image`, formData)
+            .then((response) => {
+              const { data } = response;
+              resolve(data.link);
+            })
+            .catch((error) => {
+              console.log("Error uploading image:", error);
+              reject(error);
+            });
+        });
+      });
+
+      Promise.all(uploadPromises)
+        .then((imageUrls) => {
+          resolve(imageUrls); // resolve the Promise with the array of image URLs
+        })
+        .catch((error) => {
+          console.log("Error uploading images:", error);
+          reject(error); // reject the Promise
+        });
+    });
+  };
+
+  const handleUploadAvatar = () => {
+    return new Promise((resolve, reject) => {
+      const file = avatarFile[0]; // Assuming there is only one file
+      const formData = new FormData();
+      formData.append("file", file.originFileObj, file.name);
+
+      axios
+        .post(`${apiUpload}/upload-image`, formData)
+        .then((response) => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch((error) => {
+          console.log("Error uploading image:", error);
+          reject(error);
+        });
+    });
   };
 
   const handleBack = () => {
@@ -55,24 +184,15 @@ const PersonalInfor = () => {
 
   const handleInputPhone = (event) => {
     const { value } = event.target;
-
-    const startsWithSpace = /^\s/.test(value);
-
-    if (startsWithSpace) {
-      setErrorPhone(true);
-      return;
-    } else {
-      setErrorPhone(false);
-      setErrorNumberLength(value.length < 10 || value.length > 10);
-      if (!isNaN(value)) {
-        dispatch(setUserData({ ...userData, phone: value }));
-      }
+    setErrorNumberLength(value.length < 10 || value.length > 10);
+    if (!isNaN(value)) {
+      dispatch(setUserData({ ...userData, phone: value }));
     }
   };
 
   return (
     <>
-      <form>
+      <form method="post">
         <Grid container direction="row" alignContent="center">
           <Grid item xs={12} sx={{ marginTop: "2%" }}>
             <Stack
@@ -95,7 +215,6 @@ const PersonalInfor = () => {
             direction="row"
             justifyContent="flex-end"
             alignItems="center"
-            // marginLeft="17%"
             spacing={2}
           >
             <Grid
@@ -180,7 +299,11 @@ const PersonalInfor = () => {
               </Grid>
               <Grid item container direction="row" justifyContent="center">
                 <Grid item>
-                  <UploadCCCD />
+                  <UploadCCCD
+                    fileList={fileList}
+                    setFileList={setFileList}
+                    setCccdFile={setCccdFile}
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -204,11 +327,14 @@ const PersonalInfor = () => {
                 </Typography>
               </Grid>
               <Grid item sx={{ marginRight: "30%" }}>
-                <UploadAvatar />
+                <UploadAvatar
+                  avatarFile={avatarFile}
+                  setAvatarFile={setAvatarFile}
+                />
               </Grid>
-              {/* components 2 */}
             </Grid>
           </Grid>
+
           <Grid
             item
             container

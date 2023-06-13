@@ -7,7 +7,6 @@
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
-  Button,
   Stack,
   TextField,
   Typography,
@@ -16,12 +15,100 @@ import {
 // import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from "../../../../ui-component/auth/layout";
 import LoginButton from "ui-component/buttons/login-button/LoginButton";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
+// import jwt from "jsonwebtoken";
 // import { useNavigate } from "react-router";
 // import Header from "layout/MainLayout/Header";
 
 const Page = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+
+  const requestBody = {
+    email: email,
+    password: password,
+  };
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      icon: "info",
+      title: "Đang xử lý thông tin...",
+      text: "Vui lòng chờ trong giây lát!",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      fetch(`${apiUrl}/business-manager-authentication`, requestOptions)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const res = data;
+
+          if (res.data === null) {
+            Swal.close();
+
+            Swal.fire({
+              icon: "error",
+              title: "Đăng nhập sai",
+              text: res.message,
+            });
+          } else {
+            const parts = data.data.token.split(".");
+
+            // Decode the payload using the base64-decoding function
+            const user = JSON.parse(atob(parts[1]));
+
+            if (user.role === "Manager") {
+              localStorage.setItem("token", data.data.token);
+              Swal.close();
+              navigate("/dashboard");
+            }
+          }
+          console.log("res", res);
+        });
+    } catch (error) {}
+    // const data = await fetch(
+    //   `${apiUrl}/business-manager-authentication`,
+    //   requestOptions
+    // );
+    // const res = await data.json();
+    // localStorage.setItem("token", res.data.token);
+    // const token = res.data.token;
+    // const parts = token.split(".");
+
+    // // Decode the payload using the base64-decoding function
+    // const user = JSON.parse(atob(parts[1]));
+
+    // if (user.role === "Manager") {
+    //   navigate("/dashboard");
+    // }
+
+    // console.log(user);
+  };
 
   //   const router = useRouter();
   //   const auth = useAuth();
@@ -54,6 +141,14 @@ const Page = () => {
   //       }
   //     }
   //   });
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
 
   return (
     <AuthLayout>
@@ -91,17 +186,16 @@ const Page = () => {
                   Đăng nhập
                 </Typography>
               </Box>
-              {/* <Typography color="text.secondary" variant="body2">
-                Đăng nhập tại đây
-              </Typography> */}
             </Stack>
-            <form
-            // noValidate
-            // onSubmit={formik.handleSubmit}
-            >
+            <form method="post" onSubmit={handleLogin}>
               <Stack spacing={1}>
                 <TextField
                   sx={{ borderRadius: "5px" }}
+                  required
+                  value={email}
+                  inputProps={{ maxLength: 150 }}
+                  error={email.length > 150}
+                  helperText={email.length > 50 ? "Tối đa 150 ký tự" : ""}
                   // error={!!(formik.touched.email && formik.errors.email)}
                   fullWidth
                   // helperText={formik.touched.email && formik.errors.email}
@@ -109,8 +203,9 @@ const Page = () => {
                   name="email"
                   // onBlur={formik.handleBlur}
                   // onChange={formik.handleChange}
-                  type="email"
+                  type="text"
                   // value={formik.values.email}
+                  onChange={handleChangeEmail}
                 />
                 <Typography
                   color={theme.palette.secondary.dark}
@@ -123,6 +218,11 @@ const Page = () => {
                   <a href="/input-email">Bạn quên mật khẩu?</a>
                 </Typography>
                 <TextField
+                  required
+                  value={password}
+                  inputProps={{ maxLength: 100 }}
+                  error={password.length > 100}
+                  helperText={password.length > 100 ? "Tối đa 100 ký tự" : ""}
                   // error={!!(formik.touched.password && formik.errors.password)}
                   fullWidth
                   // helperText={formik.touched.password && formik.errors.password}
@@ -132,6 +232,7 @@ const Page = () => {
                   // onChange={formik.handleChange}
                   type="password"
                   // value={formik.values.password}
+                  onChange={handleChangePassword}
                 />
               </Stack>
               {/* <FormHelperText sx={{ mt: 1 }}>
@@ -173,7 +274,13 @@ const Page = () => {
                   color={theme.palette.secondary.main}
                   variant="subtitle1"
                 >
-                  Bạn chưa có tài khoản? <a href="/register">Đăng ký tại đây</a>
+                  Bạn chưa có tài khoản?{" "}
+                  <a
+                    href="/register"
+                    style={{ textDecoration: "underline", color: "#3e3ee3" }}
+                  >
+                    Đăng ký tại đây
+                  </a>
                 </Typography>
               </Stack>
             </form>

@@ -1,5 +1,4 @@
 import {
-  Button,
   Grid,
   Stack,
   TextField,
@@ -12,17 +11,21 @@ import { Layout } from "ui-component/auth/layout";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 // import NextButton from "ui-component/buttons/next-button/NextButton";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const NewPassword = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
   const { formData } = location.state;
-  console.log(formData);
+
+  const navigate = useNavigate();
+  // console.log(formData);
   const [newMk, setNewMk] = useState();
   const [errorNewMk, setErrorNewMk] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
 
   const handleInputNewPassword = (event) => {
     const { value } = event.target;
@@ -48,16 +51,13 @@ const NewPassword = () => {
 
     let passwordEntity = { email: formData, newPassword: newMk };
     console.log("Email:", passwordEntity.email);
-    fetch(
-      "https://parkzapi.azurewebsites.net/api/password-management/forgot-password",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(passwordEntity),
-      }
-    )
+    fetch(`${apiLink}/password-management/forgot-password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(passwordEntity),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -75,7 +75,10 @@ const NewPassword = () => {
         // Handle errors
         console.error(error);
       });
-    // navigate("/otp", { state: { formData: data } });
+  };
+
+  const handleCancel = () => {
+    navigate("/login");
   };
 
   return (
@@ -170,7 +173,7 @@ const NewPassword = () => {
               spacing={3}
             >
               <Grid item xs={5}>
-                <CancelButton />
+                <CancelButton onClick={handleCancel} />
               </Grid>
               <Grid item xs={3}>
                 <SaveButton />

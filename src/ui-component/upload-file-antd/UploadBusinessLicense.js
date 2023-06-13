@@ -8,11 +8,12 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const UploadBusinessLicense = () => {
+const UploadBusinessLicense = (props) => {
+  const { businessLicenseUrl, setBusinessLicenseUrl, isChecked } = props;
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
+  // const [fileList, setFileList] = useState([]);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -24,7 +25,8 @@ const UploadBusinessLicense = () => {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) =>
+    setBusinessLicenseUrl(newFileList);
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -40,14 +42,11 @@ const UploadBusinessLicense = () => {
   return (
     <>
       <Upload
-        // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         listType="picture-card"
-        fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
-        multiple
       >
-        {fileList.length >= 2 ? null : uploadButton}
+        {businessLicenseUrl.length === 1 ? null : uploadButton}
       </Upload>
       <Modal
         open={previewOpen}

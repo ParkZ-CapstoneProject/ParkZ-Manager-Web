@@ -24,6 +24,9 @@ const EmailInput = () => {
 
   const navigate = useNavigate();
 
+  const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
+  // console.log("apiLink", apiLink);
+
   const handleInputEmail = (event) => {
     const { value } = event.target;
 
@@ -42,7 +45,7 @@ const EmailInput = () => {
     event.preventDefault();
 
     let otpEntity = { email: email };
-    fetch("https://parkzapi.azurewebsites.net/api/otp-management", {
+    fetch(`${apiLink}/otp-management`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +69,6 @@ const EmailInput = () => {
         } else {
           const formData = new FormData(event.target);
           const data2 = Object.fromEntries(formData.entries());
-          // console.log("data2", data2);
           navigate("/otp", { state: { formData: data2.email } });
         }
       })
@@ -74,7 +76,6 @@ const EmailInput = () => {
         // Handle errors
         console.error(error);
       });
-    // navigate("/otp", { state: { formData: data } });
   };
 
   return (
