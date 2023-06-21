@@ -5,6 +5,7 @@ import ParkingDetailInfo from "ui-component/parking/single-parking/DetailParkInf
 import Tabs from "ui-component/parking/single-parking/Tabs";
 import HistoryBooking from "ui-component/parking/single-parking/HistoryParking/HistoryBooking";
 import FloorParking from "ui-component/parking/single-parking/PhysicalModalParking/FloorParking";
+import { useParams } from "react-router";
 
 const tabs = [
   {
@@ -26,6 +27,9 @@ const tabs = [
 ];
 
 const ParkingDetail = () => {
+  // const { id } = useParams();
+
+  // console.log("parkingId", id);
   return (
     <MainCard title="Chi tiết bãi xe">
       <div className="container mx-auto mt-4">

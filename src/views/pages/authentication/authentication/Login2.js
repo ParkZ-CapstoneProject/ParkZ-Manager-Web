@@ -1,9 +1,3 @@
-// import { useCallback, useState } from "react";
-// import Head from 'next/head';
-// import NextLink from 'next/link';
-// import { useRouter } from 'next/navigation';
-// import { useFormik } from 'formik';
-// import * as Yup from 'yup';
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -12,15 +6,11 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-// import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from "../../../../ui-component/auth/layout";
 import LoginButton from "ui-component/buttons/login-button/LoginButton";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-// import jwt from "jsonwebtoken";
-// import { useNavigate } from "react-router";
-// import Header from "layout/MainLayout/Header";
 
 const Page = () => {
   const theme = useTheme();
@@ -84,63 +74,17 @@ const Page = () => {
 
             if (user.role === "Manager") {
               localStorage.setItem("token", data.data.token);
+              localStorage.setItem("user", JSON.stringify(user));
               Swal.close();
               navigate("/dashboard");
             }
           }
           console.log("res", res);
         });
-    } catch (error) {}
-    // const data = await fetch(
-    //   `${apiUrl}/business-manager-authentication`,
-    //   requestOptions
-    // );
-    // const res = await data.json();
-    // localStorage.setItem("token", res.data.token);
-    // const token = res.data.token;
-    // const parts = token.split(".");
-
-    // // Decode the payload using the base64-decoding function
-    // const user = JSON.parse(atob(parts[1]));
-
-    // if (user.role === "Manager") {
-    //   navigate("/dashboard");
-    // }
-
-    // console.log(user);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
-
-  //   const router = useRouter();
-  //   const auth = useAuth();
-  // const [method, setMethod] = useState("email");
-  //   const formik = useFormik({
-  //     initialValues: {
-  //       email: 'demo@devias.io',
-  //       password: 'Password123!',
-  //       submit: null
-  //     },
-  //     validationSchema: Yup.object({
-  //       email: Yup
-  //         .string()
-  //         .email('Must be a valid email')
-  //         .max(255)
-  //         .required('Email is required'),
-  //       password: Yup
-  //         .string()
-  //         .max(255)
-  //         .required('Password is required')
-  //     }),
-  //     onSubmit: async (values, helpers) => {
-  //       try {
-  //         await auth.signIn(values.email, values.password);
-  //         router.push('/');
-  //       } catch (err) {
-  //         helpers.setStatus({ success: false });
-  //         helpers.setErrors({ submit: err.message });
-  //         helpers.setSubmitting(false);
-  //       }
-  //     }
-  //   });
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -196,15 +140,10 @@ const Page = () => {
                   inputProps={{ maxLength: 150 }}
                   error={email.length > 150}
                   helperText={email.length > 50 ? "Tối đa 150 ký tự" : ""}
-                  // error={!!(formik.touched.email && formik.errors.email)}
                   fullWidth
-                  // helperText={formik.touched.email && formik.errors.email}
                   label="Tên đăng nhập"
                   name="email"
-                  // onBlur={formik.handleBlur}
-                  // onChange={formik.handleChange}
                   type="text"
-                  // value={formik.values.email}
                   onChange={handleChangeEmail}
                 />
                 <Typography
@@ -223,48 +162,14 @@ const Page = () => {
                   inputProps={{ maxLength: 100 }}
                   error={password.length > 100}
                   helperText={password.length > 100 ? "Tối đa 100 ký tự" : ""}
-                  // error={!!(formik.touched.password && formik.errors.password)}
                   fullWidth
-                  // helperText={formik.touched.password && formik.errors.password}
                   label="Mật khẩu"
                   name="password"
-                  // onBlur={formik.handleBlur}
-                  // onChange={formik.handleChange}
                   type="password"
-                  // value={formik.values.password}
                   onChange={handleChangePassword}
                 />
               </Stack>
-              {/* <FormHelperText sx={{ mt: 1 }}>
-                  Optionally you can skip.
-                </FormHelperText> */}
-              {/* {formik.errors.submit && (
-                  <Typography
-                    color="error"
-                    sx={{ mt: 3 }}
-                    variant="body2"
-                  >
-                    {formik.errors.submit}
-                  </Typography>
-                )} */}
-              {/* <Button
-                fullWidth
-                size="large"
-                sx={{
-                  mt: 3,
-                  borderRadius: "7px",
-                  backgroundColor: "#063970",
-                  ":is(:hover, :focus)": {
-                    backgroundColor: "#478be9",
-                    outline: "3px solid #478be9",
-                    outlineOffset: "2px",
-                  },
-                }}
-                type="submit"
-                variant="contained"
-              >
-                Đăng nhập
-              </Button> */}
+
               <Stack sx={{ marginTop: "5%" }}>
                 <LoginButton />
               </Stack>
@@ -290,7 +195,5 @@ const Page = () => {
     </AuthLayout>
   );
 };
-
-// Page.getLayout = (page) => <AuthLayout>{page}</AuthLayout>;
 
 export default Page;

@@ -6,7 +6,7 @@ const SaveButton = (props) => {
 
   return (
     <>
-      <button className="btn-save" type="submit" onClick={onClick}>
+      <button className="btn-save__v2" type="submit" onClick={onClick}>
         <span>Lưu</span>
         <svg
           height="35"

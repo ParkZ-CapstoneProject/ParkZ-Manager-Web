@@ -1,38 +1,20 @@
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BsChevronCompactLeft,
   BsChevronCompactRight,
   BsTrash,
 } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
+import { useParams } from "react-router";
+import Loading from "ui-component/back-drop/Loading";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 // import "../../../index.css";
 
 const ParkingImage = () => {
-  const slides = [
-    {
-      id: 1,
-      url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80",
-    },
-    {
-      id: 2,
-      url: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80",
-    },
-    {
-      id: 3,
-      url: "https://images.unsplash.com/photo-1661961112951-f2bfd1f253ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80",
-    },
-
-    {
-      id: 4,
-      url: "https://images.unsplash.com/photo-1512756290469-ec264b7fbf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2253&q=80",
-    },
-    {
-      id: 5,
-      url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80",
-    },
-  ];
+  const { id } = useParams();
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -49,6 +31,38 @@ const ParkingImage = () => {
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
+
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await fetch(
+        `${apiUrl}/parking-spot-image/${id}?pageNo=1&pageSize=11`,
+        requestOptions
+      );
+
+      const data = await response.json();
+      setSlides(data.data);
+      console.log("data.data", data.data);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
 
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
@@ -85,7 +99,7 @@ const ParkingImage = () => {
         onMouseLeave={handleMouseLeave}
       >
         <div
-          style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+          style={{ backgroundImage: `url(${slides[currentIndex]?.imgPath})` }}
           className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
         >
           {isHovered && (
@@ -100,7 +114,9 @@ const ParkingImage = () => {
                 <BsTrash
                   style={{ color: "#dad9d4" }}
                   size={40}
-                  onClick={() => handleDelete(slides[currentIndex].id)}
+                  onClick={() =>
+                    handleDelete(slides[currentIndex]?.parkingSpotImageId)
+                  }
                 />
               </div>
             </div>

@@ -38,7 +38,7 @@ const ItemModal = ({ modalType }) => {
 
   console.log("selectedTime", selectedTime);
 
-  const [gender, setGender] = useState("nam");
+  const [gender, setGender] = useState("Nam");
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -56,12 +56,20 @@ const ItemModal = ({ modalType }) => {
   return (
     <>
       <Grid
+        item
+        sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
+      >
+        <Typography variant="h2" color={theme.palette.primary.main}>
+          Tạo mới nhân viên
+        </Typography>
+      </Grid>
+      <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
         spacing={3}
-        sx={{ marginTop: "5%" }}
+        sx={{ marginTop: "3%" }}
       >
         <Grid
           item
@@ -159,13 +167,13 @@ const ItemModal = ({ modalType }) => {
                 value={gender}
                 label="gender"
                 onChange={handleChange}
-                defaultValue={gender.nam}
+                defaultValue={gender.Nam}
               >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
+                <MenuItem fullWidth value="Nam" sx={{ width: "100%" }}>
                   Nam
                 </MenuItem>
                 <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
+                <MenuItem fullWidth value="Nữ" sx={{ width: "100%" }}>
                   Nữ
                 </MenuItem>
               </Select>

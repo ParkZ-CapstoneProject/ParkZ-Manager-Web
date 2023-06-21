@@ -2,90 +2,45 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import carIcon from "../../../../assets/images/Car.svg";
-import motorbikeIcon from "../../../../assets/images/Motor.svg";
-import { setCarSlots, setMotorbikeSlots } from "store/parkingModalSlice";
+import {
+  initializeFloors,
+  setCarSlots,
+  setNumCarColumns,
+  setNumCarRows,
+} from "store/parkingModalSlice";
 import FormInput from "./FormInput";
 import { Image, Layer, Rect, Stage, Text } from "react-konva";
 import Swal from "sweetalert2";
 
-const SinglePhysicalModal = ({ floorIndex, edit }) => {
-  const [draggingType, setDraggingType] = useState(null);
+const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
   const dispatch = useDispatch();
   const slotWidth = 150;
   const slotHeight = 120;
   const spacing = 15;
   const stagePadding = 40;
 
-  const storedParkingModal = localStorage.getItem("parkingModalState");
-  const parsedParkingModal = JSON.parse(storedParkingModal);
-  const initialParkingModal = parsedParkingModal ? parsedParkingModal : {};
+  const [carSlotsCurrent, setCarSlotsCurrent] = useState([]);
 
-  const {
-    numCarSlots,
-    numMotorbikeSlots,
-    numMotorbikeRows,
-    numMotorbikeColumns,
-    numCarRows,
-    numCarColumns,
-    carSlots,
-    motorbikeSlots,
-  } = useSelector((state) => state.parkingModal[floorIndex]);
+  const numCarRows = Math.max(...listCarSlots.map((slot) => slot.rowIndex)) + 1;
+  const numCarCols =
+    Math.max(...listCarSlots.map((slot) => slot.columnIndex)) + 1;
 
-  const saveParkingModalState = () => {
-    const updatedParkingModal = {
-      ...initialParkingModal,
-      [floorIndex]: {
-        floor: floorIndex + 1,
-        numCarSlots,
-        numMotorbikeSlots,
-        numMotorbikeRows,
-        numMotorbikeColumns,
-        numCarRows,
-        numCarColumns,
-        carSlots,
-        motorbikeSlots,
-      },
-    };
-    // Store the updatedParkingModal in localStorage
-    localStorage.setItem(
-      "parkingModalState",
-      JSON.stringify(updatedParkingModal)
-    );
-  };
-
-  useEffect(() => {
-    saveParkingModalState();
-  }, [
-    floorIndex,
-    numCarSlots,
-    numMotorbikeSlots,
-    numMotorbikeRows,
-    numMotorbikeColumns,
-    numCarRows,
-    numCarColumns,
-    carSlots,
-    motorbikeSlots,
-  ]);
-
-  const numRows = numCarRows + numMotorbikeRows;
-  const numColumns = Math.max(numCarColumns, numMotorbikeColumns);
+  // const numCarSlots = listCarSlots.length;
+  // console.log("numCarCols", numCarSlots);
 
   const [stageWidth, setStageWidth] = useState(
-    numColumns * (slotWidth + spacing) + stagePadding * 2
+    numCarCols * (slotWidth + spacing) + stagePadding * 2
   );
   const [stageHeight, setStageHeight] = useState(
-    numRows * (slotHeight + spacing) + stagePadding * 2
+    numCarRows * (slotHeight + spacing) + stagePadding * 2
   );
 
   const [carImage, setCarImage] = useState(null);
-  const [motorbikeImage, setMotorbikeImage] = useState(null);
 
   useEffect(() => {
     const loadImages = async () => {
       const carImageObject = await loadImage(carIcon);
-      const motorbikeImageObject = await loadImage(motorbikeIcon);
       setCarImage(carImageObject);
-      setMotorbikeImage(motorbikeImageObject);
     };
 
     loadImages();
@@ -101,146 +56,84 @@ const SinglePhysicalModal = ({ floorIndex, edit }) => {
   };
 
   useEffect(() => {
-    if (carSlots.length === 0 || motorbikeSlots.length === 0) {
-      const calculatedCarSlots = [];
-      for (let row = 0; row < numCarRows; row++) {
-        for (let col = 0; col < numCarColumns; col++) {
-          const slotIndex = row * numCarColumns + col;
-          if (slotIndex >= numCarSlots) break; // Stop creating slots if the limit is reached
+    const calculatedCarSlots = listCarSlots.map((slot) => ({
+      id: slot.parkingSlotId,
+      trafficId: 1,
+      row: slot.rowIndex,
+      column: slot.columnIndex,
+      x: slot.columnIndex * (slotWidth + spacing) + stagePadding,
+      y: slot.rowIndex * (slotHeight + spacing) + stagePadding,
+      name: slot.name.substring(0, 4),
+      isDragging: false,
+    }));
+    setCarSlotsCurrent(calculatedCarSlots);
 
-          calculatedCarSlots.push({
-            id: `car-${row}-${col}`,
-            trafficId: 1,
-            row: row,
-            column: col,
-            x: col * (slotWidth + spacing) + stagePadding,
-            y: row * (slotHeight + spacing) + stagePadding,
-            name: `C${slotIndex + 1}`,
-            isDragging: false,
-          });
-        }
-      }
-      dispatch(
-        setCarSlots({ floorIndex: floorIndex, carSlots: calculatedCarSlots })
-      );
-
-      const calculatedMotorbikeSlots = [];
-      for (let row = numCarRows; row < numRows; row++) {
-        for (let col = 0; col < numMotorbikeColumns; col++) {
-          const slotIndex = numMotorbikeColumns * (row - numCarRows) + col;
-          if (slotIndex >= numMotorbikeSlots) break;
-
-          calculatedMotorbikeSlots.push({
-            id: `motorbike-${row}-${col}`,
-            trafficId: 2,
-            row: row,
-            column: col,
-            x: col * (slotWidth + spacing) + stagePadding,
-            y: row * (slotHeight + spacing) + stagePadding,
-            name: `M${slotIndex + 1}`,
-            isDragging: false,
-          });
-        }
-      }
-      dispatch(
-        setMotorbikeSlots({
-          floorIndex: floorIndex,
-          motorbikeSlots: calculatedMotorbikeSlots,
-        })
-      );
-    }
-
-    const newStageWidth = numColumns * (slotWidth + spacing) + stagePadding * 2;
-    const newStageHeight = numRows * (slotHeight + spacing) + stagePadding * 2;
+    const newStageWidth = numCarCols * (slotWidth + spacing) + stagePadding * 2;
+    const newStageHeight =
+      numCarRows * (slotHeight + spacing) + stagePadding * 2;
     setStageWidth(newStageWidth);
     setStageHeight(newStageHeight);
-    saveParkingModalState();
-  }, [
-    numRows,
-    numColumns,
-    numMotorbikeColumns,
-    numMotorbikeRows,
-    numCarColumns,
-    numCarRows,
-    numCarSlots,
-    numMotorbikeSlots,
-    slotWidth,
-    slotHeight,
-    spacing,
-    stagePadding,
-  ]);
+  }, [slotWidth, slotHeight, spacing, stagePadding, listCarSlots]);
 
   const handleDragStart = (slotId) => {
-    const updatedCarSlots = carSlots.map((slot) => {
+    const updatedCarSlots = carSlotsCurrent.map((slot) => {
       if (slot.id === slotId) {
-        setDraggingType("car");
         return { ...slot, isDragging: true };
       }
       return slot;
     });
-    setCarSlots(updatedCarSlots);
-
-    const updatedMotorbikeSlots = motorbikeSlots.map((slot) => {
-      if (slot.id === slotId) {
-        setDraggingType("motorbike");
-        return { ...slot, isDragging: true };
-      }
-      return slot;
-    });
-    console.log("draggingType", draggingType);
-    setMotorbikeSlots(updatedMotorbikeSlots);
+    setCarSlotsCurrent(updatedCarSlots);
   };
 
+  // useEffect(() => {
+  //   if (edit) {
+  //     dispatch(setCarSlots({ floorIndex, carSlots: carSlotsCurrent }));
+
+  //     dispatch(
+  //       setNumCarRows({ floorIndex: floorIndex, numCarRows: numCarRows })
+  //     );
+  //     dispatch(
+  //       setNumCarColumns({ floorIndex: floorIndex, numCarCols: numCarCols })
+  //     );
+  //   }
+  // }, [floorIndex, listCarSlots, edit]);
+
   const handleDragEnd = (e, slotId) => {
-    const updatedSlots = [...carSlots, ...motorbikeSlots].map((slot) => {
+    const updatedSlots = carSlotsCurrent.map((slot) => {
       if (slot.id === slotId) {
         const { x, y } = e.target.position();
         const row = Math.floor((y - stagePadding) / (slotHeight + spacing));
         const col = Math.floor((x - stagePadding) / (slotWidth + spacing));
 
-        // Check if the dropped position overlaps with any existing slots of a different type
-        const isOverlap = (
-          draggingType === "car" ? carSlots : motorbikeSlots
-        ).some(
-          (otherSlot) =>
-            otherSlot.id !== slotId &&
-            otherSlot.row === row &&
-            otherSlot.column === col &&
-            otherSlot.type !== draggingType
-        );
-
-        // Check if the dropped position overlaps with any slots occupied by cars
-        const isCarOverlap = carSlots.some(
-          (carSlot) =>
-            carSlot.id !== slotId &&
-            carSlot.row === row &&
-            carSlot.column === col
-        );
-
-        if (
-          row < 0 ||
-          row >= numRows ||
-          col < 0 ||
-          col >= numColumns ||
-          isOverlap ||
-          (draggingType === "motorbike" && isCarOverlap)
-        ) {
+        if (row < 0 || row >= numCarRows || col < 0 || col >= numCarCols) {
           Swal.fire({
             icon: "error",
             title: "Sai vị trí",
-            text: "Chỉ kéo vị trí trong khoảng hàng, cột chính và không chồng lên nhau",
+            text: "Chỉ kéo vị trí trong khoảng hàng, cột chính",
           });
-          if (draggingType === "car") {
-            e.target.setAttrs({
-              x: slot.x + 40,
-              y: slot.y + 55,
-            });
-          } else if (draggingType === "motorbike") {
-            e.target.setAttrs({
-              x: slot.x + 35,
-              y: slot.y + 50,
-            });
-          }
+          e.target.setAttrs({
+            x: slot.x + 40,
+            y: slot.y + 55,
+          });
+          return {
+            ...slot,
+            isDragging: false,
+          };
+        }
+
+        const targetSlot = carSlotsCurrent.find(
+          (s) => s.column === col && s.row === row
+        );
+        if (targetSlot && targetSlot.id !== slotId) {
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: "Vị trí này đã có xe đỗ",
+          });
+          e.target.setAttrs({
+            x: slot.x + 40,
+            y: slot.y + 55,
+          });
           return {
             ...slot,
             isDragging: false,
@@ -262,22 +155,7 @@ const SinglePhysicalModal = ({ floorIndex, edit }) => {
       return slot;
     });
 
-    dispatch(
-      setCarSlots({
-        floorIndex: floorIndex,
-        carSlots: updatedSlots.filter((slot) => slot.id.startsWith("car")),
-      })
-    );
-    dispatch(
-      setMotorbikeSlots({
-        floorIndex: floorIndex,
-        motorbikeSlots: updatedSlots.filter((slot) =>
-          slot.id.startsWith("motorbike")
-        ),
-      })
-    );
-
-    saveParkingModalState();
+    setCarSlotsCurrent(updatedSlots);
   };
 
   return (
@@ -288,7 +166,7 @@ const SinglePhysicalModal = ({ floorIndex, edit }) => {
         <div className="scrollable-stage">
           <Stage width={stageWidth} height={stageHeight} draggable={edit}>
             <Layer>
-              {carSlots?.map((slot) => (
+              {carSlotsCurrent?.map((slot) => (
                 <Fragment key={slot.id}>
                   <Rect
                     x={slot.x}
@@ -305,7 +183,7 @@ const SinglePhysicalModal = ({ floorIndex, edit }) => {
                     cornerRadius={10}
                   />
                   <Text
-                    x={slot.x + 5}
+                    x={slot.x + 8}
                     y={slot.y - 25}
                     fill="#5e35b1"
                     width={slotWidth - 10}
@@ -332,55 +210,6 @@ const SinglePhysicalModal = ({ floorIndex, edit }) => {
                   )}
                 </Fragment>
               ))}
-              {motorbikeSlots ? (
-                <>
-                  {motorbikeSlots?.map((slot) => (
-                    <Fragment key={slot.id}>
-                      <Rect
-                        x={slot.x}
-                        y={slot.y}
-                        width={slotWidth}
-                        height={slotHeight}
-                        fill={slot.isDragging ? "yellow" : "lightgreen"}
-                        stroke="black"
-                        strokeWidth={1}
-                        draggable={!slot.isDragging}
-                        onDragStart={() => handleDragStart(slot.id)}
-                        onDragEnd={(e) => handleDragEnd(e, slot.id)}
-                        dash={[5, 5]}
-                        cornerRadius={10}
-                      />
-                      <Text
-                        x={slot.x + 5}
-                        y={slot.y - 20}
-                        width={slotWidth - 10}
-                        height={slotHeight - 10}
-                        text={slot.name}
-                        fontSize={12}
-                        align="center"
-                        verticalAlign="middle"
-                        fontStyle="bold"
-                      />
-                      {motorbikeImage && (
-                        <Image
-                          image={motorbikeImage}
-                          align="center"
-                          x={slot.x + 35} // Adjust the position as needed
-                          y={slot.y + 50} // Adjust the position as needed
-                          width={slotWidth - 75} // Adjust the size as needed
-                          height={slotHeight - 65} // Adjust the size as needed
-                          draggable
-                          dash={[5, 5]}
-                          onDragStart={() => handleDragStart(slot.id)}
-                          onDragEnd={(e) => handleDragEnd(e, slot.id)}
-                        />
-                      )}
-                    </Fragment>
-                  ))}
-                </>
-              ) : (
-                <></>
-              )}
             </Layer>
           </Stage>
         </div>

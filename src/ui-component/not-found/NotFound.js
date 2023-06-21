@@ -4,6 +4,7 @@ import "./NotFound.css";
 const NotFound = () => {
   return (
     <div className="wrapper">
+      <h1 className="header">Không tìm thấy trang</h1>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
         <title>404</title>
         <g id="Layer_12 yellow-back-fig" data-name="Layer 12">

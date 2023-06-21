@@ -24,7 +24,7 @@ const renderCellStatus = (params) => {
       <Chip
         color="success"
         label={params.value}
-        sx={{ padding: "10px", color: "#fff" }}
+        sx={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
       />
     );
   }
@@ -33,14 +33,14 @@ const renderCellStatus = (params) => {
       <Chip
         color="secondary"
         label={params.value}
-        sx={{ padding: "10px", color: "#fff" }}
+        sx={{ padding: "8px", color: "#fff", fontWeight: "bold" }}
       />
     );
   }
 };
 
 const columns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "userId", headerName: "ID", width: 70 },
   {
     field: "avatar",
     headerName: "Ảnh",
@@ -59,7 +59,7 @@ const columns = [
   { field: "email", headerName: "Email", width: 250 },
   { field: "phone", headerName: "SĐT", width: 140 },
   {
-    field: "dob",
+    field: "dateOfBirth",
     headerName: "Ngày sinh",
     // type: "number",
     width: 150,

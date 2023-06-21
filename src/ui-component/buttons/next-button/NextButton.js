@@ -3,16 +3,11 @@ import React from "react";
 import "./NextButton.scss";
 
 const NextButton = (props) => {
-  const { onClick, disable } = props;
+  const { onClick } = props;
 
   return (
     <>
-      <button
-        type="submit"
-        className="btn-next"
-        onClick={onClick}
-        disabled={disable}
-      >
+      <button type="submit" className="btn-next" onClick={onClick}>
         <span>Tiếp tục</span>
         <svg
           width="34"

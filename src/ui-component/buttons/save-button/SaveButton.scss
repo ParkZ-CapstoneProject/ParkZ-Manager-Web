@@ -1,4 +1,4 @@
-.btn-save {
+.btn-save__v2 {
   cursor: pointer;
   font-weight: 700;
   font-family: Helvetica, "sans-serif";
@@ -6,7 +6,7 @@
   padding: 10px 20px;
   color: #ffff;
   border-radius: 100px;
-  background: #6225e6;
+  background: #6225e6 !important;
   cursor: pointer;
   border: 1px solid transparent;
   display: flex;
@@ -14,24 +14,24 @@
   font-size: 20px;
 }
 
-.btn-save:hover {
+.btn-save__v2:hover {
   background: #064789;
   outline: 0.1em solid transparent;
   outline-offset: 0.2em;
   box-shadow: 0 0 0.4em 0 #6225e6;
 }
 
-.btn-save > svg {
+.btn-save__v2 > svg {
   width: 34px;
   margin-left: 10px;
   color: #ffff;
   transition: transform 0.3s ease-in-out;
 }
 
-.btn-save:hover svg {
+.btn-save__v2:hover svg {
   transform: translateX(5px) rotate(45deg);
 }
 
-.btn-save:active {
+.btn-save__v2:active {
   transform: scale(0.95);
 }
