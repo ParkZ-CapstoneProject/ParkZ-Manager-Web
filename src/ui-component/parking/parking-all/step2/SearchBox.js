@@ -5,9 +5,12 @@ import SearchIcon from "@mui/icons-material/Search";
 
 export default function SearchBox(props) {
   const { setSearchResult } = props;
-  const [searchText, setSearchText] = useState("");
   // const [listPlace, setListPlace] = useState([]);
   const [inputActive, setInputActive] = useState(false);
+  const address = localStorage.getItem("address") || "";
+  // console.log("address", address);
+
+  const [searchText, setSearchText] = useState(address);
 
   const mapRef = useRef();
 

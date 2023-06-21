@@ -7,5 +7,8 @@ import AuthenticationRoutes from "./AuthenticationRoutes";
 // ==============================|| ROUTING RENDER ||============================== //
 
 export default function ThemeRoutes() {
-  return useRoutes([AuthenticationRoutes, MainRoutes]);
+  const user = localStorage.getItem("user"); // Set the authentication status here
+  const isAuthenticated = JSON.parse(user);
+
+  return useRoutes([AuthenticationRoutes, isAuthenticated ? MainRoutes : []]);
 }

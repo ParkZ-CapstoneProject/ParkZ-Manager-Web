@@ -8,22 +8,17 @@ import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
-  Card,
-  CardContent,
   Chip,
   ClickAwayListener,
   Divider,
   Grid,
-  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  OutlinedInput,
   Paper,
   Popper,
   Stack,
-  Switch,
   Typography,
 } from "@mui/material";
 
@@ -33,11 +28,11 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 // project imports
 import MainCard from "ui-component/cards/MainCard";
 import Transitions from "ui-component/extend/Transitions";
-import UpgradePlanCard from "./UpgradePlanCard";
 import User1 from "assets/images/users/user-round.svg";
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from "@tabler/icons";
+import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
+import ChangePassword from "ui-component/modal/password/ChangePassword";
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -46,17 +41,23 @@ const ProfileSection = () => {
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
 
-  const [sdm, setSdm] = useState(true);
-  const [value, setValue] = useState("");
-  const [notification, setNotification] = useState(false);
+  const user = localStorage.getItem("user"); // Set the authentication status here
+  const userData = JSON.parse(user);
+
+  // const [sdm, setSdm] = useState(true);
+  // const [value, setValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
-  const handleLogout = async () => {
-    console.log("Logout");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    navigate("/login");
   };
 
   const handleClose = (event) => {
@@ -66,7 +67,13 @@ const ProfileSection = () => {
     setOpen(false);
   };
 
-  const handleListItemClick = (event, index, route = "") => {
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+    handleClose(event);
+    setIsOpen(true);
+  };
+
+  const handleListItemProfileClick = (event, index, route) => {
     setSelectedIndex(index);
     handleClose(event);
 
@@ -74,6 +81,11 @@ const ProfileSection = () => {
       navigate(route);
     }
   };
+
+  const handleListItemClickClose = () => {
+    setIsOpen(false);
+  };
+
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -175,32 +187,13 @@ const ProfileSection = () => {
                           variant="h4"
                           sx={{ fontWeight: 400 }}
                         >
-                          Johne Doe
+                          {userData.name}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Quản lý</Typography>
+                      <Typography variant="subtitle2">
+                        {userData.role === "Manager" ? "Quản lý" : "Bảo vệ"}
+                      </Typography>
                     </Stack>
-                    {/* <OutlinedInput
-                      sx={{ width: "100%", pr: 1, pl: 2, my: 2 }}
-                      id="input-search-profile"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                      placeholder="Search profile options"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <IconSearch
-                            stroke={1.5}
-                            size="1rem"
-                            color={theme.palette.grey[500]}
-                          />
-                        </InputAdornment>
-                      }
-                      aria-describedby="search-helper-text"
-                      inputProps={{
-                        "aria-label": "weight",
-                      }}
-                    /> */}
-                    {/* <Divider /> */}
                   </Box>
                   <PerfectScrollbar
                     style={{
@@ -210,66 +203,6 @@ const ProfileSection = () => {
                     }}
                   >
                     <Box sx={{ p: 2 }}>
-                      {/* <UpgradePlanCard />
-                      <Divider />
-                      <Card
-                        sx={{
-                          bgcolor: theme.palette.primary.light,
-                          my: 2,
-                        }}
-                      >
-                        <CardContent>
-                          <Grid container spacing={3} direction="column">
-                            <Grid item>
-                              <Grid
-                                item
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">
-                                    Start DND Mode
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    color="primary"
-                                    checked={sdm}
-                                    onChange={(e) => setSdm(e.target.checked)}
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                            <Grid item>
-                              <Grid
-                                item
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">
-                                    Allow Notifications
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    checked={notification}
-                                    onChange={(e) =>
-                                      setNotification(e.target.checked)
-                                    }
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card> */}
                       <Divider />
                       <List
                         component="nav"
@@ -293,11 +226,7 @@ const ProfileSection = () => {
                           }}
                           selected={selectedIndex === 0}
                           onClick={(event) =>
-                            handleListItemClick(
-                              event,
-                              0,
-                              "/user/account-profile/profile1"
-                            )
+                            handleListItemClick(event, 0, "/profile")
                           }
                         >
                           <ListItemIcon>
@@ -305,7 +234,9 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Typography variant="body2">Cài đặt</Typography>
+                              <Typography variant="body2">
+                                Đổi mật khẩu
+                              </Typography>
                             }
                           />
                         </ListItemButton>
@@ -315,11 +246,7 @@ const ProfileSection = () => {
                           }}
                           selected={selectedIndex === 1}
                           onClick={(event) =>
-                            handleListItemClick(
-                              event,
-                              1,
-                              "/user/social-profile/posts"
-                            )
+                            handleListItemProfileClick(event, 1, "/profile")
                           }
                         >
                           <ListItemIcon>
@@ -374,6 +301,8 @@ const ProfileSection = () => {
           </Transitions>
         )}
       </Popper>
+
+      <ChangePassword isOpen={isOpen} handleClose={handleListItemClickClose} />
     </>
   );
 };

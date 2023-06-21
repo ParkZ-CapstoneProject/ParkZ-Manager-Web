@@ -5,9 +5,9 @@ const CancelButton = (props) => {
   const { onClick } = props;
   return (
     <>
-      <button class="btn-cancel" onClick={onClick}>
-        <div class="svg-wrapper-1">
-          <div class="svg-wrapper">
+      <button className="btn-cancel" onClick={onClick}>
+        <div className="svg-wrapper-1">
+          <div className="svg-wrapper">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

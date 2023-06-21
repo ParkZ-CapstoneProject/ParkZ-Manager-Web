@@ -45,7 +45,7 @@ const Maps = Loadable(
 );
 
 const Modal = Loadable(
-  lazy(() => import("ui-component/parking/parking-modal/Index"))
+  lazy(() => import("ui-component/parking/parking-all/step3/Index"))
 );
 
 const NotFound = Loadable(
@@ -55,14 +55,16 @@ const NotFound = Loadable(
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
+const isAuthenticated = true;
+
 const AuthenticationRoutes = {
   path: "/",
   element: <MinimalLayout />,
   children: [
-    // {
-    //   path: "/login",
-    //   element: <AuthLogin />,
-    // },
+    {
+      path: "login",
+      element: <AuthLogin />,
+    },
     {
       path: "",
       element: <AuthLogin />,
@@ -92,7 +94,7 @@ const AuthenticationRoutes = {
       element: <Maps />,
     },
     {
-      path: "modal",
+      path: isAuthenticated ? "modal" : "login",
       element: <Modal />,
     },
     {

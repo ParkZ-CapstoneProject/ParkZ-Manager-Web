@@ -22,17 +22,17 @@ const parking = {
 
       children: [
         {
-          id: "parking-all",
+          id: "parkings",
           title: "Tất cả bãi xe",
           type: "item",
-          url: "/parking-all",
+          url: "/parkings",
           // target: true,
         },
         {
-          id: "parking-price",
+          id: "prices",
           title: "Bảng giá",
           type: "item",
-          url: "/parking-price",
+          url: "/prices",
           // target: true,
         },
       ],

@@ -2,29 +2,20 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-// import SubCard from "ui-component/cards/SubCard";
-import { Avatar, Button, Chip, Grid } from "@mui/material";
-// import "./ParkingPrice.scss";
+import { Chip, Grid, Skeleton, Typography } from "@mui/material";
 import Menu from "ui-component/parking/parking-price/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
-import { useDispatch } from "react-redux";
-import { openModal } from "store/modalReducer";
-// import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
-// import { useDispatch } from "react-redux";
-// import { openModal } from "store/modalReducer";
-// import { useState } from "react";
-// import Loading from "ui-component/back-drop/Loading";
-// import QRScan from "ui-component/buttons/qrscan-button/QRScan";
+import { useNavigate } from "react-router";
+import Loading from "ui-component/back-drop/Loading";
+import { ImFilesEmpty } from "react-icons/im";
 
 export default function MyParkingPrice(props) {
-  const { rows } = props;
-  // const [loading, setLoading] = useState(false);
-  // const [data, setData] = useState([]);
-  const dispatch = useDispatch();
+  const { rows, loading } = props;
+  const navigate = useNavigate();
 
-  const handleOpenModalCreate = (modalType) => {
-    dispatch(openModal(modalType));
+  const handleCreate = () => {
+    navigate("/create-new-price");
   };
 
   const getCellValue = (params) => {
@@ -32,49 +23,49 @@ export default function MyParkingPrice(props) {
   };
 
   const renderCellStatus = (params) => {
-    if (params.value === "true") {
+    if (params.value === true) {
       return (
         <Chip
           color="success"
-          label={params.value}
-          sx={{ padding: "10px", color: "#fff" }}
+          label="true"
+          sx={{ padding: "0 5px", color: "#fff", fontWeight: "bold" }}
         />
       );
     }
-    if (params.value === "false") {
+    if (params.value === false) {
       return (
         <Chip
           color="secondary"
-          label={params.value}
-          sx={{ padding: "10px", color: "#fff" }}
+          label="false"
+          sx={{ padding: "5px", color: "#fff", fontWeight: "bold" }}
         />
       );
     }
   };
 
   const renderCellApply = (params) => {
-    const parking = params.row.parking;
+    // const parking = params.row.parking;
 
-    if (parking === null) {
-      return (
-        <button class="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200">
-          Áp dụng
-        </button>
-      );
-    } else {
-      return null; // Return null if parking field is null
-    }
+    // if (parking === null) {
+    return (
+      <button class="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+        Áp dụng
+      </button>
+    );
+    // } else {
+    //   return null; // Return null if parking field is null
+    // }
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "parkingPriceId", headerName: "ID", width: 70 },
     {
-      field: "name",
+      field: "parkingPriceName",
       headerName: "Tên gói",
       description: "This column has a value getter and is not sortable.",
       // sortable: false,
       width: 300,
-      valueGetter: (params) => `${params.row.name || ""}`,
+      valueGetter: (params) => `${params.row.parkingPriceName || ""}`,
     },
     {
       field: "parking",
@@ -97,7 +88,7 @@ export default function MyParkingPrice(props) {
       width: 70,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) => <Menu id={params.id} />,
+      renderCell: (params) => <Menu id={params.row.parkingPriceId} />,
     },
     {
       field: "apply",
@@ -111,39 +102,56 @@ export default function MyParkingPrice(props) {
 
   return (
     <>
-      {/* {loading ? (
-        <Loading />
-      ) : ( */}
-      <MainCard title={"Bảng giá gói cước"}>
-        <Grid item xs={12}>
-          <SubCardStaff
-            startComponent={<SearchSection />}
-            endComponent={
-              <CreateButton
-                onClick={() => handleOpenModalCreate("createModalStaff")}
+      {loading ? (
+        <>
+          <Loading loading={loading} />
+        </>
+      ) : (
+        <MainCard title={"Bảng giá gói cước"}>
+          <Grid item xs={12}>
+            <SubCardStaff
+              startComponent={<SearchSection />}
+              endComponent={<CreateButton onClick={handleCreate} />}
+            />
+          </Grid>
+
+          {rows ? (
+            <div style={{ height: "500px", width: "100%" }}>
+              <DataGrid
+                rows={rows}
+                rowHeight={70}
+                getRowId={(row) => row.parkingPriceId}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                  },
+                }}
+                pageSizeOptions={[5, 10, 25]}
+                checkboxSelection
+                style={{ paddingTop: "12px" }}
               />
-            }
-          >
-            {/* <SearchSection /> */}
-          </SubCardStaff>
-        </Grid>
-        {/* <CreateButton /> */}
-        <div style={{ height: "500px", width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            rowHeight={70}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            checkboxSelection
-            style={{ paddingTop: "12px" }}
-          />
-        </div>
-      </MainCard>
+            </div>
+          ) : (
+            <>
+              <Typography
+                variant="h1"
+                color="#21130d"
+                sx={{ textAlign: "center", marginTop: "15%" }}
+              >
+                Không tìm thấy dữ liệu
+              </Typography>
+              <ImFilesEmpty
+                style={{
+                  fontSize: "150px",
+                  marginTop: "5%",
+                  marginLeft: "46%",
+                }}
+              />{" "}
+            </>
+          )}
+        </MainCard>
+      )}
     </>
   );
 }

@@ -40,6 +40,14 @@ const ItemModal = ({ modalType }) => {
   return (
     <>
       <Grid
+        item
+        sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
+      >
+        <Typography variant="h2" color={theme.palette.primary.main}>
+          Xóa nhân viên
+        </Typography>
+      </Grid>
+      <Grid
         container
         direction="column"
         justifyContent="center"

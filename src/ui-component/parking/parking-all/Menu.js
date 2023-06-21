@@ -5,24 +5,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useDispatch } from "react-redux";
-import {
-  openModal,
-  setAccept,
-  setBookingId,
-  setCancel,
-  setCheckIn,
-  setCheckOut,
-  setStaffId,
-} from "store/modalReducer";
-import ModalBooking from "ui-component/modal/booking/ModalBooking";
-import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
+import { openModal, setBookingId, setStaffId } from "store/modalReducer";
 import EditModalStaff from "ui-component/modal/staff-modal/edit-modal/EditModalStaff";
 import DetailModalStaff from "ui-component/modal/staff-modal/detail-modal/DetailModalStaff";
 import DeleteModalStaff from "ui-component/modal/staff-modal/delete-modal/DeleteModalStaff";
+import { useNavigate } from "react-router";
 
 const Menu = ({ value, id }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,14 +27,8 @@ const Menu = ({ value, id }) => {
     // dispatch(openModal());
   };
 
-  const handleOpenModalEdit = (modalType) => {
-    dispatch(setStaffId(id));
-    dispatch(openModal(modalType));
-  };
-
-  const handleOpenModalDetail = (modalType) => {
-    dispatch(setStaffId(id));
-    dispatch(openModal(modalType));
+  const handleDetail = () => {
+    navigate(`/parking-detail/${id}`);
   };
 
   const handleOpenModalDelete = (modalType) => {
@@ -69,13 +55,13 @@ const Menu = ({ value, id }) => {
         }}
       >
         <List sx={{ width: "130px" }}>
-          <ListItem onClick={() => handleOpenModalEdit("modalStaffEdit")}>
+          {/* <ListItem onClick={() => handleOpenModalEdit("modalStaffEdit")}>
             <EditIcon sx={{ marginRight: "3%", color: "#2196f3" }} />
             <Typography color="primary" variant="subtitle1">
               Chỉnh sửa
             </Typography>
-          </ListItem>
-          <ListItem onClick={() => handleOpenModalDetail("modalStaffDetail")}>
+          </ListItem> */}
+          <ListItem onClick={handleDetail}>
             <RemoveRedEyeIcon sx={{ marginRight: "3%", color: "#673ab7" }} />
             <Typography color="secondary" variant="subtitle1">
               Chi tiết

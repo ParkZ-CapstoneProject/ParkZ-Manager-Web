@@ -2,7 +2,7 @@
   width: 50px;
   height: 50px;
   border: 1px solid #ccbcbc;
-  background: rgba(231, 192, 192, 0.699);
+  background: rgba(3, 3, 3, 0.699);
   border-radius: 25px;
   overflow: hidden;
   position: relative;
@@ -23,7 +23,7 @@
   height: 4px;
   width: 10px;
   top: calc(50% - 2px);
-  background: rgb(2, 122, 54);
+  background: rgb(252, 252, 252);
 }
 
 .add-btn::after {
@@ -47,7 +47,7 @@
   opacity: 0;
   transition: opacity 0.2s;
   font-weight: bold;
-  color: rgba(33, 34, 30, 0.884);
+  color: rgba(253, 253, 253, 0.963);
 }
 
 .add-btn:hover::before,
@@ -68,7 +68,7 @@
   height: 20px;
   width: 2px;
   top: calc(50% - 10px);
-  background: seagreen;
+  background: rgb(226, 240, 232);
   overflow: hidden;
 }
 

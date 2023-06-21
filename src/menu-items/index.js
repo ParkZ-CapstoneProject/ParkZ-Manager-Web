@@ -10,8 +10,12 @@ import profile from "./profile";
 
 // ==============================|| MENU ITEMS ||============================== //
 
+const isAuthenticated = true;
+
 const menuItems = {
-  items: [dashboard, profile, booking, parking, staff, notification],
+  items: isAuthenticated
+    ? [dashboard, profile, booking, parking, staff, notification]
+    : [profile, booking],
 };
 
 export default menuItems;

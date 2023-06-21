@@ -1,38 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Grid,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Grid, TextField, IconButton, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
+import Swal from "sweetalert2";
 
 const CardInput = (props) => {
-  const { index, inputValues, onInputChange, onRemove } = props;
+  const { index, inputValues, onInputChange, onRemove, isExtraFree } = props;
   const [values, setValues] = useState(inputValues);
 
   const theme = useTheme();
 
   const handleInputChange = (event, inputIndex) => {
+    let newValue = event.target.value;
+
+    if (inputIndex === 1 || inputIndex === 2) {
+      newValue = formatTime(newValue);
+    }
+
     const newValues = [...values];
-    newValues[inputIndex] = event.target.value;
+    newValues[inputIndex] = newValue;
     setValues(newValues);
-    onInputChange(index, inputIndex + 1, event.target.value);
+    onInputChange(index, inputIndex + 1, newValue);
   };
 
-  const handleCheckboxChange = (event) => {
-    const newValues = [...values];
-    newValues[3] = event.target.checked;
-    setValues(newValues);
-    onInputChange(index, 4, event.target.checked);
-  };
+  useEffect(() => {
+    if (values[1] && values[2] && values[1] >= values[2]) {
+      let errorFieldName = "";
+      if (values[1] >= values[2]) {
+        errorFieldName = "end time";
+      } else {
+        errorFieldName = "start time";
+      }
+      Swal.fire({
+        icon: "error",
+        text: `Thời gian bắt đầu phải nhỏ hơn kết thúc! Vui lòng kiểm tra lại.`,
+      }).then(() => {
+        // clear the input value for the time field that caused the error
+        const newValues = [...values];
+        if (errorFieldName === "start time") {
+          newValues[1] = "";
+        } else {
+          newValues[2] = "";
+        }
+        setValues(newValues);
+      });
+      return;
+    }
+  }, [values]);
 
   const handleReset = () => {
     setValues(inputValues);
+  };
+
+  const formatTime = (timeString) => {
+    const date = new Date();
+    const [hours] = timeString.split(":");
+    date.setHours(hours);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
   };
 
   return (
@@ -46,7 +77,7 @@ const CardInput = (props) => {
           border: "1px dashed gray",
           borderRadius: "7px",
           padding: "0px 0px 30px 5px",
-          marginBottom: "15px", // Add marginBottom property
+          marginBottom: "15px",
         }}
       >
         <Grid item>
@@ -74,6 +105,7 @@ const CardInput = (props) => {
           </Typography>
           <TextField
             type="number"
+            inputProps={{ min: 0 }} // Set min value to 0
             value={values[0]}
             onChange={(event) => handleInputChange(event, 0)}
             onBlur={handleReset}
@@ -86,11 +118,16 @@ const CardInput = (props) => {
               Từ
             </Typography>
             <TextField
-              type="time"
+              type="time" // Change type to "number"
               value={values[1]}
+              disabled={!isExtraFree}
               onChange={(event) => handleInputChange(event, 1)}
-              onBlur={handleReset}
               sx={{ width: "120%" }}
+              InputProps={{
+                inputProps: {
+                  style: { textAlign: "center" },
+                },
+              }}
             />
           </Grid>
           <Grid item>
@@ -100,38 +137,16 @@ const CardInput = (props) => {
             <TextField
               type="time"
               value={values[2]}
+              disabled={!isExtraFree}
               onChange={(event) => handleInputChange(event, 2)}
-              onBlur={handleReset}
               sx={{ width: "120%" }}
+              InputProps={{
+                inputProps: {
+                  style: { textAlign: "center" },
+                },
+              }}
             />
           </Grid>
-        </Grid>
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Checkbox checked={values[3]} onChange={handleCheckboxChange} />
-            }
-            label="Phụ phí"
-            sx={{
-              "& .MuiFormControlLabel-label": {
-                fontWeight: "bold",
-                fontSize: 17,
-              },
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
-            Số giờ bắt đầu tính phụ phí
-          </Typography>
-          <TextField
-            type="number"
-            value={values[4]}
-            disabled={!values[3]}
-            onChange={(event) => handleInputChange(event, 4)}
-            onBlur={handleReset}
-            sx={{ width: "180%" }}
-          />
         </Grid>
         <Grid item>
           <Typography color={theme.palette.common.black} variant="subtitle1">
@@ -139,22 +154,10 @@ const CardInput = (props) => {
           </Typography>
           <TextField
             type="number"
-            value={values[5]}
-            disabled={!values[3]}
-            onChange={(event) => handleInputChange(event, 5)}
-            onBlur={handleReset}
-            sx={{ width: "180%" }}
-          />
-        </Grid>
-        <Grid item>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
-            Bước thời gian
-          </Typography>
-          <TextField
-            type="number"
-            value={values[6]}
-            disabled={!values[3]}
-            onChange={(event) => handleInputChange(event, 6)}
+            inputProps={{ min: 0 }} // Set min value to 0
+            value={values[3]}
+            disabled={!isExtraFree}
+            onChange={(event) => handleInputChange(event, 3)}
             onBlur={handleReset}
             sx={{ width: "180%" }}
           />

@@ -3,8 +3,10 @@ import { Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ParkingLocation from "./ParkingLocation";
 
-const LeftItem = () => {
+const LeftItem = ({ data }) => {
   const theme = useTheme();
+  // const markerPosition = [data?.latitude, data?.longitude];
+  // console.log("markerPosition", markerPosition);
 
   return (
     <>
@@ -17,7 +19,7 @@ const LeftItem = () => {
           </Grid>
           <Grid item xs={6}>
             <Typography color={theme.palette.common.black} variant="h4">
-              Vinhome grandpark
+              {data?.name}
             </Typography>
           </Grid>
         </Grid>
@@ -28,11 +30,11 @@ const LeftItem = () => {
         </Grid>
         <Grid item>
           <Typography color={theme.palette.common.black} variant="h4">
-            495A Đ. Cách Mạng Tháng 8, Phường 13, Quận 10, Thành phố Hồ Chí Minh
+            {data?.address}
           </Typography>
         </Grid>
         {/* <Grid item xs={3}>
-          <ParkingLocation />
+          <ParkingLocation markerPosition={markerPosition} />
         </Grid> */}
       </Grid>
     </>

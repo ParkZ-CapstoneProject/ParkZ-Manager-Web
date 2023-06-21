@@ -18,13 +18,13 @@ const icon = L.icon({
 const position = [10.80122, 106.7937];
 
 export default function MapParking(props) {
-  const [markerPosition, setMarkerPosition] = useState(null);
-  const { searchResult, setSearchResult } = props;
+  const { searchResult, setSearchResult, markerPosition, setMarkerPosition } =
+    props;
 
   const mapRef = useRef();
 
   const handleMapClick = (e) => {
-    setMarkerPosition(e.latlng);
+    setMarkerPosition([e.latlng.lat, e.latlng.lng]);
     setSearchResult(null);
     // console.log(e.latlng.lat, e.latlng.lng);
   };

@@ -2,77 +2,87 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { initializeFloors } from "store/parkingModalSlice";
-import { saveState } from "utils/localStorageParkingModal";
 import SinglePhysicalModal from "./SinglePhysicalModal";
 import EditButton from "ui-component/buttons/edit-button/EditButton";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
+import { saveState } from "utils/ParkingModalLocalStorage";
+import { useParams } from "react-router";
+import Loading from "ui-component/back-drop/Loading";
 
 const FloorParking = () => {
+  const { id } = useParams();
   const [currentFloor, setCurrentFloor] = useState(0);
   const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
-  const [floors, setFloors] = useState(() => {
-    const initialState = [
-      {
-        floor: 1,
-        numCarSlots: 10,
-        numMotorbikeSlots: 5,
-        numMotorbikeRows: 1,
-        numMotorbikeColumns: 6,
-        numCarRows: 2,
-        numCarColumns: 6,
-        carSlots: [],
-        motorbikeSlots: [],
-      },
-      {
-        floor: 2,
-        numCarSlots: 15,
-        numMotorbikeSlots: 8,
-        numMotorbikeRows: 2,
-        numMotorbikeColumns: 6,
-        numCarRows: 3,
-        numCarColumns: 6,
-        carSlots: [],
-        motorbikeSlots: [],
-      },
-      {
-        floor: 3,
-        numCarSlots: 20,
-        numMotorbikeSlots: 10,
-        numMotorbikeRows: 2,
-        numMotorbikeColumns: 6,
-        numCarRows: 3,
-        numCarColumns: 7,
-        carSlots: [],
-        motorbikeSlots: [],
-      },
-    ];
-    dispatch(initializeFloors(initialState));
-    return initialState;
-  });
+  const [floors, setFloors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    saveState(floors);
-  }, [floors]);
+    const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+    const token = localStorage.getItem("token");
+
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const fetchCarSlots = async (floor) => {
+      setLoading(true);
+      const response = await fetch(
+        `${apiUrl}/parkingSlot/floor/${floor.floorId}`,
+        requestOptions
+      );
+      const data = await response.json();
+      // console.log("data slots", data);
+      return data.data;
+    };
+
+    const fetchFloors = async () => {
+      const response = await fetch(
+        `${apiUrl}/floors/parking/${id}`,
+        requestOptions
+      );
+      const data = await response.json();
+      const fetchedFloors = data.data;
+      // console.log("fetchedFloors", fetchedFloors);
+
+      // Fetch car slots for each floor
+      const updatedFloors = await Promise.all(
+        fetchedFloors.map(async (floor) => {
+          const carSlots = await fetchCarSlots(floor);
+          return { ...floor, carSlots };
+        })
+      );
+
+      setFloors(updatedFloors);
+      setLoading(false);
+    };
+
+    fetchFloors();
+  }, [id]);
 
   const handleTabChange = (event, newValue) => {
     event.preventDefault();
-
     setCurrentFloor(newValue);
   };
 
   const handleEdit = (e) => {
     e.preventDefault();
-
     setEdit(true);
   };
 
   const handleSave = (e) => {
     e.preventDefault();
-
     setEdit(false);
   };
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
 
   return (
     <div>
@@ -83,7 +93,7 @@ const FloorParking = () => {
         alignItems="center"
         sx={{ marginTop: "25px" }}
       >
-        <EditButton onClick={handleEdit} />
+        {/* <EditButton onClick={handleEdit} /> */}
       </Grid>
       <Tabs
         value={currentFloor}
@@ -92,10 +102,16 @@ const FloorParking = () => {
         aria-label="Parking Floors"
       >
         {floors.map((floor, index) => (
-          <Tab key={index} label={`Tầng ${floor.floor}`} />
+          <Tab key={floor.floorId} label={floor.floorName} />
         ))}
       </Tabs>
-      <SinglePhysicalModal floorIndex={currentFloor} edit={edit} />
+      {floors.length > 0 && (
+        <SinglePhysicalModal
+          floorIndex={floors[currentFloor].floorId}
+          listCarSlots={floors[currentFloor].carSlots}
+          edit={edit}
+        />
+      )}
       {edit && (
         <Grid
           container

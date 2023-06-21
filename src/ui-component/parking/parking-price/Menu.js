@@ -4,14 +4,15 @@ import { MoreVert } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 // import EditIcon from "@mui/icons-material/Edit";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { useNavigate } from "react-router";
 
 const Menu = ({ id }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
   // const dispatch = useDispatch();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log("id: ", id);
   };
 
   const handleClose = () => {
@@ -43,7 +44,7 @@ const Menu = ({ id }) => {
               Chỉnh sửa
             </Typography>
           </ListItem> */}
-          <ListItem onClick={() => console.log("first")}>
+          <ListItem onClick={() => navigate(`/price-detail/${id}`)}>
             <RemoveRedEyeIcon sx={{ marginRight: "3%", color: "#673ab7" }} />
             <Typography color="secondary" variant="subtitle1">
               Chi tiết

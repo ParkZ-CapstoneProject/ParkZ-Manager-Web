@@ -2,58 +2,19 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-// import SubCard from "ui-component/cards/SubCard";
-import { Grid, Switch } from "@mui/material";
+import { Grid, Switch, Typography } from "@mui/material";
 import "./ParkingAll.scss";
 import Menu from "ui-component/parking/parking-all/Menu";
-// import CreateButton from "ui-component/buttons/create-button/CreateButton";
-// import SubCardStaff from "ui-component/cards/SubCardStaff";
-// import { useDispatch } from "react-redux";
-// import { openModal } from "store/modalReducer";
-// import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
-import SubCard from "ui-component/cards/SubCard";
 import Swal from "sweetalert2";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
-// import { useDispatch } from "react-redux";
-// import { openModal } from "store/modalReducer";
-// import { useState } from "react";
-// import Loading from "ui-component/back-drop/Loading";
-// import QRScan from "ui-component/buttons/qrscan-button/QRScan";
-
-// const renderAvatarCell = (params) => {
-//   return <Avatar src={params.value} alt="avatar" />;
-// };
-
-// const renderCellStatus = (params) => {
-//   if (params.value === "true") {
-//     return (
-//       <Button
-//         variant="contained"
-//         size="small"
-//         color="success"
-//         sx={{ borderRadius: "20px", fontSize: "12px", color: "#ffff" }}
-//       >
-//         {params.value}
-//       </Button>
-//     );
-//   }
-//   if (params.value === "false") {
-//     return (
-//       <Button
-//         variant="contained"
-//         size="small"
-//         color="secondary"
-//         sx={{ borderRadius: "20px", fontSize: "12px" }}
-//       >
-//         {params.value}
-//       </Button>
-//     );
-//   }
-// };
+import { useNavigate } from "react-router";
+import { ImFilesEmpty } from "react-icons/im";
 
 export default function MyParkingAll(props) {
   const { rows } = props;
+
+  const navigate = useNavigate();
 
   const getCellValue = (params) => {
     return params.value ? params.value : "-------";
@@ -77,7 +38,7 @@ export default function MyParkingAll(props) {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "parkingId", headerName: "ID", width: 70 },
     {
       field: "name",
       headerName: "Tên bãi",
@@ -87,14 +48,13 @@ export default function MyParkingAll(props) {
       valueGetter: (params) => `${params.row.name || ""}`,
     },
     { field: "address", headerName: "Địa chỉ", width: 300 },
-    { field: "description", headerName: "Chi tiết", width: 250 },
     {
-      field: "motoSpot",
-      headerName: "Vị trí xe máy",
+      field: "carSpot",
+      headerName: "Vị trí ô tô",
       type: "number",
       width: 170,
+      valueGetter: getCellValue,
     },
-    { field: "carSpot", headerName: "Vị trí ô tô", type: "number", width: 170 },
     {
       field: "isActive",
       headerName: "Hoạt động",
@@ -110,7 +70,7 @@ export default function MyParkingAll(props) {
 
         return (
           <Switch
-            checked={params.value}
+            checked={Boolean(params.value)}
             onChange={handleChange}
             color="primary"
           />
@@ -132,7 +92,7 @@ export default function MyParkingAll(props) {
 
         return (
           <div onClick={handleChange}>
-            <Switch checked={params.value} color="primary" />
+            <Switch checked={Boolean(params.value)} color="primary" />
           </div>
         );
       },
@@ -149,37 +109,48 @@ export default function MyParkingAll(props) {
 
   return (
     <>
-      {/* {loading ? (
-        <Loading />
-      ) : ( */}
       <MainCard title={"Tất cả bãi"}>
         <Grid item xs={12}>
           <SubCardStaff
             startComponent={<SearchSection />}
-            endComponent={<CreateButton onClick={() => console.log("first")} />}
-          >
-            {/* <SearchSection /> */}
-          </SubCardStaff>
+            endComponent={
+              <CreateButton onClick={() => navigate("/new-parking")} />
+            }
+          ></SubCardStaff>
         </Grid>
 
-        <div style={{ height: "500px", width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            rowHeight={70}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            checkboxSelection
-            style={{ paddingTop: "12px" }}
-          />
-        </div>
+        {rows ? (
+          <div style={{ height: "500px", width: "100%" }}>
+            <DataGrid
+              rows={rows}
+              rowHeight={70}
+              getRowId={(row) => row.parkingId}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 10 },
+                },
+              }}
+              pageSizeOptions={[5, 10, 25]}
+              checkboxSelection
+              style={{ paddingTop: "12px" }}
+            />
+          </div>
+        ) : (
+          <>
+            <Typography
+              variant="h1"
+              color="#21130d"
+              sx={{ textAlign: "center", marginTop: "15%" }}
+            >
+              Không tìm thấy dữ liệu
+            </Typography>
+            <ImFilesEmpty
+              style={{ fontSize: "150px", marginTop: "5%", marginLeft: "46%" }}
+            />
+          </>
+        )}
       </MainCard>
-
-      {/* <CreateModalStaff modalType="createModalStaff" /> */}
     </>
   );
 }
