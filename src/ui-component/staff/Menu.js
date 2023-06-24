@@ -5,17 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useDispatch } from "react-redux";
-import {
-  openModal,
-  setAccept,
-  setBookingId,
-  setCancel,
-  setCheckIn,
-  setCheckOut,
-  setStaffId,
-} from "store/modalReducer";
-import ModalBooking from "ui-component/modal/booking/ModalBooking";
-import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
+import { openModal, setBookingId, setStaffId } from "store/modalReducer";
 import EditModalStaff from "ui-component/modal/staff-modal/edit-modal/EditModalStaff";
 import DetailModalStaff from "ui-component/modal/staff-modal/detail-modal/DetailModalStaff";
 import DeleteModalStaff from "ui-component/modal/staff-modal/delete-modal/DeleteModalStaff";
@@ -26,8 +16,6 @@ const Menu = ({ value, id }) => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    dispatch(setBookingId(id));
-    console.log("id: ", id);
   };
 
   const handleClose = () => {

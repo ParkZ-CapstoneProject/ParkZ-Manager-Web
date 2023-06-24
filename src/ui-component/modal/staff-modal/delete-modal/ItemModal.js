@@ -1,41 +1,112 @@
-import {
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-// import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 import UploadAvatar from "ui-component/upload-file/upload-staff/UploadAvatar";
 import DeleteButton from "ui-component/buttons/delete-button/DeleteButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
-import DialogDelete from "./DialogDelete";
+import Swal from "sweetalert2";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
+  const staffId = useSelector((state) => state.modal.staffId);
 
   const dispatch = useDispatch();
+  const [data, setData] = useState();
 
-  const [gender, setGender] = useState("nam");
-  const [openDialog, setOpenDialog] = useState(false);
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+      "Content-Type": "application/json", // Replace with the appropriate content type
+    },
   };
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `${apiUrl}/keeper-account-management/${staffId}`,
+      requestOptions
+    );
+
+    const data = await response.json();
+    if (data) {
+      setData(data.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleCloseModal = () => {
     dispatch(closeModal(modalType));
   };
 
-  const handleChange = (e) => {
-    setGender(e.target.value);
+  const handleDeleteStaff = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "Xác nhận?",
+      text: "Bạn có chắc chắn muốn lưu!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Hủy",
+      confirmButtonText: "Xác nhận!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: "info",
+          title: "Đang xử lý thông tin...",
+          text: "Vui lòng chờ trong giây lát!",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        const requestOps = {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Replace with the appropriate content type
+          },
+        };
+
+        fetch(`${apiUrl}/keeper-account-management/${staffId}`, requestOps)
+          .then((response) => {
+            if (response.ok) {
+              dispatch(closeModal(modalType));
+              Swal.fire({
+                icon: "success",
+                text: "Xóa nhân viên thành công!",
+              });
+              return response.json();
+            } else {
+              Swal.fire({
+                icon: "error",
+                text: "Xảy ra lỗi khi xóa nhân viên!",
+              });
+              throw new Error("Request failed");
+            }
+          })
+          .then((data) => {
+            // Handle response data
+            console.log(data);
+          })
+          .catch((error) => {
+            // Handle error
+            console.error(error);
+          });
+      }
+    });
   };
   return (
     <>
@@ -69,7 +140,14 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="Tên NV" type="text" />
+            <TextField
+              fullWidth
+              type="text"
+              value={data?.name}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -86,7 +164,14 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth type="date" />
+            <TextField
+              fullWidth
+              type="date"
+              value={data?.dateOfBirth.substring(0, 10)}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -103,7 +188,14 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="Email" type="email" />
+            <TextField
+              fullWidth
+              type="email"
+              value={data?.email}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -120,7 +212,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="SĐT" />
+            <TextField
+              fullWidth
+              value={data?.phone}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -137,25 +235,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Giới tính</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={gender}
-                label="gender"
-                onChange={handleChange}
-                defaultValue={gender.nam}
-              >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
-                  Nam
-                </MenuItem>
-                <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
-                  Nữ
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              value={data?.gender}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
 
@@ -173,24 +259,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Bãi xe</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={gender}
-                label="gender"
-                onChange={handleChange}
-              >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
-                  Bãi xe số 1
-                </MenuItem>
-                <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
-                  Bãi xe số 2
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              value={data?.parkingName}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
 
@@ -208,7 +283,7 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <UploadAvatar />
+            <UploadAvatar avatar={data?.avatar} />
           </Grid>
         </Grid>
 
@@ -224,12 +299,12 @@ const ItemModal = ({ modalType }) => {
             <CancelButton onClick={handleCloseModal} />
           </Grid>
           <Grid item>
-            <DeleteButton onClick={handleOpenDialog} />
+            <DeleteButton onClick={handleDeleteStaff} />
           </Grid>
         </Grid>
       </Grid>
 
-      <DialogDelete open={openDialog} modalType={modalType} />
+      {/* <DialogDelete open={openDialog} modalType={modalType} /> */}
     </>
   );
 };

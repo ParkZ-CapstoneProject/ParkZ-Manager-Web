@@ -6,7 +6,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
 
 const CardInput = (props) => {
-  const { index, inputValues, onInputChange, onRemove, isExtraFree } = props;
+  const {
+    index,
+    inputValues,
+    onInputChange,
+    onRemove,
+    isExtraFree,
+    isWholeDay,
+  } = props;
   const [values, setValues] = useState(inputValues);
 
   const theme = useTheme();
@@ -120,7 +127,7 @@ const CardInput = (props) => {
             <TextField
               type="time" // Change type to "number"
               value={values[1]}
-              disabled={!isExtraFree}
+              disabled={!isExtraFree || isWholeDay}
               onChange={(event) => handleInputChange(event, 1)}
               sx={{ width: "120%" }}
               InputProps={{
@@ -137,7 +144,7 @@ const CardInput = (props) => {
             <TextField
               type="time"
               value={values[2]}
-              disabled={!isExtraFree}
+              disabled={!isExtraFree || isWholeDay}
               onChange={(event) => handleInputChange(event, 2)}
               sx={{ width: "120%" }}
               InputProps={{

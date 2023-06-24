@@ -1,13 +1,7 @@
-import * as React from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@material-ui/core/IconButton";
+import React from "react";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "store/modalReducer";
+import { Backdrop, Box, Fade, IconButton, Modal } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import ItemModal from "./ItemModal";
 
 const style = {
@@ -15,21 +9,20 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "40%",
-  height: "90%",
+  width: "35%",
+  height: "65%",
   bgcolor: "background.paper",
   borderRadius: "5px",
   boxShadow: 12,
   p: 4,
 };
 
-export default function DetailModalStaff({ modalType }) {
+const CreateNewTimeLine = (props) => {
+  const { isOpen, setIsOpen } = props;
   const theme = useTheme();
-  const isOpen = useSelector((state) => state.modal.modals.includes(modalType));
-  const dispatch = useDispatch();
 
   const handleClose = () => {
-    dispatch(closeModal(modalType));
+    setIsOpen(false);
   };
 
   return (
@@ -63,10 +56,12 @@ export default function DetailModalStaff({ modalType }) {
             >
               <CloseIcon />
             </IconButton>
-            <ItemModal modalType={modalType} />
+            <ItemModal setIsOpen={setIsOpen} />
           </Box>
         </Fade>
       </Modal>
     </div>
   );
-}
+};
+
+export default CreateNewTimeLine;

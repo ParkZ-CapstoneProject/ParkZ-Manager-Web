@@ -52,10 +52,6 @@ const ParkingAll = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   // const updateRow = (rowId, isActive) => {
   //   const updatedRows = rows.map((row) =>
   //     row.id === rowId ? { ...row, isActive } : row

@@ -47,6 +47,14 @@ const ParkingPriceDetail = Loadable(
   lazy(() => import("views/parking/parking-price/parkinng-price-detail/Index"))
 );
 
+const ParkingPriceDetailParking = Loadable(
+  lazy(() =>
+    import(
+      "views/parking/parking-price/parkinng-price-detail/ParkingPriceOfParking"
+    )
+  )
+);
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -104,6 +112,10 @@ const MainRoutes = {
     {
       path: `/price-detail/:priceId`,
       element: <ParkingPriceDetail />,
+    },
+    {
+      path: `/price-detail-parking/:priceId`,
+      element: <ParkingPriceDetailParking />,
     },
   ],
 };

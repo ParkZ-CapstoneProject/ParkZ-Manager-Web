@@ -8,9 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
 // import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
@@ -19,18 +19,43 @@ import UploadAvatar from "ui-component/upload-file/upload-staff/UploadAvatar";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
+  const staffId = useSelector((state) => state.modal.staffId);
 
   const dispatch = useDispatch();
 
-  const [gender, setGender] = useState("nam");
+  const [data, setData] = useState();
+
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+      "Content-Type": "application/json", // Replace with the appropriate content type
+    },
+  };
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `${apiUrl}/keeper-account-management/${staffId}`,
+      requestOptions
+    );
+
+    const data = await response.json();
+    if (data) {
+      setData(data.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleCloseModal = () => {
     dispatch(closeModal(modalType));
   };
 
-  const handleChange = (e) => {
-    setGender(e.target.value);
-  };
   return (
     <>
       <Grid
@@ -63,7 +88,14 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="Tên NV" type="text" />
+            <TextField
+              fullWidth
+              type="text"
+              value={data?.name}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -80,7 +112,14 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth type="date" />
+            <TextField
+              fullWidth
+              type="date"
+              value={data?.dateOfBirth.substring(0, 10)}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -97,7 +136,14 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="Email" type="email" />
+            <TextField
+              fullWidth
+              type="email"
+              value={data?.email}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -114,7 +160,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth type="number" label="SĐT" />
+            <TextField
+              fullWidth
+              value={data?.phone}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -131,25 +183,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Giới tính</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={gender}
-                label="gender"
-                onChange={handleChange}
-                defaultValue={gender.nam}
-              >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
-                  Nam
-                </MenuItem>
-                <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
-                  Nữ
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              value={data?.gender}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
 
@@ -167,24 +207,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Bãi xe</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={gender}
-                label="gender"
-                onChange={handleChange}
-              >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
-                  Bãi xe số 1
-                </MenuItem>
-                <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
-                  Bãi xe số 2
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              value={data?.parkingName}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
           </Grid>
         </Grid>
 
@@ -202,7 +231,7 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <UploadAvatar />
+            <UploadAvatar avatar={data?.avatar} />
           </Grid>
         </Grid>
 

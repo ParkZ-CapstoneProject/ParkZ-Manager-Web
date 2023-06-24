@@ -50,6 +50,12 @@ const Menu = ({ id }) => {
               Chi tiết
             </Typography>
           </ListItem>
+          <ListItem onClick={() => navigate(`/price-detail-parking/${id}`)}>
+            <RemoveRedEyeIcon sx={{ marginRight: "3%", color: "#673ab7" }} />
+            <Typography color="secondary" variant="subtitle1">
+              Đã áp dụng
+            </Typography>
+          </ListItem>
           <ListItem onClick={() => console.log("first")}>
             <DeleteIcon sx={{ marginRight: "3%", color: "#f44336" }} />
             <Typography color="error" variant="subtitle1">

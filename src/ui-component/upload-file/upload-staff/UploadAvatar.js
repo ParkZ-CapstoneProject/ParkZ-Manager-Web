@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 // import { CloudinaryContext, Image } from "cloudinary-react";
 // import "./UploadFront.scss";
@@ -7,10 +7,23 @@ import FolderIcon from "../assets/FolderIcon.png";
 import CloseIcon from "../assets/CloseIcon.svg";
 import { BoxUpload, ImagePreview } from "./style";
 
-const UploadAvatar = () => {
+const UploadAvatar = (props) => {
+  const { setAvatar, avatar, edit } = props;
   const [image, setImage] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+
   // const clientId = "053414b7c8fa0c7";
+
+  useEffect(() => {
+    if (avatar) {
+      setImage(avatar);
+      setIsUploaded(true);
+    }
+  }, [avatar]);
+  console.log("avatar", avatar);
+  console.log("image", image);
+
   function handleImageChange(e) {
     if (e.target.files && e.target.files[0]) {
       let reader = new FileReader();
@@ -22,11 +35,10 @@ const UploadAvatar = () => {
         const formData = new FormData();
         formData.append("file", blob, "filename.png");
         console.log(formData);
-        axios
-          .post("https://parkzapi.azurewebsites.net/api/upload-image", formData)
-          .then((response) => {
-            console.log("link hình mặt trước", response.data.link);
-          });
+        axios.post(`${apiUrl}/upload-image`, formData).then((response) => {
+          // console.log("link hình mặt trước", response.data.link);
+          setAvatar(response.data.link);
+        });
       };
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -57,15 +69,20 @@ const UploadAvatar = () => {
             </>
           ) : (
             <ImagePreview>
-              <img
-                className="close-icon"
-                src={CloseIcon}
-                alt="CloseIcon"
-                onClick={() => {
-                  setIsUploaded(false);
-                  setImage(null);
-                }}
-              />
+              {avatar && !edit ? (
+                <></>
+              ) : (
+                <img
+                  className="close-icon"
+                  src={CloseIcon}
+                  alt="CloseIcon"
+                  onClick={() => {
+                    setIsUploaded(false);
+                    setImage(null);
+                  }}
+                  style={{ top: "-6px", right: "-2px" }}
+                />
+              )}
               <div
                 style={{
                   width: "160px",
@@ -77,8 +94,7 @@ const UploadAvatar = () => {
                   src={image}
                   alt="uploaded-img"
                   width={"100%"}
-                  height={"100%"}
-                  style={{ borderRadius: "20px" }}
+                  style={{ borderRadius: "20px", height: "100%" }}
                   draggable={false}
                 />
               </div>

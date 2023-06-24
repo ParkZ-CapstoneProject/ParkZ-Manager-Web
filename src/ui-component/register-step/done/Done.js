@@ -1,13 +1,24 @@
 import { Grid, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom/dist";
 import ContinueLogin from "ui-component/buttons/continue-login/ContinueLogin";
+import Lottie from "react-lottie";
+import animationData from "../../../assets/json/88860-success-animation.json";
 
 const Done = () => {
   const theme = useTheme();
 
   const navigate = useNavigate();
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const handleOnclick = () => {
     navigate("/login");
@@ -22,11 +33,12 @@ const Done = () => {
         spacing={3}
       >
         <Grid item>
-          <img
-            src="https://img.freepik.com/premium-vector/done-green-sign-icon-web-app-check-mark-sign-vector-stock-illustration_100456-5937.jpg?w=2000"
-            alt="done"
-            width={700}
-            height={300}
+          <Lottie
+            options={defaultOptions}
+            height={400}
+            width={400}
+            // isStopped={isStopped}
+            // isPaused={isPaused}
           />
         </Grid>
         <Grid item>

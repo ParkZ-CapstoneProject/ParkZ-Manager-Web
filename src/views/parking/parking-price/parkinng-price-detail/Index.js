@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ParkingPriceDetail from "./ParkingPriceDetail";
 import { useParams } from "react-router";
-import { Typography } from "@mui/material";
-import { ImFilesEmpty } from "react-icons/im";
+import * as signalR from "@microsoft/signalr";
 
 const PriceDetail = () => {
   const { priceId } = useParams();
@@ -10,6 +9,24 @@ const PriceDetail = () => {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
+
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+    .build();
+  console.log("connection", connection);
+
+  connection
+    .start()
+    .then(() => console.log("Connection started!"))
+    .catch((err) => console.error("Error: ", err));
+
+  connection.on("LoadTimelineInManager", () => {
+    fetchDataPrice();
+  });
+
+  useEffect(() => {
+    fetchDataPrice();
+  }, []);
 
   const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
 
@@ -21,42 +38,23 @@ const PriceDetail = () => {
     },
   };
 
-  useEffect(() => {
-    const fetchDataPrice = async () => {
-      setLoading(true);
-      const res = await fetch(
-        `${apiUrl}/timeline-management/${priceId}?pageNo=1&pageSize=11`,
-        requestOptions
-      );
+  const fetchDataPrice = async () => {
+    setLoading(true);
+    const res = await fetch(
+      `${apiUrl}/timeline-management/${priceId}?pageNo=1&pageSize=11`,
+      requestOptions
+    );
 
-      const data = await res.json();
-      console.log("data", data.data);
+    const data = await res.json();
+    console.log("data", data.data);
 
-      setRows(data.data);
-      setLoading(false);
-    };
-
-    fetchDataPrice();
-  }, []);
+    setRows(data.data);
+    setLoading(false);
+  };
 
   return (
     <>
-      {rows ? (
-        <ParkingPriceDetail rows={rows} loading={loading} />
-      ) : (
-        <>
-          <Typography
-            variant="h1"
-            color="#21130d"
-            sx={{ textAlign: "center", marginTop: "15%" }}
-          >
-            Không tìm thấy dữ liệu
-          </Typography>
-          <ImFilesEmpty
-            style={{ fontSize: "150px", marginTop: "5%", marginLeft: "46%" }}
-          />
-        </>
-      )}
+      <ParkingPriceDetail rows={rows} loading={loading} />
     </>
   );
 };
