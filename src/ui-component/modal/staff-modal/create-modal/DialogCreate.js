@@ -2,38 +2,109 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { closeModal } from "store/modalReducer";
 import Swal from "sweetalert2";
-// import { useDispatch } from "react-redux";
-// import { closeModal } from "store/modalReducer";
 
 const DialogCreate = (props) => {
-  const { open, modalType } = props;
+  const {
+    open,
+    modalType,
+    dateOfBirth,
+    setDateOfBirth,
+    name,
+    setName,
+    email,
+    setEmail,
+    errorEmail,
+    phone,
+    setPhone,
+    gender,
+    avatar,
+    setAvatar,
+    parkingId,
+    setParkingId,
+  } = props;
   const dispatch = useDispatch();
 
-  const handleConfirm = () => {
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user"); // Set the authentication status here
+  const userData = JSON.parse(user);
+
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    if (errorEmail) {
+      return;
+    }
+
     Swal.fire({
       title: "Xác nhận?",
-      text: "Bạn có chắc chắn muốn thay đổi!",
+      text: "Bạn có chắc chắn muốn lưu!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       cancelButtonText: "Hủy",
       confirmButtonText: "Xác nhận!",
-      customClass: {
-        container: "swal-custom", // Apply the custom class to the Swal container
-      },
-    }).then((result) => {
-      // Handle SweetAlert2 dialog result
+    }).then(async (result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Thành công!",
-          text: "Trạng thái cập nhật thành công.",
-          icon: "success",
-          customClass: {
-            container: "swal-custom", // Apply the custom class to the Swal container
+          icon: "info",
+          title: "Đang xử lý thông tin...",
+          text: "Vui lòng chờ trong giây lát!",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
           },
         });
-        dispatch(closeModal(modalType));
+        const request = {
+          name: name,
+          email: email,
+          phone: phone,
+          dateOfBirth: dateOfBirth,
+          gender: gender,
+          avatar: avatar,
+          managerId: userData._id,
+          parkingId: parkingId,
+        };
+
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify(request),
+        };
+
+        const response = await fetch(
+          `${apiUrl}/keeper-account-management/register`,
+          requestOptions
+        );
+
+        const data = await response.json();
+
+        if (data.statusCode === 204) {
+          Swal.fire({
+            icon: "success",
+            text: "Tạo mới ảo vệ thành công",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setDateOfBirth("");
+              setName("");
+              setPhone("");
+              setEmail();
+              setAvatar("");
+              setParkingId(0);
+
+              dispatch(closeModal(modalType));
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            text: "Có lỗi khi tạo mới",
+          });
+        }
       }
     });
   };

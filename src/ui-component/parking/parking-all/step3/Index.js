@@ -125,11 +125,12 @@ const ParkingModalInFloor = () => {
           Swal.fire({
             icon: "success",
             title: "Thành công!",
-            text: "Tạo mới sa bàn cho bãi xe thành công!",
+            text: "Yêu cầu của bạn đã được gửi! Vui lòng chờ được duyệt!",
           }).then((result) => {
             if (result.isConfirmed) {
               navigate("/parkings");
               localStorage.removeItem("parkingModalState");
+              localStorage.removeItem("parkingId");
             }
           });
         } catch (error) {

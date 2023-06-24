@@ -169,7 +169,7 @@ const ProfileSection = () => {
       >
         {({ TransitionProps }) => (
           <Transitions in={open} {...TransitionProps}>
-            <Paper>
+            <Paper sx={{ transform: "translate(-2px, -25px)" }}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard
                   border={false}

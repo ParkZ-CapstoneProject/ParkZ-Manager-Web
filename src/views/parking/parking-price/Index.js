@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MyParkingPrice from "./ParkingPrice";
 import * as signalR from "@microsoft/signalr";
-import { Typography } from "@mui/material";
-import { ImFilesEmpty } from "react-icons/im";
 
 const ParkingPrice = () => {
   const [rows, setRows] = useState([]);
@@ -43,7 +41,7 @@ const ParkingPrice = () => {
   const fetchDataPrice = async () => {
     setLoading(true);
     const res = await fetch(
-      `${apiUrl}/parking-price?BusinessId=${userData._id}&PageNo=1&PageSize=11`,
+      `${apiUrl}/parking-price?ManagerId=${userData._id}&PageNo=1&PageSize=11`,
       requestOptions
     );
 
@@ -56,22 +54,7 @@ const ParkingPrice = () => {
 
   return (
     <>
-      {rows ? (
-        <MyParkingPrice rows={rows} loading={loading} />
-      ) : (
-        <>
-          <Typography
-            variant="h1"
-            color="#21130d"
-            sx={{ textAlign: "center", marginTop: "15%" }}
-          >
-            Không tìm thấy dữ liệu
-          </Typography>
-          <ImFilesEmpty
-            style={{ fontSize: "150px", marginTop: "5%", marginLeft: "46%" }}
-          />
-        </>
-      )}
+      <MyParkingPrice rows={rows} loading={loading} />
     </>
   );
 };

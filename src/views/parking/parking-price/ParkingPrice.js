@@ -1,18 +1,24 @@
 import * as React from "react";
+import { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-import { Chip, Grid, Skeleton, Typography } from "@mui/material";
+import { Chip, Grid, Typography } from "@mui/material";
 import Menu from "ui-component/parking/parking-price/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
 import { useNavigate } from "react-router";
 import Loading from "ui-component/back-drop/Loading";
 import { ImFilesEmpty } from "react-icons/im";
+import ApplyParking from "ui-component/modal/parking-price-apply/ApplyParking";
 
 export default function MyParkingPrice(props) {
   const { rows, loading } = props;
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [priceId, setPriceId] = useState();
+  const [priceName, setPriceName] = useState();
 
   const handleCreate = () => {
     navigate("/create-new-price");
@@ -43,18 +49,21 @@ export default function MyParkingPrice(props) {
     }
   };
 
-  const renderCellApply = (params) => {
-    // const parking = params.row.parking;
+  const handleApply = (params) => {
+    setIsOpen(true);
+    setPriceId(params.row.parkingPriceId);
+    setPriceName(params.row.parkingPriceName);
+  };
 
-    // if (parking === null) {
+  const renderCellApply = (params) => {
     return (
-      <button class="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+      <button
+        onClick={() => handleApply(params)}
+        className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+      >
         Áp dụng
       </button>
     );
-    // } else {
-    //   return null; // Return null if parking field is null
-    // }
   };
 
   const columns = [
@@ -66,12 +75,6 @@ export default function MyParkingPrice(props) {
       // sortable: false,
       width: 300,
       valueGetter: (params) => `${params.row.parkingPriceName || ""}`,
-    },
-    {
-      field: "parking",
-      headerName: "Bãi xe",
-      width: 350,
-      valueGetter: getCellValue,
     },
     {
       field: "isActive",
@@ -137,7 +140,7 @@ export default function MyParkingPrice(props) {
               <Typography
                 variant="h1"
                 color="#21130d"
-                sx={{ textAlign: "center", marginTop: "15%" }}
+                sx={{ textAlign: "center", marginTop: "5%" }}
               >
                 Không tìm thấy dữ liệu
               </Typography>
@@ -152,6 +155,13 @@ export default function MyParkingPrice(props) {
           )}
         </MainCard>
       )}
+
+      <ApplyParking
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        priceId={priceId}
+        priceName={priceName}
+      />
     </>
   );
 }

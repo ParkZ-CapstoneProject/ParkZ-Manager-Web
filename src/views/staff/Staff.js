@@ -1,17 +1,30 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-import { Avatar, Button, Chip, Grid } from "@mui/material";
+import { Avatar, Chip, Grid, Skeleton } from "@mui/material";
 import Menu from "ui-component/staff/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
 import { useDispatch } from "react-redux";
 import { openModal } from "store/modalReducer";
 import CreateModalStaff from "ui-component/modal/staff-modal/create-modal/CreateModalStaff";
+import * as signalR from "@microsoft/signalr";
+import { useState } from "react";
+import SubCard from "ui-component/cards/SubCard";
+import Loading from "ui-component/back-drop/Loading";
 
 const renderAvatarCell = (params) => {
-  return <Avatar src={params.value} alt="avatar" />;
+  return (
+    <>
+      {params.value ? (
+        <Avatar src={params.value} alt="avatar" />
+      ) : (
+        <Avatar src="https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg" />
+      )}
+    </>
+  );
 };
 
 const getCellValue = (params) => {
@@ -19,24 +32,31 @@ const getCellValue = (params) => {
 };
 
 const renderCellStatus = (params) => {
-  if (params.value === "true") {
+  if (params.value === true) {
     return (
       <Chip
         color="success"
-        label={params.value}
+        label="True"
         sx={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
       />
     );
   }
-  if (params.value === "false") {
+  if (params.value === false) {
     return (
       <Chip
         color="secondary"
-        label={params.value}
+        label="False"
         sx={{ padding: "8px", color: "#fff", fontWeight: "bold" }}
       />
     );
   }
+};
+
+const formatDateOfBirth = (dateOfBirth) => {
+  if (dateOfBirth && dateOfBirth.length >= 10) {
+    return dateOfBirth.slice(0, 10);
+  }
+  return "-------";
 };
 
 const columns = [
@@ -61,11 +81,11 @@ const columns = [
   {
     field: "dateOfBirth",
     headerName: "Ngày sinh",
-    // type: "number",
     width: 150,
+    valueGetter: (params) => formatDateOfBirth(params.row.dateOfBirth),
   },
   { field: "gender", headerName: "Giới tính", width: 160 },
-  { field: "parking", headerName: "Thuộc bãi", width: 260 },
+  { field: "parkingName", headerName: "Thuộc bãi", width: 260 },
   {
     field: "isActive",
     headerName: "Hoạt động",
@@ -85,73 +105,73 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    email: "nguyenthiquynhthi@gamil.com",
-    phone: "012341234132",
-    dob: "11-11-1990",
-    gender: "Nam",
-    parking: "Bãi xe Hoang Văn Thụ số 1",
-    isActive: "true",
-  },
-  {
-    id: 2,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    email: "nguyenthiquynhthi@gamil.com",
-    phone: "012341234132",
-    dob: "11-11-1990",
-    gender: "Nam",
-    parking: "Bãi xe Hoang Văn Thụ số 2",
-    isActive: "false",
-  },
-  {
-    id: 3,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    email: "nguyenthiquynhthi@gamil.com",
-    phone: "012341234132",
-    dob: "11-11-1990",
-    gender: "Nam",
-    parking: "Bãi xe Hoang Văn Thụ số 1",
-    isActive: "true",
-  },
-  {
-    id: 4,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    email: "nguyenthiquynhthi@gamil.com",
-    phone: "012341234132",
-    dob: "11-11-1990",
-    gender: "Nam",
-    parking: "Bãi xe Hoang Văn Thụ số 1",
-    isActive: "false",
-  },
-  {
-    id: 5,
-    avatar:
-      "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-    name: "Nguyễn Thị Minh Khai",
-    email: "nguyenthiquynhthi@gamil.com",
-    phone: "012341234132",
-    dob: "11-11-1990",
-    gender: "Nam",
-    parking: "Bãi xe Hoang Văn Thụ số 1",
-    isActive: "true",
-  },
-];
-
 export default function Staff() {
-  // const [loading, setLoading] = useState(false);
-  // const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
+
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user"); // Set the authentication status here
+  const userData = JSON.parse(user);
+
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+    .build();
+  console.log("connection", connection);
+
+  connection
+    .start()
+    .then(() => console.log("Connection started!"))
+    .catch((err) => console.error("Error: ", err));
+
+  connection.on("LoadKeeperAccounts", () => {
+    fetchData();
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+      "Content-Type": "application/json", // Replace with the appropriate content type
+    },
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `${apiUrl}/keeper-management/manager?pageNo=1&pageSize=11&managerId=${userData._id}`,
+      requestOptions
+    );
+    const data = await response.json();
+    setRows(data.data);
+    setLoading(false);
+  };
+
+  if (loading) {
+    // Render the Skeleton components or any other loading indicator
+    return (
+      <>
+        <MainCard title={"Lịch đặt"}>
+          <Grid item xs={12}>
+            <SubCard>
+              {/* Render the Skeleton components for the search section */}
+              <Skeleton animation="wave" height={40} width={200} />
+            </SubCard>
+          </Grid>
+          <div style={{ height: "500px", width: "100%" }}>
+            {/* Render the Skeleton components for the data grid */}
+            <Skeleton animation="wave" height={400} />
+          </div>
+        </MainCard>
+        <Loading loading={loading} />
+      </>
+    );
+  }
 
   const handleOpenModalCreate = (modalType) => {
     dispatch(openModal(modalType));
@@ -159,9 +179,6 @@ export default function Staff() {
 
   return (
     <>
-      {/* {loading ? (
-        <Loading />
-      ) : ( */}
       <MainCard title={"Nhân viên"}>
         <Grid item xs={12}>
           <SubCardStaff
@@ -171,15 +188,13 @@ export default function Staff() {
                 onClick={() => handleOpenModalCreate("createModalStaff")}
               />
             }
-          >
-            {/* <SearchSection /> */}
-          </SubCardStaff>
+          ></SubCardStaff>
         </Grid>
-        {/* <CreateButton /> */}
         <div style={{ height: "500px", width: "100%" }}>
           <DataGrid
             rows={rows}
             rowHeight={70}
+            getRowId={(row) => row.userId}
             columns={columns}
             initialState={{
               pagination: {

@@ -7,6 +7,7 @@ import { Avatar, Chip, Grid, Skeleton } from "@mui/material";
 import Menu from "ui-component/booking/Menu";
 import FloatingButton from "ui-component/buttons/qr-button-drag/FloatingButton";
 import { useNavigate } from "react-router";
+import Loading from "ui-component/back-drop/Loading";
 // import Loading from "ui-component/back-drop/Loading";
 
 const renderAvatarCell = (params) => {
@@ -64,7 +65,14 @@ const columns = [
     valueGetter: (params) => `${params.row.name || ""}`,
   },
   { field: "position", headerName: "Vị trí", width: 100 },
-  { field: "startTime", headerName: "Thời gian", width: 100 },
+  {
+    field: "startTime",
+    headerName: "Thời gian đặt",
+    width: 200,
+    valueGetter: getCellValue,
+    renderCell: (params) =>
+      `${params.row.startTime || ""} - ${params.row.endTime || ""}`,
+  },
   {
     field: "totalPrice",
     headerName: "Giá",
@@ -147,7 +155,7 @@ export default function DataTable(props) {
             <Skeleton animation="wave" height={400} />
           </div>
         </MainCard>
-        {/* <Loading /> */}
+        <Loading loading={loading} />
       </>
     );
   }

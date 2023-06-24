@@ -11,6 +11,7 @@ const Booking = () => {
       name: "Nguyễn Thị Minh Khai",
       position: "A4",
       startTime: "7 : 00 AM",
+      endTime: "10 : 00 AM",
       totalPrice: "20,000 vnđ",
       phone: "012341234132",
       licensePlate: "60A - 12345",

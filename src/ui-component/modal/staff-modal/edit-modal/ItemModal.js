@@ -8,34 +8,197 @@ import {
   Typography,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 import UploadAvatar from "ui-component/upload-file/upload-staff/UploadAvatar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
+import validator from "validator";
 import DialogEdit from "./DialogEdit";
+import Swal from "sweetalert2";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
 
+  const staffId = useSelector((state) => state.modal.staffId);
+
   const dispatch = useDispatch();
 
-  const [gender, setGender] = useState("nam");
-  const [openDialog, setOpenDialog] = useState(false);
+  const defaultData = {
+    name: "",
+    dateOfBirth: "",
+    gender: "",
+    email: "",
+    phone: "",
+    avatar: "",
+    parkingId: "",
+  };
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const [data, setData] = useState(defaultData);
+  const [parkings, setParkings] = useState([]);
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [avatar, setAvatar] = useState("");
+  const edit = true;
+
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user"); // Set the authentication status here
+  const userData = JSON.parse(user);
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+      "Content-Type": "application/json", // Replace with the appropriate content type
+    },
+  };
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `${apiUrl}/keeper-account-management/${staffId}`,
+      requestOptions
+    );
+
+    const responseData = await response.json();
+    if (responseData) {
+      setData(responseData.data);
+    }
+  };
+
+  const fetchDataParking = async () => {
+    const response = await fetch(
+      `${apiUrl}/parkings?managerId=${userData._id}&pageNo=1&pageSize=22`,
+      requestOptions
+    );
+
+    const responseData = await response.json();
+    setParkings(responseData.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchDataParking();
+  }, []);
+
+  const handleInputPhone = (event) => {
+    const { value } = event.target;
+    const phoneNumber = value.replace(/\D/g, ""); // Remove non-digit characters
+
+    if (phoneNumber.length > 0 && phoneNumber[0] === "0") {
+      setData((prevData) => ({
+        ...prevData,
+        phone: phoneNumber.substring(0, 10),
+      }));
+    }
+  };
+
+  const handleInputEmail = (event) => {
+    const { value } = event.target;
+
+    const startsWithSpace = /^\s/.test(value);
+    // Remove any spaces from the input value
+    if (!startsWithSpace) {
+      setData((prevData) => ({
+        ...prevData,
+        email: value,
+      }));
+      setErrorEmail(!validator.isEmail(value));
+    } else {
+      setErrorEmail(true);
+    }
+  };
+
+  const handleDateOfBirthChange = (event) => {
+    const { value } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      dateOfBirth: value,
+    }));
+  };
+
+  const handleChangeName = (event) => {
+    const { value } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      name: value,
+    }));
   };
 
   const handleCloseModal = () => {
     dispatch(closeModal(modalType));
   };
 
-  const handleChange = (e) => {
-    setGender(e.target.value);
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      gender: value,
+    }));
   };
+
+  const handleChangeParking = (event) => {
+    const { value } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      parkingId: value,
+    }));
+  };
+  console.log("data", data);
+  // const handleOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
+
+  const handleSubmit = async () => {
+    Swal.fire({
+      title: "Xác nhận?",
+      text: "Bạn có chắc chắn muốn lưu!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Hủy",
+      confirmButtonText: "Xác nhận!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: "info",
+          title: "Đang xử lý thông tin...",
+          text: "Vui lòng chờ trong giây lát!",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+          const response = await fetch(
+            `${apiUrl}/keeper-account-management/${staffId}`,
+            {
+              ...requestOptions,
+              method: "PUT",
+              body: JSON.stringify(data),
+            }
+          );
+          if (response.ok) {
+            // Handle successful response here
+            // You can close the modal or perform any other actions
+            handleCloseModal();
+          } else {
+            // Handle error response here
+            // You can display an error message or perform any other actions
+            console.error("Error:", response.statusText);
+          }
+        } catch (error) {
+          // Handle network errors here
+          console.error("Error:", error);
+        }
+      }
+    });
+  };
+
   return (
     <>
       <Grid
@@ -68,7 +231,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="Tên NV" type="text" />
+            <TextField
+              fullWidth
+              label="Tên NV"
+              type="text"
+              value={data.name}
+              onChange={handleChangeName}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -85,7 +254,12 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth type="date" />
+            <TextField
+              fullWidth
+              type="date"
+              value={data.dateOfBirth.substring(0, 10)}
+              onChange={handleDateOfBirthChange}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -102,7 +276,15 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth label="Email" type="email" />
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              value={data.email}
+              onChange={handleInputEmail}
+              error={errorEmail}
+              helperText={errorEmail ? "Vui lòng nhập đúng email" : ""}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -119,7 +301,13 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <TextField fullWidth type="number" label="SĐT" />
+            <TextField
+              fullWidth
+              type="number"
+              label="SĐT"
+              value={data.phone}
+              onChange={handleInputPhone}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -141,16 +329,16 @@ const ItemModal = ({ modalType }) => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={gender}
+                value={data.gender}
                 label="gender"
                 onChange={handleChange}
-                defaultValue={gender.nam}
+                defaultValue={data.gender}
               >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
+                <MenuItem fullWidth value="Nam" sx={{ width: "100%" }}>
                   Nam
                 </MenuItem>
                 <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
+                <MenuItem fullWidth value="Nữ" sx={{ width: "100%" }}>
                   Nữ
                 </MenuItem>
               </Select>
@@ -177,17 +365,16 @@ const ItemModal = ({ modalType }) => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={gender}
-                label="gender"
-                onChange={handleChange}
+                value={data.parkingId}
+                label="parkingName"
+                onChange={handleChangeParking}
+                defaultValue={data.parkingName}
               >
-                <MenuItem fullWidth value="nam" sx={{ width: "100%" }}>
-                  Bãi xe số 1
-                </MenuItem>
-                <br />
-                <MenuItem fullWidth value="nữ" sx={{ width: "100%" }}>
-                  Bãi xe số 2
-                </MenuItem>
+                {parkings.map((parking) => (
+                  <MenuItem sx={{ width: "100%" }} value={parking.parkingId}>
+                    {parking.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -207,7 +394,11 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <UploadAvatar />
+            <UploadAvatar
+              avatar={data.avatar}
+              setAvatar={setAvatar}
+              edit={edit}
+            />
           </Grid>
         </Grid>
 
@@ -223,12 +414,12 @@ const ItemModal = ({ modalType }) => {
             <CancelButton onClick={handleCloseModal} />
           </Grid>
           <Grid item>
-            <SaveButton onClick={handleOpenDialog} />
+            <SaveButton onClick={handleSubmit} />
           </Grid>
         </Grid>
       </Grid>
 
-      <DialogEdit open={openDialog} modalType={modalType} />
+      {/* <DialogEdit open={openDialog} modalType={modalType} /> */}
     </>
   );
 };

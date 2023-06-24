@@ -92,6 +92,16 @@ const CreateNewParking = () => {
     setFloors(updatedFloors);
   };
 
+  const getTotalNumCarSlots = () => {
+    const totalNumCarSlots = floors.reduce((sum, floor) => {
+      return sum + floor.numCarSlots;
+    }, 0);
+
+    return totalNumCarSlots;
+  };
+  // Call the getTotalNumCarSlots function to get the sum
+  const totalNumCarSlots = getTotalNumCarSlots();
+
   const handleNameChange = (e) => {
     setParking({ ...parking, name: e.target.value });
   };
@@ -162,7 +172,7 @@ const CreateNewParking = () => {
     name: parking.name,
     address: parking.address,
     description: parking.description,
-    carSpot: 0,
+    carSpot: totalNumCarSlots,
     isPrepayment: parking.isPrepayment,
     isOvernight: parking.isOvernight,
     managerId: Number(userData._id),

@@ -67,7 +67,7 @@ const CreateNewPrice = () => {
 
   const requestBody = {
     parkingPriceName: parkingPrice.name,
-    businessId: userData._id,
+    managerId: userData._id,
     trafficId: parkingPrice.vehicleType,
     isWholeDay: parkingPrice.isWholeDay,
     startingTime: parkingPrice.startingTime ? parkingPrice.startingTime : null,
@@ -90,6 +90,26 @@ const CreateNewPrice = () => {
   };
 
   const handleSave = () => {
+    if (
+      parkingPrice.name === "" ||
+      (parkingPrice.isWholeDay === false && parkingPrice.isExtraFree === false)
+    ) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng nhập tên gói cước và chọn gói cước!",
+      });
+      return;
+    }
+    if (
+      parkingPrice.isPenaltyChecked === false ||
+      parkingPrice.penaltyPrice === 0
+    ) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng chọn phạt quá giờ và phí phạt!",
+      });
+      return;
+    }
     const isValid = cards.every((card, index) => {
       if (index > 0) {
         const prevEndTime = cards[index - 1].endTime;
@@ -374,6 +394,7 @@ const CreateNewPrice = () => {
             <CardInput
               index={index}
               isExtraFree={parkingPrice.isExtraFree}
+              isWholeDay={parkingPrice.isWholeDay}
               inputValues={[
                 card.price,
                 card.startTime,
@@ -385,7 +406,7 @@ const CreateNewPrice = () => {
             />
           </Grid>
         ))}
-        {cards.length < 5 && (
+        {cards.length < 5 && !parkingPrice.isWholeDay && (
           <Grid item>
             <AddButton onClick={handleAddCard} />
           </Grid>

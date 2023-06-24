@@ -3,16 +3,12 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-// import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@material-ui/core/IconButton";
 import { useTheme } from "@mui/material/styles";
-// import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
-// import { Grid } from "@mui/material";
 import ItemModal from "./ItemModal";
-import "./CreateModal.scss";
 
 const style = {
   position: "absolute",
@@ -22,7 +18,6 @@ const style = {
   width: "40%",
   height: "90%",
   bgcolor: "background.paper",
-  // border: "1px solid #000",
   borderRadius: "5px",
   boxShadow: 12,
   p: 4,
@@ -33,9 +28,6 @@ export default function CreateModalStaff({ modalType }) {
   const isOpen = useSelector((state) => state.modal.modals.includes(modalType));
   const dispatch = useDispatch();
 
-  // const handleOpen = (modalType) => {
-  //   dispatch(openModal(modalType));
-  // };
   const handleClose = () => {
     dispatch(closeModal(modalType));
   };
@@ -60,14 +52,7 @@ export default function CreateModalStaff({ modalType }) {
         <Fade in={isOpen}>
           <Box sx={style}>
             <IconButton
-              // aria-label="close"
               onClick={handleClose}
-              // sx={{
-              //   position: "absolute",
-              //   right: 0,
-              //   top: 0,
-              //   color: theme.palette.grey[500],
-              // }}
               style={{
                 position: "absolute",
                 top: 1,

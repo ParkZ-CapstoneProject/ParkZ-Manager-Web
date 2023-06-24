@@ -147,7 +147,7 @@ const NotificationSection = () => {
             in={open}
             {...TransitionProps}
           >
-            <Paper>
+            <Paper sx={{ transform: "translate(-2px, -30px)" }}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard
                   border={false}

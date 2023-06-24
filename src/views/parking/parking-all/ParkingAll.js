@@ -3,7 +3,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
 import { Grid, Switch, Typography } from "@mui/material";
-import "./ParkingAll.scss";
 import Menu from "ui-component/parking/parking-all/Menu";
 import Swal from "sweetalert2";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
