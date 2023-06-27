@@ -129,7 +129,11 @@ const CardInput = (props) => {
               value={values[1]}
               disabled={!isExtraFree || isWholeDay}
               onChange={(event) => handleInputChange(event, 1)}
-              sx={{ width: "120%" }}
+              sx={
+                !isExtraFree || isWholeDay
+                  ? { width: "120%", opacity: 0.5 }
+                  : { width: "120%" }
+              }
               InputProps={{
                 inputProps: {
                   style: { textAlign: "center" },
@@ -146,7 +150,11 @@ const CardInput = (props) => {
               value={values[2]}
               disabled={!isExtraFree || isWholeDay}
               onChange={(event) => handleInputChange(event, 2)}
-              sx={{ width: "120%" }}
+              sx={
+                !isExtraFree || isWholeDay
+                  ? { width: "120%", opacity: 0.5 }
+                  : { width: "120%" }
+              }
               InputProps={{
                 inputProps: {
                   style: { textAlign: "center" },
@@ -166,7 +174,9 @@ const CardInput = (props) => {
             disabled={!isExtraFree}
             onChange={(event) => handleInputChange(event, 3)}
             onBlur={handleReset}
-            sx={{ width: "180%" }}
+            sx={
+              !isExtraFree ? { width: "180%", opacity: 0.5 } : { width: "180%" }
+            }
           />
         </Grid>
       </Grid>

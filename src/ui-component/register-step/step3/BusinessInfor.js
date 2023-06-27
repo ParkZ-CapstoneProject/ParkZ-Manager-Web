@@ -18,6 +18,7 @@ import ContinueButton from "ui-component/buttons/continue-button-register/Contin
 import UploadBusinessLicense from "ui-component/upload-file-antd/UploadBusinessLicense";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { data } from "autoprefixer";
 
 const BusinessInfor = () => {
   const theme = useTheme();
@@ -121,6 +122,11 @@ const BusinessInfor = () => {
         })
         .catch((error) => {
           // Handle any errors
+          Swal.close();
+          Swal.fire({
+            icon: "error",
+            text: data.message,
+          });
           console.error(error);
         });
     }

@@ -9,7 +9,9 @@ import { RxDotFilled } from "react-icons/rx";
 import { useParams } from "react-router";
 import Loading from "ui-component/back-drop/Loading";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
-// import "../../../index.css";
+import CreateImageModal from "./CreateImageModal";
+import Swal from "sweetalert2";
+import * as signalR from "@microsoft/signalr";
 
 const ParkingImage = () => {
   const { id } = useParams();
@@ -19,6 +21,7 @@ const ParkingImage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isTrashHovered, setIsTrashHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
@@ -32,6 +35,20 @@ const ParkingImage = () => {
     setCurrentIndex(newIndex);
   };
 
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+    .build();
+  console.log("connection", connection);
+
+  connection
+    .start()
+    .then(() => console.log("Connection started!"))
+    .catch((err) => console.error("Error: ", err));
+
+  connection.on("LoadParkingSpotImage", () => {
+    fetchData();
+  });
+
   const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
   const token = localStorage.getItem("token");
 
@@ -43,20 +60,20 @@ const ParkingImage = () => {
     },
   };
 
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `${apiUrl}/parking-spot-image/${id}?pageNo=1&pageSize=11`,
+      requestOptions
+    );
+
+    const data = await response.json();
+    setSlides(data.data);
+    console.log("data.data", data.data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `${apiUrl}/parking-spot-image/${id}?pageNo=1&pageSize=11`,
-        requestOptions
-      );
-
-      const data = await response.json();
-      setSlides(data.data);
-      console.log("data.data", data.data);
-      setLoading(false);
-    };
-
     fetchData();
   }, []);
 
@@ -84,14 +101,60 @@ const ParkingImage = () => {
     setIsTrashHovered(false);
   };
 
-  const handleDelete = (id) => {
-    console.log("clicked to id:", id);
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Xác nhận?",
+      text: "Bạn có chắc chắn muốn xóa hình ảnh này!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Hủy",
+      confirmButtonText: "Xác nhận!",
+      customClass: {
+        container: "swal-custom", // Apply the custom class to the Swal container
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const requestOptions = {
+          method: "DELETE",
+          headers: {
+            Authorization: `bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+
+        const response = await fetch(
+          `${apiUrl}/parking-spot-image/${id}`,
+          requestOptions
+        );
+
+        const data = await response.json();
+
+        if (data.statusCode === 204) {
+          Swal.fire({
+            icon: "success",
+            text: "Xóa ảnh thành công!",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            text: data.message,
+          });
+          return;
+        }
+      }
+    });
+  };
+
+  const handleOpenModal = () => {
+    setIsOpen(true);
   };
 
   return (
     <>
       <Grid container direction="row" justifyContent="flex-end">
-        <CreateButton />
+        <CreateButton onClick={handleOpenModal} />
       </Grid>
       <div
         className="max-w-[1400px] h-[780px] w-full m-auto py-4 px-4 relative group"
@@ -148,6 +211,8 @@ const ParkingImage = () => {
           ))}
         </div>
       </div>
+
+      <CreateImageModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 };

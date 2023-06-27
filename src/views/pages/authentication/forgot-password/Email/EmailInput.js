@@ -41,41 +41,23 @@ const EmailInput = () => {
     // setSpaceInput(newEmail.trim().length === 0);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    let otpEntity = { email: email };
-    fetch(`${apiLink}/otp-management`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(otpEntity),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.statusCode !== 201) {
-          console.log("Message", data.message);
-          Swal.fire({
-            icon: "error",
-            title: "Không tìm thấy",
-            text: `${data.message}`,
-          });
-        } else {
-          const formData = new FormData(event.target);
-          const data2 = Object.fromEntries(formData.entries());
-          navigate("/otp", { state: { formData: data2.email } });
-        }
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error(error);
+    const response = await fetch(`${apiLink}/verify-email?email=${email}`);
+
+    const data = await response.json();
+
+    if (data.message !== "Thành công") {
+      console.log("success", data.data);
+      Swal.fire({
+        icon: "error",
+        title: "Không tìm thấy",
+        text: "Email của bạn chưa đăng ký hoặc sai Email! Vui long kiểm tra lại!",
       });
+    } else {
+      navigate("/otp", { state: { email: email } });
+    }
   };
 
   return (
@@ -110,7 +92,7 @@ const EmailInput = () => {
           </Stack>
         </Grid>
 
-        <form onSubmit={handleSubmit} method="post">
+        <form onSubmit={handleSubmit}>
           <Grid item>
             <Stack justifyContent="center" spacing={1}>
               <Typography
@@ -141,11 +123,11 @@ const EmailInput = () => {
             justifyContent="center"
             sx={{ marginTop: "8%", marginLeft: "33%" }}
           >
-            <NextButton />
+            <NextButton onClick={handleSubmit} />
           </Grid>
         </form>
 
-        <div id="swal-container"></div>
+        {/* <div id="swal-container"></div> */}
       </Grid>
     </Layout>
   );

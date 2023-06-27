@@ -39,8 +39,7 @@ const GridItem = ({ leftText, rightText, color, active }) => {
     </Grid>
   );
 };
-const RightItem = () => {
-  const value = 4;
+const RightItem = ({ data }) => {
   const theme = useTheme();
 
   return (
@@ -48,20 +47,20 @@ const RightItem = () => {
       <Grid container direction="column" spacing={5}>
         <GridItem
           leftText="Trạng thái"
-          rightText="Còn chỗ"
+          rightText={data?.isFull ? "Còn chỗ" : "Hết chỗ"}
           color={theme.palette.primary.main}
-          active={true}
+          active={data?.isFull}
         />
 
         <GridItem
           leftText="Trạng thái bãi xe"
-          rightText="Đang hoạt động"
+          rightText={data?.isActive ? "Đang hoạt động" : "Ngưng hoạt động"}
           color={theme.palette.primary.main}
-          active={true}
+          active={data?.isActive}
         />
         <GridItem
           leftText="Đánh giá"
-          rightText={<Rating value={value} readOnly />}
+          rightText={<Rating value={data?.stars} readOnly />}
           color={theme.palette.primary.main}
         />
         <Grid item>
@@ -71,13 +70,12 @@ const RightItem = () => {
         </Grid>
         <Grid item>
           <Typography color={theme.palette.common.black} variant="h4">
-            Bãi xe giá rẻ thuận tiện đi lại trong thành phố và gần các khu vui
-            chơi lớn
+            {data?.description}
           </Typography>
         </Grid>
-        <GridItem leftText="Slot xe ô tô" rightText="40" />
-        <GridItem leftText="Gói cước xe ô tô" rightText="Gói A" />
-        <GridItem leftText="Người quản lý" rightText="Hoàng Văn Minh" />
+        <GridItem leftText="Slot xe ô tô" rightText={data?.carSpot} />
+        {/* <GridItem leftText="Gói cước xe ô tô" rightText="Gói A" /> */}
+        {/* <GridItem leftText="Người quản lý" rightText="Hoàng Văn Minh" /> */}
       </Grid>
     </>
   );
