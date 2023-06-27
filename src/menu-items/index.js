@@ -10,12 +10,14 @@ import profile from "./profile";
 
 // ==============================|| MENU ITEMS ||============================== //
 
-const isAuthenticated = true;
+const user = localStorage.getItem("user"); // Set the authentication status here
+const userData = JSON.parse(user);
 
 const menuItems = {
-  items: isAuthenticated
-    ? [dashboard, profile, booking, parking, staff, notification]
-    : [profile, booking],
+  items:
+    userData.role === "Manager"
+      ? [dashboard, profile, booking, parking, staff, notification]
+      : [profile, booking],
 };
 
 export default menuItems;

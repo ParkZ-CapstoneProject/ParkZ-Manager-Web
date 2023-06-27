@@ -12,12 +12,14 @@ import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 // import NextButton from "ui-component/buttons/next-button/NextButton";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import { useLocation, useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import { data } from "autoprefixer";
 
 const NewPassword = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
-  const { formData } = location.state;
+  const { email } = location.state;
 
   const navigate = useNavigate();
   // console.log(formData);
@@ -49,7 +51,7 @@ const NewPassword = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let passwordEntity = { email: formData, newPassword: newMk };
+    let passwordEntity = { email: email, newPassword: newMk };
     console.log("Email:", passwordEntity.email);
     fetch(`${apiLink}/password-management/forgot-password`, {
       method: "PUT",
@@ -67,12 +69,21 @@ const NewPassword = () => {
       .then((data) => {
         if (data === 204) {
           console.log("Thành công");
+          Swal.fire({
+            icon: "success",
+            text: "Cập nhật mật khẩu thành công!",
+          });
+          navigate("/login");
         } else {
           console.log(data);
         }
       })
       .catch((error) => {
         // Handle errors
+        Swal.fire({
+          icon: "error",
+          text: data.message,
+        });
         console.error(error);
       });
   };

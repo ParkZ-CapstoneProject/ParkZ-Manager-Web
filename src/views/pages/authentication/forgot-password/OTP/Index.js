@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Grid,
@@ -7,64 +7,105 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-
 import { Layout } from "ui-component/auth/layout";
 import NextButton from "ui-component/buttons/next-button/NextButton";
 import BackButton from "ui-component/buttons/back-button/BackButton";
 import CountTime from "./CountTime";
 import { useLocation } from "react-router";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const OTP = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [otp, setOTP] = useState();
+  const [otpGenerate, setOtpGenerate] = useState("");
+  const [elapsedTime, setElapsedTime] = useState(0); // state variable to track elapsed time
   const location = useLocation();
-  const { formData } = location.state;
-  // console.log(formData);
+  const { email } = location.state;
+  console.log(email);
+
+  const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
+
   const navigate = useNavigate();
   const handleInputOTP = (e) => {
     setOTP(e.target.value);
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
 
-    let verifyEntity = { email: formData, otpCode: otp };
-    fetch(`${apiLink}/otp-management/verify`, {
+  const generateOTP = () => {
+    const length = 6;
+    const chars = "0123456789";
+    let result = "";
+    for (let i = length; i > 0; --i) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    setOtpGenerate(result);
+    return result;
+  };
+
+  const sendOTPEmail = async (toEmail, otp) => {
+    const requestBody = {
+      email: toEmail,
+      otp: otp,
+    };
+
+    const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(verifyEntity),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((dataRes) => {
-        if (dataRes.statusCode !== 201) {
-          console.log("Message", dataRes.message);
-          Swal.fire({
-            icon: "error",
-            title: "Không đúng",
-            text: `${dataRes.message}`,
-          });
-        } else {
-          // const formData = new FormData(event.target);
-          // const data= Object.fromEntries(formData.entries());
-          // console.log("data2", data2);
-          navigate("/new-password", { state: { formData: formData } });
-        }
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error(error);
+      body: JSON.stringify(requestBody),
+    };
+    const response = await fetch(
+      `${apiLink}/otp-management/send-email-otp`,
+      requestOptions
+    );
+
+    const data = await response.json();
+
+    if (data.statusCode === 201) {
+      console.log("Send successfully!");
+    }
+  };
+
+  const sendOTP = () => {
+    const generatedOTP = generateOTP();
+    sendOTPEmail(email, generatedOTP);
+  };
+
+  useEffect(() => {
+    sendOTP();
+
+    const intervalId = setInterval(() => {
+      setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (elapsedTime === 60) {
+      sendOTP();
+      setElapsedTime(0);
+    }
+  }, [elapsedTime]);
+
+  console.log("otpGenerate", otpGenerate);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (otp.trim() === otpGenerate) {
+      navigate("/new-password", { state: { email: email } });
+    } else {
+      Swal.fire({
+        icon: "error",
+        text: "OTP không chính xác! Vui lòng thử lại!",
       });
-    // navigate("/otp", { state: { formData: data } });
+      return;
+    }
   };
 
   return (
@@ -101,7 +142,7 @@ const OTP = () => {
         </Grid>
 
         <Grid item>
-          <form onSubmit={handleSubmit} method="post">
+          <form>
             <Stack xs={12} justifyContent="center" spacing={1}>
               <Typography
                 color={theme.palette.secondary.dark}
@@ -115,20 +156,11 @@ const OTP = () => {
                 required
                 sx={{ width: "500px" }}
                 inputProps={{ maxLength: 100 }}
-                type="number"
+                type="number                "
                 name="otp"
-                // value={userData["email"]}
                 label="OTP"
                 color="secondary"
                 onChange={handleInputOTP}
-                // error={errorEmail || spaceInput}
-                // helperText={
-                //   spaceInput
-                //     ? "Không nhập khoảng cách"
-                //     : errorEmail
-                //     ? "Vui lòng nhập đúng email"
-                //     : ""
-                // }
               />
             </Stack>
 
@@ -150,7 +182,7 @@ const OTP = () => {
                 <BackButton />
               </Grid>
               <Grid item xs={5}>
-                <NextButton />
+                <NextButton onClick={handleSubmit} />
               </Grid>
             </Grid>
           </form>

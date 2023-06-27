@@ -47,7 +47,7 @@ const CountTime = () => {
             color={theme.palette.secondary.dark}
             variant={matchDownSM ? "subtitle2" : "subtitle2"}
           >
-            Gửi lại({formatTime(timeRemaining)})
+            Gửi lại({formatTime(timeRemaining)}s)
           </Typography>
         )}
       </div>
