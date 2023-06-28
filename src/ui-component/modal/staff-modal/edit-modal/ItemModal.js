@@ -175,21 +175,24 @@ const ItemModal = ({ modalType }) => {
 
         try {
           const response = await fetch(
-            `${apiUrl}/keeper-account-management/${staffId}`,
+            `${apiUrl}/managers/censorship/${staffId}`,
             {
               ...requestOptions,
               method: "PUT",
               body: JSON.stringify(data),
             }
           );
-          if (response.ok) {
-            // Handle successful response here
-            // You can close the modal or perform any other actions
-            handleCloseModal();
+          const dataRes = await response.json();
+          if (dataRes.statusCode === 204) {
+            Swal.fire({
+              icon: "success",
+              text: "Cập nhật thông tin nhân viên thành công!",
+            });
           } else {
-            // Handle error response here
-            // You can display an error message or perform any other actions
-            console.error("Error:", response.statusText);
+            Swal.fire({
+              icon: "error",
+              text: dataRes.message,
+            });
           }
         } catch (error) {
           // Handle network errors here
@@ -284,6 +287,9 @@ const ItemModal = ({ modalType }) => {
               onChange={handleInputEmail}
               error={errorEmail}
               helperText={errorEmail ? "Vui lòng nhập đúng email" : ""}
+              InputProps={{
+                readOnly: true,
+              }}
             />
           </Grid>
         </Grid>

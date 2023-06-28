@@ -115,22 +115,26 @@ export default function Staff() {
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 
-  const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
-    .build();
-  console.log("connection", connection);
-
-  connection
-    .start()
-    .then(() => console.log("Connection started!"))
-    .catch((err) => console.error("Error: ", err));
-
-  connection.on("LoadKeeperAccounts", () => {
-    fetchData();
-  });
-
   useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+      .build();
+    console.log("connection", connection);
+
+    connection
+      .start()
+      .then(() => console.log("Connection started!"))
+      .catch((err) => console.error("Error: ", err));
+
+    connection.on("LoadKeeperAccounts", () => {
+      fetchData();
+    });
+
     fetchData();
+
+    return () => {
+      connection.stop();
+    };
   }, []);
 
   const requestOptions = {

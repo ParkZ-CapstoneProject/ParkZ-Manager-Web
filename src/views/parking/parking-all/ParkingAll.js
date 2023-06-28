@@ -15,11 +15,14 @@ export default function MyParkingAll(props) {
 
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+
   const getCellValue = (params) => {
-    return params.value ? params.value : "-------";
+    return params.value == null ? false : params.value;
   };
 
-  const handleSwitchToggle = (params, field) => {
+  const handleSwitchToggle = async (params, field) => {
     Swal.fire({
       title: "Xác nhận?",
       text: "Bạn có chắc chắn muốn thay đổi!",
@@ -29,11 +32,82 @@ export default function MyParkingAll(props) {
       cancelButtonColor: "#d33",
       cancelButtonText: "Hủy",
       confirmButtonText: "Xác nhận!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire("Thành công!", "Trạng thái cập nhật thành công.", "success");
+        try {
+          if (field === "isActive") {
+            const requestOptions = {
+              method: "DELETE",
+              headers: {
+                Authorization: `bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            };
+            const response = await fetch(
+              `${apiUrl}/parkings/parking/${params.id}`,
+              requestOptions
+            );
+            if (response.status === 204) {
+              Swal.fire({
+                icon: "success",
+                text: "Cập nhật trạng thái thành công!",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                text: "Cập nhật trạng thái thất bạij!",
+              });
+            }
+          } else {
+            const requestOptions = {
+              method: "PUT",
+              headers: {
+                Authorization: `bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            };
+            const response = await fetch(
+              `${apiUrl}/parkings/parking/full/${params.id}`,
+              requestOptions
+            );
+            console.log("response", response.status);
+            if (response.status === 204) {
+              Swal.fire({
+                icon: "success",
+                text: "Cập nhật trạng thái thành công!",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                text: "Cập nhật trạng thái thất bạij!",
+              });
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
       }
     });
+  };
+
+  const renderCellIsActive = (params) => {
+    const handleChange = () => {
+      handleSwitchToggle(params, "isActive");
+    };
+
+    return (
+      <Switch checked={params.value} onChange={handleChange} color="primary" />
+    );
+  };
+
+  const renderCellIsFull = (params) => {
+    const handleChange = () => {
+      handleSwitchToggle(params, "isFull");
+    };
+
+    return (
+      <Switch checked={params.value} onChange={handleChange} color="primary" />
+    );
   };
 
   const columns = [
@@ -59,42 +133,18 @@ export default function MyParkingAll(props) {
       headerName: "Hoạt động",
       width: 120,
       valueGetter: getCellValue,
-      // renderCell: renderCellStatus,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) => {
-        const handleChange = () => {
-          handleSwitchToggle(params, "isActive");
-        };
-
-        return (
-          <Switch
-            checked={Boolean(params.value)}
-            onChange={handleChange}
-            color="primary"
-          />
-        );
-      },
+      renderCell: renderCellIsActive,
     },
     {
       field: "isFull",
       headerName: "Đã đầy",
       width: 120,
       valueGetter: getCellValue,
-      // renderCell: renderCellStatus,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) => {
-        const handleChange = () => {
-          handleSwitchToggle(params, "isFull");
-        };
-
-        return (
-          <div onClick={handleChange}>
-            <Switch checked={Boolean(params.value)} color="primary" />
-          </div>
-        );
-      },
+      renderCell: renderCellIsFull,
     },
     {
       field: "action",

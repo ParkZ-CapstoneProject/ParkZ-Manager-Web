@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import ParkingLocation from "./ParkingLocation";
+// import ParkingLocation from "./ParkingLocation";
 
 const LeftItem = ({ data }) => {
   const theme = useTheme();
-  // const markerPosition = [data?.latitude, data?.longitude];
-  // console.log("markerPosition", markerPosition);
+  // const [markerPosition, setMarkerPosition] = useState(null);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     const { latitude, longitude } = data;
+  //     setMarkerPosition([latitude, longitude]);
+  //   }
+  // }, [data]);
+
+  // if (!data) {
+  //   // Render a loading indicator if data is not loaded yet
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>
@@ -33,9 +44,11 @@ const LeftItem = ({ data }) => {
             {data?.address}
           </Typography>
         </Grid>
-        {/* <Grid item xs={3}>
-          <ParkingLocation markerPosition={markerPosition} />
-        </Grid> */}
+        {/* {markerPosition && (
+          <Grid item xs={3}>
+            <ParkingLocation markerPosition={markerPosition} />
+          </Grid>
+        )} */}
       </Grid>
     </>
   );

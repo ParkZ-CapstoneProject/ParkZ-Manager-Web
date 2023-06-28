@@ -3,8 +3,6 @@ import MyParkingAll from "./ParkingAll";
 import { useState } from "react";
 import Loading from "ui-component/back-drop/Loading";
 import * as signalR from "@microsoft/signalr";
-import { Typography } from "@mui/material";
-import { ImFilesEmpty } from "react-icons/im";
 
 const ParkingAll = () => {
   const [rows, setRows] = useState([]);
@@ -15,23 +13,30 @@ const ParkingAll = () => {
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 
-  const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
-    .build();
-  console.log("connection", connection);
-
-  connection
-    .start()
-    .then(() => console.log("Connection started!"))
-    .catch((err) => console.error("Error: ", err));
-
-  connection.on("LoadParkingInAdmin", () => {
-    fetchData();
-  });
-
   useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+      .build();
+
+    connection
+      .start()
+      .then(() => console.log("Connection started!"))
+      .catch((err) => console.error("Error: ", err));
+
+    connection.on("LoadParkingInAdmin", () => {
+      fetchData();
+    });
+
     fetchData();
+
+    return () => {
+      connection.stop();
+    };
   }, []);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const requestOptions = {
     method: "GET",
@@ -51,13 +56,6 @@ const ParkingAll = () => {
     setRows(data.data);
     setLoading(false);
   };
-
-  // const updateRow = (rowId, isActive) => {
-  //   const updatedRows = rows.map((row) =>
-  //     row.id === rowId ? { ...row, isActive } : row
-  //   );
-  //   setRows(updatedRows);
-  // };
 
   if (loading) {
     return <Loading loading={loading} />;

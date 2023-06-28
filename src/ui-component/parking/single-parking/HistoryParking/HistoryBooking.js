@@ -173,10 +173,10 @@ const HistoryBooking = () => {
         spacing={3}
         sx={{ marginTop: "2px" }}
       >
-        <Grid item xs={2.3}>
+        <Grid item xs={2.2}>
           <BoxContent name="Tổng số đơn" value="200" />
         </Grid>
-        <Grid item xs={2.3}>
+        <Grid item xs={2.2}>
           <BoxContent name="Đơn thành công" value="100" />
         </Grid>
         <Grid item xs={2.2}>

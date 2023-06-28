@@ -31,8 +31,9 @@ import Transitions from "ui-component/extend/Transitions";
 import User1 from "assets/images/users/user-round.svg";
 
 // assets
-import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
+import { IconLogout, IconSettings, IconUser, IconWallet } from "@tabler/icons";
 import ChangePassword from "ui-component/modal/password/ChangePassword";
+import WalletModal from "ui-component/modal/wallet/WalletModal";
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -47,6 +48,7 @@ const ProfileSection = () => {
   // const [sdm, setSdm] = useState(true);
   // const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenWallet, setIsOpenWallet] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   /**
@@ -65,12 +67,19 @@ const ProfileSection = () => {
       return;
     }
     setOpen(false);
+    setIsOpenWallet(false);
   };
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     handleClose(event);
     setIsOpen(true);
+  };
+
+  const handleListItemClickWallet = (event, index) => {
+    setSelectedIndex(index);
+    handleClose(event);
+    setIsOpenWallet(true);
   };
 
   const handleListItemProfileClick = (event, index, route) => {
@@ -84,6 +93,8 @@ const ProfileSection = () => {
 
   const handleListItemClickClose = () => {
     setIsOpen(false);
+    setIsOpenWallet(false);
+    setSelectedIndex(-1);
   };
 
   const handleToggle = () => {
@@ -225,9 +236,7 @@ const ProfileSection = () => {
                             borderRadius: `${customization.borderRadius}px`,
                           }}
                           selected={selectedIndex === 0}
-                          onClick={(event) =>
-                            handleListItemClick(event, 0, "/profile")
-                          }
+                          onClick={(event) => handleListItemClick(event, 0)}
                         >
                           <ListItemIcon>
                             <IconSettings stroke={1.5} size="1.3rem" />
@@ -280,7 +289,33 @@ const ProfileSection = () => {
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,
                           }}
-                          selected={selectedIndex === 4}
+                          selected={selectedIndex === 2}
+                          onClick={(event) =>
+                            handleListItemClickWallet(event, 2)
+                          }
+                        >
+                          <ListItemIcon>
+                            <IconWallet stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <Grid
+                                container
+                                spacing={1}
+                                justifyContent="space-between"
+                              >
+                                <Grid item>
+                                  <Typography variant="body2">Ví</Typography>
+                                </Grid>
+                              </Grid>
+                            }
+                          />
+                        </ListItemButton>
+                        <ListItemButton
+                          sx={{
+                            borderRadius: `${customization.borderRadius}px`,
+                          }}
+                          selected={selectedIndex === 3}
                           onClick={handleLogout}
                         >
                           <ListItemIcon>
@@ -303,6 +338,10 @@ const ProfileSection = () => {
       </Popper>
 
       <ChangePassword isOpen={isOpen} handleClose={handleListItemClickClose} />
+      <WalletModal
+        isOpen={isOpenWallet}
+        handleClose={handleListItemClickClose}
+      />
     </>
   );
 };
