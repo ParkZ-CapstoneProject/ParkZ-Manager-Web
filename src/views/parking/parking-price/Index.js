@@ -6,22 +6,26 @@ const ParkingPrice = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
-    .build();
-  console.log("connection", connection);
-
-  connection
-    .start()
-    .then(() => console.log("Connection started!"))
-    .catch((err) => console.error("Error: ", err));
-
-  connection.on("LoadParkingPrice", () => {
-    fetchDataPrice();
-  });
-
   useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+      .build();
+    console.log("connection", connection);
+
+    connection
+      .start()
+      .then(() => console.log("Connection started!"))
+      .catch((err) => console.error("Error: ", err));
+
+    connection.on("LoadParkingPrice", () => {
+      fetchDataPrice();
+    });
+
     fetchDataPrice();
+
+    return () => {
+      connection.stop();
+    };
   }, []);
 
   const token = localStorage.getItem("token");

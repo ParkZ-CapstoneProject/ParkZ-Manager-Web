@@ -10,22 +10,26 @@ const PriceDetail = () => {
 
   const token = localStorage.getItem("token");
 
-  const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
-    .build();
-  console.log("connection", connection);
-
-  connection
-    .start()
-    .then(() => console.log("Connection started!"))
-    .catch((err) => console.error("Error: ", err));
-
-  connection.on("LoadTimelineInManager", () => {
-    fetchDataPrice();
-  });
-
   useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+      .build();
+    console.log("connection", connection);
+
+    connection
+      .start()
+      .then(() => console.log("Connection started!"))
+      .catch((err) => console.error("Error: ", err));
+
+    connection.on("LoadTimelineInManager", () => {
+      fetchDataPrice();
+    });
+
     fetchDataPrice();
+
+    return () => {
+      connection.stop();
+    };
   }, []);
 
   const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;

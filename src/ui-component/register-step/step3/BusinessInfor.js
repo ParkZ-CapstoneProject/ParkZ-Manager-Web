@@ -79,6 +79,14 @@ const BusinessInfor = () => {
         title: "Điền tất cả ô nhập",
         text: "Bạn phải nhập thông tin và đồng ý các chính sách",
       });
+    } else if (isChecked === false) {
+      if (userData.businessLicenseUrl.length === 0) {
+        Swal.fire({
+          icon: "warning",
+          text: "Vui lòng cập nhật hình ảnh giấy phép kinh doanh!",
+        });
+        return;
+      }
     } else {
       Swal.fire({
         icon: "info",

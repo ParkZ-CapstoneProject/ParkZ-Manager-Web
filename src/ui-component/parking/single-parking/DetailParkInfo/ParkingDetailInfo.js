@@ -21,18 +21,17 @@ const ParkingDetailInfo = () => {
     },
   };
 
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await fetch(`${apiUrl}/parkings/${id}`, requestOptions);
+
+    const data = await response.json();
+    // console.log("data", data);
+    // console.log("data.data.parkingEntity", data.data.parkingEntity);
+    setData(data.data.parkingEntity);
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await fetch(`${apiUrl}/parkings/${id}`, requestOptions);
-
-      const data = await response.json();
-      // console.log("data", data);
-      // console.log("data.data.parkingEntity", data.data.parkingEntity);
-      setData(data.data.parkingEntity);
-      setLoading(false);
-    };
-
     fetchData();
   }, []);
   // console.log("data log", data?.description);
