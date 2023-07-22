@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCarSlots } from "store/parkingModalSlice";
 import FormInput from "./FormInput";
 
-const ParkingModal = ({ floorIndex }) => {
+const ParkingModal = ({ floorIndex, onModalDataChange }) => {
   const dispatch = useDispatch();
   const slotWidth = 150;
   const slotHeight = 120;
@@ -41,6 +41,7 @@ const ParkingModal = ({ floorIndex }) => {
       "parkingModalState",
       JSON.stringify(updatedParkingModal)
     );
+    onModalDataChange();
   };
 
   useEffect(() => {
@@ -193,6 +194,7 @@ const ParkingModal = ({ floorIndex }) => {
     );
 
     saveParkingModalState();
+    onModalDataChange();
   };
 
   return (

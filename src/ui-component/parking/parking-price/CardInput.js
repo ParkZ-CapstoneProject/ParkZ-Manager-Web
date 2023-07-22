@@ -31,30 +31,30 @@ const CardInput = (props) => {
     onInputChange(index, inputIndex + 1, newValue);
   };
 
-  useEffect(() => {
-    if (values[1] && values[2] && values[1] >= values[2]) {
-      let errorFieldName = "";
-      if (values[1] >= values[2]) {
-        errorFieldName = "end time";
-      } else {
-        errorFieldName = "start time";
-      }
-      Swal.fire({
-        icon: "error",
-        text: `Thời gian bắt đầu phải nhỏ hơn kết thúc! Vui lòng kiểm tra lại.`,
-      }).then(() => {
-        // clear the input value for the time field that caused the error
-        const newValues = [...values];
-        if (errorFieldName === "start time") {
-          newValues[1] = "";
-        } else {
-          newValues[2] = "";
-        }
-        setValues(newValues);
-      });
-      return;
-    }
-  }, [values]);
+  // useEffect(() => {
+  //   if (values[1] && values[2] && values[1] >= values[2]) {
+  //     let errorFieldName = "";
+  //     if (values[1] >= values[2]) {
+  //       errorFieldName = "end time";
+  //     } else {
+  //       errorFieldName = "start time";
+  //     }
+  //     Swal.fire({
+  //       icon: "error",
+  //       text: `Thời gian bắt đầu phải nhỏ hơn kết thúc! Vui lòng kiểm tra lại.`,
+  //     }).then(() => {
+  //       // clear the input value for the time field that caused the error
+  //       const newValues = [...values];
+  //       if (errorFieldName === "start time") {
+  //         newValues[1] = "";
+  //       } else {
+  //         newValues[2] = "";
+  //       }
+  //       setValues(newValues);
+  //     });
+  //     return;
+  //   }
+  // }, [values]);
 
   const handleReset = () => {
     setValues(inputValues);

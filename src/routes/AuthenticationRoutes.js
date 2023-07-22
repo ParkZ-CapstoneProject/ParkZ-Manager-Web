@@ -55,7 +55,7 @@ const NotFound = Loadable(
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
-const isAuthenticated = true;
+const user = localStorage.getItem("user"); // Set the authentication status here
 
 const AuthenticationRoutes = {
   path: "/",
@@ -86,15 +86,11 @@ const AuthenticationRoutes = {
       element: <NewPassword />,
     },
     {
-      path: "qr",
-      element: <QrCodeScan />,
-    },
-    {
-      path: "maps",
+      path: user ? "maps" : "login",
       element: <Maps />,
     },
     {
-      path: isAuthenticated ? "modal" : "login",
+      path: user ? "modal" : "login",
       element: <Modal />,
     },
     {

@@ -10,16 +10,15 @@ import { loadState, saveState } from "utils/ParkingModalLocalStorage";
 
 const ParkingModalInFloor = () => {
   const [currentFloor, setCurrentFloor] = useState(0);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const initialFloorsObj = loadState();
+  const [initialFloorsObj, setInitialFloorsObj] = useState(loadState());
   console.log("initialFloorsObj", initialFloorsObj);
 
   const initialFloorsArr = Object.values(initialFloorsObj);
   console.log("initialFloorsArr", initialFloorsArr);
 
-  const dispatch = useDispatch();
   const [floors, setFloors] = useState(() => {
     const initialState = initialFloorsArr;
     dispatch(initializeFloors(initialState));
@@ -87,7 +86,7 @@ const ParkingModalInFloor = () => {
             floorIds.push(data.data);
             console.log("floorIds", floorIds);
           }
-
+          // console.log("initialFloorsArr 2", initialFloorsArr);
           // Create carSlots for each floor
           const promises = [];
           initialFloorsArr.forEach((floor, i) => {
@@ -109,12 +108,16 @@ const ParkingModalInFloor = () => {
                   Authorization: `bearer ${token}`,
                 },
                 body: JSON.stringify(body),
-              }).then((response) => {
-                if (!response.ok) {
-                  throw new Error("Failed to create car slot"); // Throw an error if the response is not OK
-                }
-                return response.json();
-              });
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Failed to create car slot"); // Throw an error if the response is not OK
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log("data", data);
+                });
               promises.push(promise);
             });
           });
@@ -145,6 +148,10 @@ const ParkingModalInFloor = () => {
     });
   };
 
+  const handleModalDataChange = () => {
+    setInitialFloorsObj(loadState());
+  };
+
   return (
     <div>
       <Tabs
@@ -157,7 +164,10 @@ const ParkingModalInFloor = () => {
           <Tab key={index} label={`Tầng ${floor.floor}`} />
         ))}
       </Tabs>
-      <ParkingModal floorIndex={currentFloor} />
+      <ParkingModal
+        floorIndex={currentFloor}
+        onModalDataChange={handleModalDataChange}
+      />
       <Grid
         container
         direction="row"
