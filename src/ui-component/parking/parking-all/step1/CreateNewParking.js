@@ -147,7 +147,7 @@ const CreateNewParking = () => {
             },
           });
           const parkingId = await handleCreateNewPark();
-          if (parkingId !== "undefined" || parkingId === 0) {
+          if (parkingId) {
             const done = await handleUploadImage(parkingId);
             if (done) {
               saveState(floors);
@@ -191,9 +191,18 @@ const CreateNewParking = () => {
     const response = await fetch(`${apiUrl}/parkings/parking`, requestOptions);
 
     const data = await response.json();
-    console.log("data", data);
-    localStorage.setItem("parkingId", data.data);
-    return data.data;
+
+    if (data.data === 0) {
+      Swal.fire({
+        icon: "error",
+        text: data.message,
+      });
+      return;
+    } else {
+      console.log("data", data);
+      localStorage.setItem("parkingId", data.data);
+      return data.data;
+    }
   };
 
   const handleUploadImage = async (parkingId) => {
