@@ -38,7 +38,7 @@ const BusinessInfor = () => {
   // console.log("userData[back]", userData["backSide"]);
   // console.log("userData[avatar]", userData["avatar"]);
 
-  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
 
   const requestBody = {
     userEntity: {

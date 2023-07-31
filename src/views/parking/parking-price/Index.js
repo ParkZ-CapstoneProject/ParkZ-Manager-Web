@@ -33,7 +33,7 @@ const ParkingPrice = () => {
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 
-  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
 
   const requestOptions = {
     method: "GET",

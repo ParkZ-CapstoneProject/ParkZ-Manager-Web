@@ -11,7 +11,7 @@ const UploadAvatar = (props) => {
   const { setAvatar, avatar, edit } = props;
   const [image, setImage] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
-  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
 
   // const clientId = "053414b7c8fa0c7";
 

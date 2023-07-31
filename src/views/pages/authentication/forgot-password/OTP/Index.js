@@ -25,7 +25,7 @@ const OTP = () => {
   const { email } = location.state;
   console.log(email);
 
-  const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiLink = "https://parkzserver-001-site1.btempurl.com/api";
 
   const navigate = useNavigate();
   const handleInputOTP = (e) => {

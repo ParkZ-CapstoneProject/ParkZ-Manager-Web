@@ -24,7 +24,7 @@ const EmailInput = () => {
 
   const navigate = useNavigate();
 
-  const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiLink = "https://parkzserver-001-site1.btempurl.com/api";
   // console.log("apiLink", apiLink);
 
   const handleInputEmail = (event) => {

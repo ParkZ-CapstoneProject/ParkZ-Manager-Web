@@ -31,7 +31,7 @@ const PersonalInfor = () => {
   const [avatarFile, setAvatarFile] = useState([]);
   // const [loading, setLoading] = useState(false);
 
-  const apiUpload = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiUpload = "https://parkzserver-001-site1.btempurl.com/api";
 
   const urlAPICheck = "https://api-uat.unicloud.ai/ekyc/kyc-documents-sides";
   const username = "sst-tester";
