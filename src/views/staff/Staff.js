@@ -85,7 +85,7 @@ const columns = [
     valueGetter: (params) => formatDateOfBirth(params.row.dateOfBirth),
   },
   { field: "gender", headerName: "Giới tính", width: 160 },
-  { field: "parkingName", headerName: "Thuộc bãi", width: 260 },
+  { field: "parkingName", headerName: "Thuộc bãi", width: 240 },
   {
     field: "isActive",
     headerName: "Hoạt động",
