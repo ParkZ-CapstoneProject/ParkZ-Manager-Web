@@ -11,16 +11,20 @@ import { closeModal } from "store/modalReducer";
 import ItemModal from "./ItemModal";
 
 const style = {
-  position: "absolute",
+  position: "fixed",
+  overFlow: "auto",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "40%",
-  height: "92%",
+  minWidth: "40%",
+  maxWidth: "40%",
+  minHeight: "91%",
+  maxHeight: "93%",
   bgcolor: "background.paper",
   borderRadius: "5px",
   boxShadow: 12,
   p: 4,
+  zIndex: 9999,
 };
 
 export default function DeleteModalStaff({ modalType }) {
