@@ -23,7 +23,6 @@ const Page = () => {
 
   const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
   const FCMToken = localStorage.getItem("FCMToken");
-  console.log("FCMToken", FCMToken);
 
   const requestBody = {
     email: email,
@@ -53,10 +52,7 @@ const Page = () => {
     });
 
     try {
-      fetch(
-        "https://parkzserver-001-site1.btempurl.com/api/business-manager-authentication",
-        requestOptions
-      )
+      fetch(`${apiUrl}/business-manager-authentication`, requestOptions)
         .then((response) => {
           return response.json();
         })
