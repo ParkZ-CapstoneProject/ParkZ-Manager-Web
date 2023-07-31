@@ -76,33 +76,33 @@ const Page = () => {
 
             // Decode the payload using the base64-decoding function
             const user = JSON.parse(atob(parts[1]));
-            const request = {
-              userId: user._id,
-              devicetoken: FCMToken,
-            };
-            const requestOptionsPut = {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(request),
-            };
+            // const request = {
+            //   userId: user._id,
+            //   devicetoken: FCMToken,
+            // };
+            // const requestOptionsPut = {
+            //   method: "PUT",
+            //   headers: {
+            //     "Content-Type": "application/json",
+            //   },
+            //   body: JSON.stringify(request),
+            // };
 
             if (user.role === "Manager" || user.role === "Keeper") {
-              fetch(`${apiUrl}/DeviceToken`, requestOptionsPut).then(
-                (response) => {
-                  if (response.ok) {
-                    console.log("response", response);
-                  }
-                }
-              );
+              // fetch(`${apiUrl}/DeviceToken`, requestOptionsPut).then(
+              //   (response) => {
+              //     if (response.ok) {
+              //       console.log("response", response);
+              //     }
+              //   }
+              // );
               localStorage.setItem("token", data.data.token);
               localStorage.setItem("user", JSON.stringify(user));
               Swal.close();
               navigate("/dashboard");
             }
           }
-          console.log("res", res);
+          // console.log("res", res);
         });
     } catch (error) {
       console.log("error", error);
