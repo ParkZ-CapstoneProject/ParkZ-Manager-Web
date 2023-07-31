@@ -11,10 +11,14 @@ import LoginButton from "ui-component/buttons/login-button/LoginButton";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { updateToken } from "store/tokenSlice";
 
 const Page = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -94,6 +98,7 @@ const Page = () => {
               );
               localStorage.setItem("token", data.data.token);
               localStorage.setItem("user", JSON.stringify(user));
+              dispatch(updateToken(data.data.token));
               Swal.close();
               navigate("/dashboard");
             }
