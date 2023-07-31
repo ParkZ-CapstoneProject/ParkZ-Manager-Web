@@ -3,7 +3,6 @@ import parking from "./parking";
 import booking from "./booking";
 import staff from "./staff";
 // import traffic from "./traffic";
-import notification from "./notification";
 import profile from "./profile";
 import vnpay from "./vnpay";
 // import utilities from "./utilities";
