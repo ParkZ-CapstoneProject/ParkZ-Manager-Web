@@ -358,8 +358,8 @@ const ItemModal = ({ modalType }) => {
               >
                 {parkings.map((parking) => (
                   <MenuItem
-                    fullWidth
-                    sx={{ display: "block", width: "100%" }}
+                    sx={{ width: "100%" }}
+                    key={parking.parkingId}
                     value={parking.parkingId}
                   >
                     {parking.name}

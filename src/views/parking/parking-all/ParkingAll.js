@@ -173,6 +173,7 @@ export default function MyParkingAll(props) {
             <DataGrid
               rows={rows}
               rowHeight={70}
+              autoHeight
               getRowId={(row) => row.parkingId}
               columns={columns}
               initialState={{

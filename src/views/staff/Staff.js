@@ -199,6 +199,7 @@ export default function Staff() {
           <DataGrid
             rows={rows}
             rowHeight={70}
+            autoHeight
             getRowId={(row) => row.userId}
             columns={columns}
             initialState={{
