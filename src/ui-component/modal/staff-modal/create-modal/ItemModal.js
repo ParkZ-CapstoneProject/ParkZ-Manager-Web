@@ -93,7 +93,7 @@ const ItemModal = ({ modalType }) => {
   useEffect(() => {
     fetchDataParking();
   }, []);
-  console.log("avatar", parkings);
+  console.log("avatar", avatar);
 
   const [gender, setGender] = useState("Nam");
 
