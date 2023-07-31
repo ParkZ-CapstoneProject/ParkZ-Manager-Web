@@ -106,6 +106,7 @@ const ItemModal = ({ modalType }) => {
   };
 
   const handleChangeParking = (e) => {
+    console.log("clicked");
     setParkingId(e.target.value);
   };
 
@@ -365,16 +366,9 @@ const ItemModal = ({ modalType }) => {
                 onChange={handleChangeParking}
               >
                 {parkings.map((parking) => (
-                  <div
-                    sx={{
-                      width: "100%",
-                    }}
-                    key={parking.parkingId}
-                  >
-                    <MenuItem sx={{ width: "100%" }} value={parking.parkingId}>
-                      {parking.name}
-                    </MenuItem>
-                  </div>
+                  <MenuItem sx={{ width: "100%" }} value={parking.parkingId}>
+                    {parking.name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
