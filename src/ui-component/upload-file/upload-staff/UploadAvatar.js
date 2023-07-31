@@ -21,7 +21,7 @@ const UploadAvatar = (props) => {
       setIsUploaded(true);
     }
   }, [avatar]);
-  console.log("avatar", avatar);
+  // console.log("avatar", avatar);
   console.log("image", image);
 
   function handleImageChange(e) {
