@@ -12,6 +12,7 @@ import vnpay from "./vnpay";
 // ==============================|| MENU ITEMS ||============================== //
 
 const user = localStorage.getItem("user"); // Set the authentication status here
+console.log("user", user);
 
 const menuItems = {
   items: user ? [dashboard, profile, booking, parking, staff, vnpay] : [],
