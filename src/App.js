@@ -20,6 +20,7 @@ import { getMessagingToken, onMessageListener } from "utils/config";
 const App = () => {
   const customization = useSelector((state) => state.customization);
   const [notification, setNotification] = useState({ title: "", body: "" });
+
   // const [token, setToken] = useState();
   // console.log('message token: ' ,messaging);
   useEffect(() => {

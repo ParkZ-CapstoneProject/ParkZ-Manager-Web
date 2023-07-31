@@ -60,7 +60,13 @@ const RightItem = ({ data }) => {
         />
         <GridItem
           leftText="Đánh giá"
-          rightText={<Rating value={data?.stars} readOnly />}
+          rightText={
+            data?.stars ? (
+              <Rating value={data?.stars} readOnly />
+            ) : (
+              "Chưa có đánh giá"
+            )
+          }
           color={theme.palette.primary.main}
         />
         <Grid item>

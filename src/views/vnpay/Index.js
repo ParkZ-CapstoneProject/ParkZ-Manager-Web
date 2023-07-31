@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import MyParkingAll from "./ParkingAll";
 import { useState } from "react";
 import Loading from "ui-component/back-drop/Loading";
 import * as signalR from "@microsoft/signalr";
+import MyVNPay from "./VNPay";
 
-const ParkingAll = () => {
+const VNPay = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +24,7 @@ const ParkingAll = () => {
       .then(() => console.log("Connection started!"))
       .catch((err) => console.error("Error: ", err));
 
-    connection.on("LoadParkingInAdmin", () => {
+    connection.on("LoadVnPays", () => {
       fetchData();
     });
 
@@ -50,10 +50,11 @@ const ParkingAll = () => {
   const fetchData = async () => {
     setLoading(true);
     const response = await fetch(
-      `${apiUrl}/parkings?managerId=${userData._id}&pageNo=1&pageSize=11`,
+      `${apiUrl}/vnpay/user/${userData._id}`,
       requestOptions
     );
     const data = await response.json();
+    console.log("data.data", data.data);
     setRows(data.data);
     setLoading(false);
   };
@@ -61,12 +62,13 @@ const ParkingAll = () => {
   if (loading) {
     return <Loading loading={loading} />;
   }
+  console.log("type: ", typeof rows);
 
   return (
     <>
-      <MyParkingAll rows={rows} />
+      <MyVNPay rows={rows} />
     </>
   );
 };
 
-export default ParkingAll;
+export default VNPay;

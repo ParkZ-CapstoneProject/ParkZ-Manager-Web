@@ -12,25 +12,24 @@ import ItemModal from "./ItemModal";
 
 const style = {
   position: "absolute",
-  overFlow: "auto",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "40%",
-  height: "90%",
+  width: "25%",
+  height: "43%",
   bgcolor: "background.paper",
   borderRadius: "5px",
   boxShadow: 12,
   p: 4,
 };
 
-export default function CreateModalStaff({ modalType }) {
+export default function DelEdit(props) {
+  const { openDetailDelete, setOpenDetailDelete, vnPayId, detail } = props;
+
   const theme = useTheme();
-  const isOpen = useSelector((state) => state.modal.modals.includes(modalType));
-  const dispatch = useDispatch();
 
   const handleClose = () => {
-    dispatch(closeModal(modalType));
+    setOpenDetailDelete(false);
   };
 
   return (
@@ -39,7 +38,7 @@ export default function CreateModalStaff({ modalType }) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={isOpen}
+        open={openDetailDelete}
         onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
@@ -50,7 +49,7 @@ export default function CreateModalStaff({ modalType }) {
         }}
         sx={{ border: "none" }}
       >
-        <Fade in={isOpen}>
+        <Fade in={openDetailDelete}>
           <Box sx={style}>
             <IconButton
               onClick={handleClose}
@@ -64,7 +63,11 @@ export default function CreateModalStaff({ modalType }) {
             >
               <CloseIcon />
             </IconButton>
-            <ItemModal modalType={modalType} />
+            <ItemModal
+              vnPayId={vnPayId}
+              detail={detail}
+              setOpenDetailDelete={setOpenDetailDelete}
+            />
           </Box>
         </Fade>
       </Modal>

@@ -9,10 +9,11 @@ const PriceDetail = () => {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
+  const signalRUrl = process.env.REACT_APP_BASE_URL_SIGNALR;
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+      .withUrl(`${signalRUrl}`)
       .build();
     console.log("connection", connection);
 

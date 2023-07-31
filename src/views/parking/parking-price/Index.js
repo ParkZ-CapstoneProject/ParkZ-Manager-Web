@@ -5,10 +5,11 @@ import * as signalR from "@microsoft/signalr";
 const ParkingPrice = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const signalRUrl = process.env.REACT_APP_BASE_URL_SIGNALR;
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://parkzwebapiver2-001-site1.ctempurl.com/parkz")
+      .withUrl(`${signalRUrl}`)
       .build();
     console.log("connection", connection);
 

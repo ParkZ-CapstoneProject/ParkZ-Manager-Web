@@ -4,6 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import EditButton from "ui-component/buttons/edit-button/EditButton";
 
 const Business = (props) => {
+  const { data } = props;
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -34,7 +35,7 @@ const Business = (props) => {
             gutterBottom
             variant={matchDownSM ? "h3" : "h3"}
           >
-            {businessName}
+            {data?.businessProfileName}
           </Typography>
         </Grid>
         <Grid item xs={10} sx={{ marginLeft: "3%" }}>
@@ -50,26 +51,38 @@ const Business = (props) => {
             gutterBottom
             variant={matchDownSM ? "h3" : "h3"}
           >
-            {address}
+            {data?.address}
           </Typography>
         </Grid>
-        <Grid item xs={10} sx={{ marginLeft: "3%" }}>
-          <Typography
-            color={theme.palette.secondary.main}
-            gutterBottom
-            variant={matchDownSM ? "h4" : "h4"}
-          >
-            Giấy phép kinh doanh
-          </Typography>
-          <Avatar
-            alt="front"
-            src="https://media.phunutoday.vn/files/content/2022/12/20/can-cuoc-cong-dan-gan-chip-31280x720-800-resize-0938.jpg"
-            variant="rounded"
-            sx={{ width: "80%", height: "80%" }}
-          />
-        </Grid>
+        {data?.businessLicense ? (
+          <Grid item xs={10} sx={{ marginLeft: "3%" }}>
+            <Typography
+              color={theme.palette.secondary.main}
+              gutterBottom
+              variant={matchDownSM ? "h4" : "h4"}
+            >
+              Giấy phép kinh doanh
+            </Typography>
+            <Avatar
+              alt="front"
+              src={data?.businessLicense}
+              variant="rounded"
+              sx={{ width: "80%", height: "80%" }}
+            />
+          </Grid>
+        ) : (
+          <Grid item xs={10} sx={{ marginLeft: "3%" }}>
+            <Typography
+              color={theme.palette.secondary.main}
+              gutterBottom
+              variant={matchDownSM ? "h4" : "h4"}
+            >
+              Hộ kinh doanh gia đình
+            </Typography>
+          </Grid>
+        )}
       </Grid>
-      <Grid
+      {/* <Grid
         container
         direction="row"
         justifyContent="flex-end"
@@ -79,7 +92,7 @@ const Business = (props) => {
         <Grid item xs={2}>
           <EditButton />
         </Grid>
-      </Grid>
+      </Grid> */}
     </>
   );
 };

@@ -55,6 +55,8 @@ const ParkingPriceDetailParking = Loadable(
   )
 );
 
+const VNPay = Loadable(lazy(() => import("views/vnpay/Index")));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -116,6 +118,10 @@ const MainRoutes = {
     {
       path: `/price-detail-parking/:priceId`,
       element: <ParkingPriceDetailParking />,
+    },
+    {
+      path: `/vnpay`,
+      element: <VNPay />,
     },
   ],
 };

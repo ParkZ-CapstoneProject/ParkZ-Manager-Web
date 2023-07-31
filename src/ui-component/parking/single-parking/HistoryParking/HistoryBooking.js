@@ -1,6 +1,8 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTableItem from "./DataTableItem";
+import { useParams } from "react-router";
+import Loading from "ui-component/back-drop/Loading";
 
 const BoxContent = ({ name, value }) => {
   return (
@@ -29,141 +31,74 @@ const BoxContent = ({ name, value }) => {
 };
 
 const HistoryBooking = () => {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Nguyễn Thị Minh Khai",
-      position: "A4",
-      floor: "tầng 1",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: null,
-      guestPhone: null,
-      status: "Khởi tạo",
+  const { parkingId } = useParams();
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [totalBooking, setTotalBooking] = useState(0);
+  const [cancelBooking, setCancelBooking] = useState(0);
+  const [doneBooking, setDoneBooking] = useState(0);
+  const [bookingDay, setBookingDay] = useState(0);
+  const [bookingWatining, setBookingWatining] = useState(0);
+
+  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const token = localStorage.getItem("token");
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+      "Content-Type": "application/json", // Replace with the appropriate content type
     },
-    {
-      id: 2,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Đỗ Anh Linh",
-      position: "A4",
-      floor: "tầng 2",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: "Nguyễn Thị Minh Khai",
-      guestPhone: null,
-      status: "Thành công",
-    },
-    {
-      id: 3,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Nguyễn Thị Minh Khai",
-      position: "A4",
-      floor: "tầng 1",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: null,
-      guestPhone: null,
-      status: "Đã duyệt",
-    },
-    {
-      id: 4,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Nguyễn Thị Minh Khai",
-      position: "A4",
-      floor: "tầng 1",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: null,
-      guestPhone: null,
-      status: "Vào bãi",
-    },
-    {
-      id: 5,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Nguyễn Thị Minh Khai",
-      position: "A4",
-      floor: "tầng 1",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: null,
-      guestPhone: null,
-      status: "Chờ thanh toán",
-    },
-    {
-      id: 6,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Nguyễn Thị Minh Khai",
-      position: "A4",
-      floor: "tầng 1",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: null,
-      guestPhone: null,
-      status: "Ra bãi",
-    },
-    {
-      id: 7,
-      avatar:
-        "https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
-      name: "Nguyễn Thị Minh Khai",
-      position: "A4",
-      floor: "tầng 2",
-      startTime: "7 : 00 AM",
-      totalPrice: "20,000 vnđ",
-      phone: "012341234132",
-      licensePlate: "60A - 12345",
-      parkingName: "Hoàng Văn Thụ",
-      checkInTime: "7 AM",
-      checkOutTime: null,
-      paymentMethod: null,
-      guestName: null,
-      guestPhone: null,
-      status: "Hủy đơn",
-    },
-  ]);
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `${apiUrl}/booking-management/parkings/${parkingId}?pageNo=1&pageSize=11`,
+      requestOptions
+    );
+    const data = await response.json();
+    setRows(data.data);
+    console.log("data.data", data.data);
+    setLoading(false);
+  };
+
+  const fetchBookingDoneCancel = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `${apiUrl}/chart/pie/parkings/${parkingId}/done-cancel-booking`,
+      requestOptions
+    );
+    const data = await response.json();
+    setDoneBooking(data.data.numberOfDoneBooking);
+    setCancelBooking(data.data.numberOfCancelBooking);
+    console.log("data.data", data.data);
+    setLoading(false);
+  };
+
+  const fetchBookingDayWatting = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `${apiUrl}/chart/card/parkings/${parkingId}/statistic-card`,
+      requestOptions
+    );
+    const data = await response.json();
+    setTotalBooking(data.data.numberOfOrders);
+    setBookingDay(data.data.numberOfOrdersInCurrentDay);
+    setBookingWatining(data.data.waitingOrder);
+    console.log("data.data", data.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchBookingDoneCancel();
+  }, []);
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
+
   return (
     <>
       <Grid
@@ -174,19 +109,19 @@ const HistoryBooking = () => {
         sx={{ marginTop: "2px" }}
       >
         <Grid item xs={2.2}>
-          <BoxContent name="Tổng số đơn" value="200" />
+          <BoxContent name="Tổng số đơn" value={totalBooking} />
         </Grid>
         <Grid item xs={2.2}>
-          <BoxContent name="Đơn thành công" value="100" />
+          <BoxContent name="Đơn hoàn thành" value={doneBooking} />
         </Grid>
         <Grid item xs={2.2}>
-          <BoxContent name="Đơn trong ngày" value="250" />
+          <BoxContent name="Đơn trong ngày" value={bookingDay} />
         </Grid>
         <Grid item xs={2.2}>
-          <BoxContent name="Số đơn hủy" value="15" />
+          <BoxContent name="Số đơn hủy" value={cancelBooking} />
         </Grid>
         <Grid item xs={2.2}>
-          <BoxContent name="Số đơn chờ" value="15" />
+          <BoxContent name="Số đơn chờ" value={bookingWatining} />
         </Grid>
       </Grid>
 

@@ -19,6 +19,7 @@ import UploadBusinessLicense from "ui-component/upload-file-antd/UploadBusinessL
 import Swal from "sweetalert2";
 import axios from "axios";
 import { data } from "autoprefixer";
+import FeeCardBusiness from "ui-component/cards/FeeCard/FeeCardBusiness";
 
 const BusinessInfor = () => {
   const theme = useTheme();
@@ -266,6 +267,10 @@ const BusinessInfor = () => {
             color="secondary"
           />
         </Stack>
+
+        <Grid item sx={{ marginTop: "20px" }}>
+          <FeeCardBusiness />
+        </Grid>
 
         <Grid
           item
