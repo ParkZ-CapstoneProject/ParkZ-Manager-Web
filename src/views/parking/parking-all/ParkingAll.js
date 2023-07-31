@@ -9,11 +9,24 @@ import SubCardStaff from "ui-component/cards/SubCardStaff";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import { useNavigate } from "react-router";
 import { ImFilesEmpty } from "react-icons/im";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function MyParkingAll(props) {
   const { rows } = props;
 
   const navigate = useNavigate();
+
+  const dataGridRef = useRef(null);
+
+  useEffect(() => {
+    if (dataGridRef.current) {
+      // get the height of the DataGrid using the ref
+      const height = dataGridRef.current.clientHeight;
+      // set the height of the outer div to be the same as the DataGrid height
+      document.getElementById("outer-div").style.height = `${height}px`;
+    }
+  }, [rows]);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
@@ -124,7 +137,7 @@ export default function MyParkingAll(props) {
     {
       field: "carSpot",
       headerName: "Vị trí ô tô",
-      type: "number",
+      // type: "number",
       width: 180,
       valueGetter: getCellValue,
     },
@@ -169,7 +182,7 @@ export default function MyParkingAll(props) {
         </Grid>
 
         {rows ? (
-          <div style={{ height: "500px", width: "100%" }}>
+          <div id="outer-div">
             <DataGrid
               rows={rows}
               rowHeight={70}
@@ -184,6 +197,7 @@ export default function MyParkingAll(props) {
               pageSizeOptions={[5, 10, 25]}
               checkboxSelection
               style={{ paddingTop: "12px" }}
+              ref={dataGridRef}
             />
           </div>
         ) : (

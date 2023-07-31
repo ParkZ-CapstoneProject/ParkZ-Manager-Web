@@ -6,6 +6,8 @@ import SubCard from "ui-component/cards/SubCard";
 import { Chip, Grid, Skeleton } from "@mui/material";
 import Menu from "ui-component/booking/Menu";
 import Loading from "ui-component/back-drop/Loading";
+import { useRef } from "react";
+import { useEffect } from "react";
 // import Loading from "ui-component/back-drop/Loading";
 
 const getCellValue = (params) => {
@@ -167,11 +169,20 @@ const columns = [
 
 export default function DataTable(props) {
   const { rows, loading } = props;
+  const dataGridRef = useRef(null);
   // const navigate = useNavigate();
 
   // const handleOpenScanner = () => {
   //   navigate("/qr");
   // };
+  useEffect(() => {
+    if (dataGridRef.current) {
+      // get the height of the DataGrid using the ref
+      const height = dataGridRef.current.clientHeight;
+      // set the height of the outer div to be the same as the DataGrid height
+      document.getElementById("outer-div").style.height = `${height}px`;
+    }
+  }, [rows]);
 
   if (loading) {
     // Render the Skeleton components or any other loading indicator
@@ -202,7 +213,7 @@ export default function DataTable(props) {
             <SearchSection />
           </SubCard>
         </Grid>
-        <div style={{ height: "500px", width: "100%" }}>
+        <div id="outer-div">
           <DataGrid
             rows={rows}
             rowHeight={70}
@@ -217,6 +228,7 @@ export default function DataTable(props) {
             pageSizeOptions={[5, 10, 25]}
             checkboxSelection
             style={{ paddingTop: "12px" }}
+            ref={dataGridRef}
           />
         </div>
       </MainCard>

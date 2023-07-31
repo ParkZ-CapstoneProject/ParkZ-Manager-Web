@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
+import Loading from "ui-component/back-drop/Loading";
 // import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 import UploadAvatar from "ui-component/upload-file/upload-staff/UploadAvatar";
@@ -24,6 +25,7 @@ const ItemModal = ({ modalType }) => {
   const dispatch = useDispatch();
 
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
@@ -37,6 +39,7 @@ const ItemModal = ({ modalType }) => {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     const response = await fetch(
       `${apiUrl}/keeper-account-management/${staffId}`,
       requestOptions
@@ -45,6 +48,7 @@ const ItemModal = ({ modalType }) => {
     const data = await response.json();
     if (data) {
       setData(data.data);
+      setLoading(false);
     }
   };
 
@@ -55,6 +59,10 @@ const ItemModal = ({ modalType }) => {
   const handleCloseModal = () => {
     dispatch(closeModal(modalType));
   };
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
 
   return (
     <>

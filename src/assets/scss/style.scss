@@ -182,10 +182,10 @@
   background-color: #f1f1f1 !important;
 }
 
-.css-8ybyx8-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
-  width: 20%;
-  left: 900px !important;
-}
+// .css-8ybyx8-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
+//   width: 20%;
+//   left: 900px !important;
+// }
 
 .css-y599qu {
   min-height: 65px !important;
@@ -196,14 +196,14 @@
   border: none;
 }
 
-.css-g1ne49 {
-  width: 20% !important;
-  left: 900px !important;
-}
-
-// .MuiDataGrid-columnHeaderTitleContainer {
-//   justify-content: center;
+// .css-g1ne49 {
+//   width: 20% !important;
+//   left: 900px !important;
 // }
+
+.MuiDataGrid-columnHeaderTitleContainer {
+  justify-content: flex-start;
+}
 // .MuiDataGrid-row {
 //   max-height: 58px !important;
 //   min-height: 58px !important;

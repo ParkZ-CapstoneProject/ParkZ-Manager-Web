@@ -8,6 +8,7 @@ import DeleteButton from "ui-component/buttons/delete-button/DeleteButton";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
 import Swal from "sweetalert2";
+import Loading from "ui-component/back-drop/Loading";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
@@ -15,6 +16,7 @@ const ItemModal = ({ modalType }) => {
 
   const dispatch = useDispatch();
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
@@ -28,6 +30,7 @@ const ItemModal = ({ modalType }) => {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     const response = await fetch(
       `${apiUrl}/keeper-account-management/${staffId}`,
       requestOptions
@@ -36,6 +39,7 @@ const ItemModal = ({ modalType }) => {
     const data = await response.json();
     if (data) {
       setData(data.data);
+      setLoading(false);
     }
   };
 
@@ -108,6 +112,11 @@ const ItemModal = ({ modalType }) => {
       }
     });
   };
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
+
   return (
     <>
       <Grid
