@@ -206,6 +206,7 @@ export default function DataTable(props) {
           <DataGrid
             rows={rows}
             rowHeight={70}
+            autoHeight
             columns={columns}
             getRowId={(row) => row.bookingId}
             initialState={{

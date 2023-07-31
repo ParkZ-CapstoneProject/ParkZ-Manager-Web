@@ -42,6 +42,7 @@ const ProfileSection = () => {
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 

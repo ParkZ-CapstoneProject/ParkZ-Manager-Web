@@ -16,7 +16,6 @@ import UploadAvatar from "ui-component/upload-file/upload-staff/UploadAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
 import validator from "validator";
-import DialogEdit from "./DialogEdit";
 import Swal from "sweetalert2";
 
 const ItemModal = ({ modalType }) => {
@@ -76,6 +75,8 @@ const ItemModal = ({ modalType }) => {
     const responseData = await response.json();
     setParkings(responseData.data);
   };
+
+  console.log("avatar", avatar);
 
   useEffect(() => {
     fetchData();
@@ -173,13 +174,21 @@ const ItemModal = ({ modalType }) => {
           },
         });
 
+        const body = {
+          userId: staffId,
+          name: data.name,
+          phone: data.phone,
+          avatar: avatar ? avatar : data.avatar,
+          dateOfBirth: data.dateOfBirth,
+          gender: data.gender,
+        };
         try {
           const response = await fetch(
             `${apiUrl}/managers/censorship/${staffId}`,
             {
               ...requestOptions,
               method: "PUT",
-              body: JSON.stringify(data),
+              body: JSON.stringify(body),
             }
           );
           const dataRes = await response.json();
