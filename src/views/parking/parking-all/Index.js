@@ -8,7 +8,7 @@ const ParkingAll = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const signalRUrl = process.env.REACT_APP_BASE_URL_SIGNALR;
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here

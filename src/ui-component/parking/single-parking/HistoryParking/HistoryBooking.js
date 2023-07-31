@@ -40,7 +40,7 @@ const HistoryBooking = () => {
   const [bookingDay, setBookingDay] = useState(0);
   const [bookingWatining, setBookingWatining] = useState(0);
 
-  const apiUrl = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
 
   const requestOptions = {

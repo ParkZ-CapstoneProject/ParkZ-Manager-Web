@@ -27,7 +27,7 @@ const NewPassword = () => {
   const [errorNewMk, setErrorNewMk] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-  const apiLink = process.env.REACT_APP_BASE_URL_API_APP;
+  const apiLink = "https://parkzserver-001-site1.btempurl.com/api";
 
   const handleInputNewPassword = (event) => {
     const { value } = event.target;
