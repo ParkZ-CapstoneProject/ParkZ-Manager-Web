@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
 import validator from "validator";
 import Swal from "sweetalert2";
+import Loading from "ui-component/back-drop/Loading";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
@@ -33,12 +34,14 @@ const ItemModal = ({ modalType }) => {
     phone: "",
     avatar: "",
     parkingId: "",
+    parkingName: "",
   };
 
   const [data, setData] = useState(defaultData);
   const [parkings, setParkings] = useState([]);
   const [errorEmail, setErrorEmail] = useState(false);
   const [avatar, setAvatar] = useState("");
+  const [loading, setLoading] = useState(false);
   const edit = true;
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
@@ -55,18 +58,22 @@ const ItemModal = ({ modalType }) => {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     const response = await fetch(
       `${apiUrl}/keeper-account-management/${staffId}`,
       requestOptions
     );
 
     const responseData = await response.json();
+    console.log("responseData.data", responseData.data);
     if (responseData) {
       setData(responseData.data);
+      setLoading(false);
     }
   };
 
   const fetchDataParking = async () => {
+    setLoading(true);
     const response = await fetch(
       `${apiUrl}/parkings?managerId=${userData._id}&pageNo=1&pageSize=22`,
       requestOptions
@@ -74,6 +81,7 @@ const ItemModal = ({ modalType }) => {
 
     const responseData = await response.json();
     setParkings(responseData.data);
+    setLoading(false);
   };
 
   console.log("avatar", avatar);
@@ -210,6 +218,10 @@ const ItemModal = ({ modalType }) => {
       }
     });
   };
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
 
   return (
     <>

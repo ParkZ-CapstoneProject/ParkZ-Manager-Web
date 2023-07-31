@@ -45,6 +45,7 @@ const ProfileSection = () => {
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
 
   // const [sdm, setSdm] = useState(true);
   // const [value, setValue] = useState("");
@@ -52,6 +53,29 @@ const ProfileSection = () => {
   const [isOpenWallet, setIsOpenWallet] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
+  const [avatar, setAvatar] = useState();
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+      "Content-Type": "application/json", // Replace with the appropriate content type
+    },
+  };
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `${apiUrl}/business-profile/business-profile/${userData._id}`,
+      requestOptions
+    );
+    const data = await response.json();
+    console.log("data.data", data.data);
+    setAvatar(data.data.avatar);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
@@ -135,7 +159,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={avatar ? avatar : User1}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: "8px 0 8px 8px !important",

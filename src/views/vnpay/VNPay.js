@@ -9,12 +9,25 @@ import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import { useState } from "react";
 import Create from "ui-component/modal/vnpay/create-modal/Create";
 import Menu from "ui-component/vnpay/Menu";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function MyVNPay(props) {
   const { rows } = props;
   console.log("rows", rows);
 
   const [open, setOpen] = useState(false);
+
+  const dataGridRef = useRef(null);
+
+  useEffect(() => {
+    if (dataGridRef.current) {
+      // get the height of the DataGrid using the ref
+      const height = dataGridRef.current.clientHeight;
+      // set the height of the outer div to be the same as the DataGrid height
+      document.getElementById("outer-div").style.height = `${height}px`;
+    }
+  }, [rows]);
 
   const getCellValue = (params) => {
     return params.value == null ? false : params.value;
@@ -68,7 +81,7 @@ export default function MyVNPay(props) {
         </Grid>
 
         {rows && Object.keys(rows).length > 0 ? (
-          <div style={{ height: "180px", width: "100%" }}>
+          <div id="outer-div">
             <DataGrid
               rows={[rows]}
               autoHeight
@@ -83,6 +96,7 @@ export default function MyVNPay(props) {
               pageSizeOptions={[5, 10, 25]}
               checkboxSelection
               style={{ paddingTop: "12px" }}
+              ref={dataGridRef}
             />
           </div>
         ) : (

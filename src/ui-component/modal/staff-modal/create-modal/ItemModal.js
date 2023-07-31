@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { closeModal } from "store/modalReducer";
 import validator from "validator";
 import Swal from "sweetalert2";
+import Loading from "ui-component/back-drop/Loading";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
@@ -30,6 +31,7 @@ const ItemModal = ({ modalType }) => {
   const [avatar, setAvatar] = useState("");
   const [parkings, setParkings] = useState([]);
   const [parkingId, setParkingId] = useState();
+  const [loading, setLoading] = useState(false);
   console.log("avatar", avatar);
 
   const handleInputPhone = (event) => {
@@ -77,6 +79,7 @@ const ItemModal = ({ modalType }) => {
   };
 
   const fetchDataParking = async () => {
+    setLoading(true);
     const response = await fetch(
       `${apiUrl}/parkings?managerId=${userData._id}&pageNo=1&pageSize=22`,
       requestOptions
@@ -84,12 +87,13 @@ const ItemModal = ({ modalType }) => {
 
     const data = await response.json();
     setParkings(data.data);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchDataParking();
   }, []);
-  console.log("parkings", parkings);
+  console.log("avatar", parkings);
 
   const [gender, setGender] = useState("Nam");
 
@@ -184,6 +188,10 @@ const ItemModal = ({ modalType }) => {
       }
     });
   };
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
 
   return (
     <>
@@ -357,13 +365,16 @@ const ItemModal = ({ modalType }) => {
                 onChange={handleChangeParking}
               >
                 {parkings.map((parking) => (
-                  <MenuItem
-                    sx={{ width: "100%" }}
+                  <div
+                    sx={{
+                      width: "100%",
+                    }}
                     key={parking.parkingId}
-                    value={parking.parkingId}
                   >
-                    {parking.name}
-                  </MenuItem>
+                    <MenuItem sx={{ width: "100%" }} value={parking.parkingId}>
+                      {parking.name}
+                    </MenuItem>
+                  </div>
                 ))}
               </Select>
             </FormControl>

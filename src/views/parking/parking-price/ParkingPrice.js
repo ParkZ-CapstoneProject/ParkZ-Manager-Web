@@ -11,6 +11,8 @@ import { useNavigate } from "react-router";
 import Loading from "ui-component/back-drop/Loading";
 import { ImFilesEmpty } from "react-icons/im";
 import ApplyParking from "ui-component/modal/parking-price-apply/ApplyParking";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function MyParkingPrice(props) {
   const { rows, loading } = props;
@@ -19,6 +21,17 @@ export default function MyParkingPrice(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [priceId, setPriceId] = useState();
   const [priceName, setPriceName] = useState();
+
+  const dataGridRef = useRef(null);
+
+  useEffect(() => {
+    if (dataGridRef.current) {
+      // get the height of the DataGrid using the ref
+      const height = dataGridRef.current.clientHeight;
+      // set the height of the outer div to be the same as the DataGrid height
+      document.getElementById("outer-div").style.height = `${height}px`;
+    }
+  }, [rows]);
 
   const handleCreate = () => {
     navigate("/create-new-price");
@@ -119,10 +132,11 @@ export default function MyParkingPrice(props) {
           </Grid>
 
           {rows ? (
-            <div style={{ height: "500px", width: "100%" }}>
+            <div id="outer-div">
               <DataGrid
                 rows={rows}
                 rowHeight={70}
+                autoHeight
                 getRowId={(row) => row.parkingPriceId}
                 columns={columns}
                 initialState={{
@@ -133,6 +147,7 @@ export default function MyParkingPrice(props) {
                 pageSizeOptions={[5, 10, 25]}
                 checkboxSelection
                 style={{ paddingTop: "12px" }}
+                ref={dataGridRef}
               />
             </div>
           ) : (
