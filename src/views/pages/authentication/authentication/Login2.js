@@ -102,7 +102,7 @@ const Page = () => {
               navigate("/dashboard");
             }
           }
-          console.log("res", res);
+          // console.log("res", res);
         });
     } catch (error) {
       console.log("error", error);
