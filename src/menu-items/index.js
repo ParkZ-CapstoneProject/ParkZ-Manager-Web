@@ -5,16 +5,19 @@ import staff from "./staff";
 // import traffic from "./traffic";
 import profile from "./profile";
 import vnpay from "./vnpay";
+import { useSelector } from "react-redux";
 // import utilities from "./utilities";
 // import other from "./other";
 
 // ==============================|| MENU ITEMS ||============================== //
 
-const user = localStorage.getItem("user"); // Set the authentication status here
-console.log("user", user);
+const Menu = () => {
+  const token = useSelector((state) => state.token.token);
+  const menuItems = {
+    items: token ? [dashboard, profile, booking, parking, staff, vnpay] : [],
+  };
 
-const menuItems = {
-  items: user ? [dashboard, profile, booking, parking, staff, vnpay] : [],
+  return menuItems;
 };
 
-export default menuItems;
+export default Menu;
