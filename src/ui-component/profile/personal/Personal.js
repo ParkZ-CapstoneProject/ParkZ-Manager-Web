@@ -5,40 +5,47 @@ import Information from "./Information";
 import EditButton from "ui-component/buttons/edit-button/EditButton";
 
 const Personal = (props) => {
+  const { data } = props;
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
-      <Grid container direction="row" spacing={2}>
-        <Grid item xs={4} alignItems="flex-start" justifyContent="center">
+      <Grid
+        container
+        direction="row"
+        spacing={1}
+        justifyContent="space-evenly"
+        alignItems="center"
+      >
+        <Grid item xs={2}>
           <Avatar
             alt="avatar"
-            src="https://img.freepik.com/free-icon/user_318-563642.jpg"
+            src={data?.avatar}
             variant="circular"
-            sx={{ width: "100%", height: "100%" }}
+            sx={{ width: "50%", height: "25%" }}
           />
         </Grid>
         <Grid
           item
           container
-          xs={4}
-          direction="column"
+          xs={3}
+          direction="row"
+          alignItems="center"
           justifyContent="center"
-          alignItems="flex-start"
         >
-          <Information props={props} />
+          <Information data={data} />
         </Grid>
         <Grid
           item
+          xs={6}
           container
-          xs={3}
-          direction="column"
-          justifyContent="center"
+          direction="row"
+          justifyContent="space-around"
           alignItems="center"
-          spacing={4}
+          sx={{ width: "55%" }}
         >
-          <Grid item>
+          <Grid item xs={4}>
             <Typography
               color={theme.palette.secondary.main}
               gutterBottom
@@ -48,12 +55,12 @@ const Personal = (props) => {
             </Typography>
             <Avatar
               alt="front"
-              src="https://media.phunutoday.vn/files/content/2022/12/20/can-cuoc-cong-dan-gan-chip-31280x720-800-resize-0938.jpg"
+              src={data?.frontIdentification}
               variant="rounded"
-              sx={{ width: "100%", height: "100%" }}
+              sx={{ width: "100%", height: "30%" }}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             <Typography
               color={theme.palette.secondary.main}
               gutterBottom
@@ -63,14 +70,15 @@ const Personal = (props) => {
             </Typography>
             <Avatar
               alt="bback"
-              src="https://cdn.tgdd.vn/Files/2022/08/23/1458821/chipmatsaucuacancuoccongdan_1280x715-800-resize.jpg"
+              src={data?.backIdentification}
               variant="rounded"
-              sx={{ width: "100%", height: "100%" }}
+              sx={{ width: "100%", height: "30%" }}
             />
           </Grid>
         </Grid>
       </Grid>
-      <Grid
+
+      {/* <Grid
         container
         direction="row"
         justifyContent="flex-end"
@@ -80,7 +88,7 @@ const Personal = (props) => {
         <Grid item xs={1.5}>
           <EditButton />
         </Grid>
-      </Grid>
+      </Grid> */}
     </>
   );
 };

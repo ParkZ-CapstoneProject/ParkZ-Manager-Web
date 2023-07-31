@@ -67,19 +67,19 @@ export default function MyParkingPrice(props) {
   };
 
   const columns = [
-    { field: "parkingPriceId", headerName: "ID", width: 70 },
+    { field: "parkingPriceId", headerName: "ID", width: 130 },
     {
       field: "parkingPriceName",
       headerName: "Tên gói",
       description: "This column has a value getter and is not sortable.",
       // sortable: false,
-      width: 300,
+      width: 750,
       valueGetter: (params) => `${params.row.parkingPriceName || ""}`,
     },
     {
       field: "isActive",
       headerName: "Hoạt động",
-      width: 120,
+      width: 220,
       renderCell: renderCellStatus,
       valueGetter: getCellValue,
       sortable: false,
@@ -88,7 +88,7 @@ export default function MyParkingPrice(props) {
     {
       field: "action",
       headerName: "",
-      width: 70,
+      width: 150,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => <Menu id={params.row.parkingPriceId} />,
@@ -96,7 +96,7 @@ export default function MyParkingPrice(props) {
     {
       field: "apply",
       headerName: "",
-      width: 90,
+      width: 120,
       sortable: false,
       disableColumnMenu: true,
       renderCell: renderCellApply,

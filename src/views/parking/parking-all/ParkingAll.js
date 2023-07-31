@@ -111,27 +111,27 @@ export default function MyParkingAll(props) {
   };
 
   const columns = [
-    { field: "parkingId", headerName: "ID", width: 70 },
+    { field: "parkingId", headerName: "ID", width: 100 },
     {
       field: "name",
       headerName: "Tên bãi",
       description: "This column has a value getter and is not sortable.",
       // sortable: false,
-      width: 200,
+      width: 300,
       valueGetter: (params) => `${params.row.name || ""}`,
     },
-    { field: "address", headerName: "Địa chỉ", width: 300 },
+    { field: "address", headerName: "Địa chỉ", width: 450 },
     {
       field: "carSpot",
       headerName: "Vị trí ô tô",
       type: "number",
-      width: 170,
+      width: 180,
       valueGetter: getCellValue,
     },
     {
       field: "isActive",
       headerName: "Hoạt động",
-      width: 120,
+      width: 170,
       valueGetter: getCellValue,
       sortable: false,
       disableColumnMenu: true,
@@ -140,7 +140,7 @@ export default function MyParkingAll(props) {
     {
       field: "isFull",
       headerName: "Đã đầy",
-      width: 120,
+      width: 170,
       valueGetter: getCellValue,
       sortable: false,
       disableColumnMenu: true,
@@ -149,7 +149,7 @@ export default function MyParkingAll(props) {
     {
       field: "action",
       headerName: "",
-      width: 70,
+      width: 90,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => <Menu value={params.value} id={params.id} />,

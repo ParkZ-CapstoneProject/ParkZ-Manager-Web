@@ -156,6 +156,10 @@
   //   border-radius: 12px !important;
 }
 
+.css-1dqeomg-MuiGrid-root {
+  margin-top: 20px;
+}
+
 .css-1iyq7zh-MuiDataGrid-columnHeaders {
   background-color: #eef2f6;
   min-height: 60px !important;
@@ -164,9 +168,9 @@
   border-radius: 4px !important;
 }
 
-.MuiDataGrid-columnHeaderTitleContainer {
-  justify-content: center;
-}
+// .MuiDataGrid-columnHeaderTitleContainer {
+//   justify-content: center;
+// }
 // .MuiDataGrid-row {
 //   max-height: 58px !important;
 //   min-height: 58px !important;
@@ -194,9 +198,9 @@
   height: 20px;
 }
 
-.MuiDataGrid-cell {
-  justify-content: center !important;
-}
+// .MuiDataGrid-cell {
+//   justify-content: center !important;
+// }
 
 .css-g8plc8-MuiListItem-root:hover {
   background-color: #f1f1f1;

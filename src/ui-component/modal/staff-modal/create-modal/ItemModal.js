@@ -357,7 +357,11 @@ const ItemModal = ({ modalType }) => {
                 onChange={handleChangeParking}
               >
                 {parkings.map((parking) => (
-                  <MenuItem sx={{ width: "100%" }} value={parking.parkingId}>
+                  <MenuItem
+                    fullWidth
+                    sx={{ display: "block", width: "100%" }}
+                    value={parking.parkingId}
+                  >
                     {parking.name}
                   </MenuItem>
                 ))}

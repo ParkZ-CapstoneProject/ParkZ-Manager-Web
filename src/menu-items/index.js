@@ -5,6 +5,7 @@ import staff from "./staff";
 // import traffic from "./traffic";
 import notification from "./notification";
 import profile from "./profile";
+import vnpay from "./vnpay";
 // import utilities from "./utilities";
 // import other from "./other";
 
@@ -13,9 +14,7 @@ import profile from "./profile";
 const user = localStorage.getItem("user"); // Set the authentication status here
 
 const menuItems = {
-  items: user
-    ? [dashboard, profile, booking, parking, staff, notification]
-    : [],
+  items: user ? [dashboard, profile, booking, parking, staff, vnpay] : [],
 };
 
 export default menuItems;
