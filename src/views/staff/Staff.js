@@ -53,11 +53,15 @@ const renderCellStatus = (params) => {
   }
 };
 
-const formatDateOfBirth = (dateOfBirth) => {
-  if (dateOfBirth && dateOfBirth.length >= 10) {
-    return dateOfBirth.slice(0, 10);
-  }
-  return "-------";
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
+
+  return formattedDate;
 };
 
 const columns = [
@@ -83,7 +87,8 @@ const columns = [
     field: "dateOfBirth",
     headerName: "Ngày sinh",
     width: 150,
-    valueGetter: (params) => formatDateOfBirth(params.row.dateOfBirth),
+    valueGetter: (params) =>
+      params.row.dateOfBirth ? formatDate(params.row.dateOfBirth) : "----",
   },
   { field: "gender", headerName: "Giới tính", width: 160 },
   { field: "parkingName", headerName: "Thuộc bãi", width: 240 },
@@ -102,6 +107,7 @@ const columns = [
     width: 70,
     sortable: false,
     disableColumnMenu: true,
+    align: "center",
     renderCell: (params) => <Menu value={params.value} id={params.id} />,
   },
 ];

@@ -104,6 +104,7 @@ export default function MyParkingPrice(props) {
       width: 150,
       sortable: false,
       disableColumnMenu: true,
+      align: "center",
       renderCell: (params) => <Menu id={params.row.parkingPriceId} />,
     },
     {

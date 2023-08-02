@@ -136,7 +136,7 @@ export default function MyParkingAll(props) {
     { field: "address", headerName: "Địa chỉ", width: 450 },
     {
       field: "carSpot",
-      headerName: "Vị trí ô tô",
+      headerName: "Tổng số vị trí",
       // type: "number",
       width: 180,
       valueGetter: getCellValue,
@@ -165,7 +165,8 @@ export default function MyParkingAll(props) {
       width: 90,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) => <Menu value={params.value} id={params.id} />,
+      align: "center",
+      renderCell: (params) => <Menu id={params.id} />,
     },
   ];
 

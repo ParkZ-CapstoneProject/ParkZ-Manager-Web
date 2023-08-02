@@ -11,7 +11,7 @@ import DetailModalStaff from "ui-component/modal/staff-modal/detail-modal/Detail
 import DeleteModalStaff from "ui-component/modal/staff-modal/delete-modal/DeleteModalStaff";
 import { useNavigate } from "react-router";
 
-const Menu = ({ value, id }) => {
+const Menu = ({ id }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
