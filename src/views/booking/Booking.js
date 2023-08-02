@@ -8,7 +8,6 @@ import Menu from "ui-component/booking/Menu";
 import Loading from "ui-component/back-drop/Loading";
 import { useRef } from "react";
 import { useEffect } from "react";
-// import Loading from "ui-component/back-drop/Loading";
 
 const getCellValue = (params) => {
   return params.value ? params.value : "-------";
@@ -16,24 +15,25 @@ const getCellValue = (params) => {
 
 const renderCellStatus = (params) => {
   const statusMap = {
-    Initial: { color: "#fff", bgColor: "gray" },
-    Done: { color: "#fff", bgColor: "#4caf50" },
-    OverTime: { color: "#fff", bgColor: "#1976d2" },
-    Check_In: { color: "#fff", bgColor: "#f44336" },
-    Check_Out: { color: "#000", bgColor: "#ff9800" },
-    Success: { color: "#fff", bgColor: "#2196f3" },
-    Cancel: { color: "#fff", bgColor: "#f44336" },
+    Initial: { label: "Chưa xử lý", color: "#fff", bgColor: "gray" },
+    Done: { label: "Hoàn thành", color: "#fff", bgColor: "#4caf50" },
+    OverTime: { label: "Quá hạn", color: "#fff", bgColor: "#1976d2" },
+    Check_In: { label: "Check in", color: "#fff", bgColor: "#f44336" },
+    Check_Out: { label: "Check out", color: "#000", bgColor: "#ff9800" },
+    Success: { label: "Thành công", color: "#fff", bgColor: "#2196f3" },
+    Cancel: { label: "Hủy bỏ", color: "#fff", bgColor: "#f44336" },
   };
 
   const { value } = params;
   const statusStyle = statusMap[value] || {
+    label: value,
     color: "inherit",
     bgColor: "gray",
   };
 
   return (
     <Chip
-      label={value}
+      label={statusStyle.label}
       sx={{
         backgroundColor: statusStyle.bgColor,
         color: statusStyle.color,
@@ -41,17 +41,6 @@ const renderCellStatus = (params) => {
       }}
     />
   );
-};
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const formattedDate = date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-
-  return formattedDate;
 };
 
 const formatTime = (dateString) => {
@@ -163,18 +152,14 @@ const columns = [
     width: 70,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params) => <Menu value={params.value} id={params.id} />,
+    renderCell: (params) => <Menu id={params.id} />,
   },
 ];
 
 export default function DataTable(props) {
   const { rows, loading } = props;
   const dataGridRef = useRef(null);
-  // const navigate = useNavigate();
 
-  // const handleOpenScanner = () => {
-  //   navigate("/qr");
-  // };
   useEffect(() => {
     if (dataGridRef.current) {
       // get the height of the DataGrid using the ref
@@ -232,7 +217,6 @@ export default function DataTable(props) {
           />
         </div>
       </MainCard>
-      {/* <FloatingButton handleOpenScanner={handleOpenScanner} /> */}
     </>
   );
 }

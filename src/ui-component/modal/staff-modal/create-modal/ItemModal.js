@@ -1,8 +1,11 @@
 import {
+  Box,
+  Chip,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
   Typography,
@@ -19,6 +22,17 @@ import validator from "validator";
 import Swal from "sweetalert2";
 import Loading from "ui-component/back-drop/Loading";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -32,7 +46,6 @@ const ItemModal = ({ modalType }) => {
   const [parkings, setParkings] = useState([]);
   const [parkingId, setParkingId] = useState();
   const [loading, setLoading] = useState(false);
-  console.log("avatar", avatar);
 
   const handleInputPhone = (event) => {
     const { value } = event.target;
@@ -93,7 +106,6 @@ const ItemModal = ({ modalType }) => {
   useEffect(() => {
     fetchDataParking();
   }, []);
-  console.log("avatar", avatar);
 
   const [gender, setGender] = useState("Nam");
 
@@ -137,54 +149,63 @@ const ItemModal = ({ modalType }) => {
             Swal.showLoading();
           },
         });
-        const request = {
-          name: name,
-          email: email,
-          phone: phone,
-          dateOfBirth: dateOfBirth,
-          gender: gender,
-          avatar: avatar,
-          managerId: userData._id,
-          parkingId: parkingId,
-        };
 
-        const requestOptions = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-          body: JSON.stringify(request),
-        };
+        if (avatar) {
+          const request = {
+            name: name,
+            email: email,
+            phone: phone,
+            dateOfBirth: dateOfBirth,
+            gender: gender,
+            avatar: avatar,
+            managerId: userData._id,
+            parkingId: parkingId,
+          };
 
-        const response = await fetch(
-          `${apiUrl}/keeper-account-management/register`,
-          requestOptions
-        );
+          const requestOptions = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${token}`,
+            },
+            body: JSON.stringify(request),
+          };
 
-        const data = await response.json();
+          const response = await fetch(
+            `${apiUrl}/keeper-account-management/register`,
+            requestOptions
+          );
 
-        if (data.statusCode === 201) {
-          dispatch(closeModal(modalType));
+          const data = await response.json();
 
-          Swal.fire({
-            icon: "success",
-            text: "Tạo mới bảo vệ thành công",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setDateOfBirth("");
-              setName("");
-              setPhone("");
-              setEmail();
-              setAvatar("");
-              setParkingId(0);
-            }
-          });
+          if (data.statusCode === 201) {
+            dispatch(closeModal(modalType));
+
+            Swal.fire({
+              icon: "success",
+              text: "Tạo mới bảo vệ thành công",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setDateOfBirth("");
+                setName("");
+                setPhone("");
+                setEmail();
+                setAvatar("");
+                setParkingId(0);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              text: data.message,
+            });
+          }
         } else {
           Swal.fire({
-            icon: "error",
-            text: "Có lỗi khi tạo mới",
+            icon: "warning",
+            text: "Vui lòng đợi giây lát để lấy link hình!",
           });
+          return;
         }
       }
     });
@@ -356,17 +377,22 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Bãi xe</InputLabel>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="demo-multiple-chip-label">Bãi xe</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="demo-multiple-chip-label"
+                id="demo-multiple-chip"
                 value={parkingId}
-                label="Bãi xe"
                 onChange={handleChangeParking}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                MenuProps={MenuProps}
               >
                 {parkings.map((parking) => (
-                  <MenuItem sx={{ width: "100%" }} value={parking.parkingId}>
+                  <MenuItem
+                    key={parking.parkingId}
+                    value={parking.parkingId}
+                    sx={{ width: "100%" }}
+                  >
                     {parking.name}
                   </MenuItem>
                 ))}

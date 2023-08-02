@@ -16,7 +16,7 @@ import {
 } from "store/modalReducer";
 import ModalBooking from "ui-component/modal/booking/ModalBooking";
 
-const Menu = ({ value, id }) => {
+const Menu = ({ id }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
 

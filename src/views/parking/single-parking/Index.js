@@ -5,7 +5,6 @@ import ParkingDetailInfo from "ui-component/parking/single-parking/DetailParkInf
 import Tabs from "ui-component/parking/single-parking/Tabs";
 import HistoryBooking from "ui-component/parking/single-parking/HistoryParking/HistoryBooking";
 import FloorParking from "ui-component/parking/single-parking/PhysicalModalParking/FloorParking";
-import { useParams } from "react-router";
 
 const tabs = [
   {
@@ -13,7 +12,7 @@ const tabs = [
     component: <ParkingDetailInfo />,
   },
   {
-    label: "Thông tin xa bàn",
+    label: "Thông tin sa bàn",
     component: <FloorParking />,
   },
   {
