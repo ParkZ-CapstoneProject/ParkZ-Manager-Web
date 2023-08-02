@@ -421,10 +421,7 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <UploadAvatar
-              setAvatar={setAvatar}
-              setLoadingSpinner={setLoadingSpinner}
-            />
+            <UploadAvatar setAvatar={setAvatar} />
           </Grid>
         </Grid>
 
