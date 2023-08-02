@@ -21,6 +21,7 @@ import { closeModal } from "store/modalReducer";
 import validator from "validator";
 import Swal from "sweetalert2";
 import Loading from "ui-component/back-drop/Loading";
+import Spinner from "ui-component/back-drop/Spinner";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -46,6 +47,7 @@ const ItemModal = ({ modalType }) => {
   const [parkings, setParkings] = useState([]);
   const [parkingId, setParkingId] = useState();
   const [loading, setLoading] = useState(false);
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   const handleInputPhone = (event) => {
     const { value } = event.target;
@@ -213,6 +215,10 @@ const ItemModal = ({ modalType }) => {
 
   if (loading) {
     return <Loading loading={loading} />;
+  }
+
+  if (loadingSpinner) {
+    return <Spinner />;
   }
 
   return (
@@ -415,7 +421,10 @@ const ItemModal = ({ modalType }) => {
             </Typography>
           </Grid>
           <Grid item xs={7}>
-            <UploadAvatar setAvatar={setAvatar} />
+            <UploadAvatar
+              setAvatar={setAvatar}
+              setLoadingSpinner={setLoadingSpinner}
+            />
           </Grid>
         </Grid>
 
