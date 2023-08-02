@@ -152,6 +152,7 @@ const columns = [
     width: 70,
     sortable: false,
     disableColumnMenu: true,
+    align: "center",
     renderCell: (params) => <Menu id={params.id} />,
   },
 ];

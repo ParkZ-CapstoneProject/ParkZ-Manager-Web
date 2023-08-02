@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useDispatch } from "react-redux";
-import { openModal, setBookingId, setStaffId } from "store/modalReducer";
+import { openModal, setStaffId } from "store/modalReducer";
 import EditModalStaff from "ui-component/modal/staff-modal/edit-modal/EditModalStaff";
 import DetailModalStaff from "ui-component/modal/staff-modal/detail-modal/DetailModalStaff";
 import DeleteModalStaff from "ui-component/modal/staff-modal/delete-modal/DeleteModalStaff";

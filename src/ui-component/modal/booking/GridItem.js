@@ -12,7 +12,7 @@ const GridItem = ({ title, value }) => {
         </Typography>
       </Grid>
       <Grid item>
-        <Typography color={theme.palette.common.black} variant="h4">
+        <Typography color={theme.palette.common.black} variant="subtitle1">
           {value}
         </Typography>
       </Grid>
