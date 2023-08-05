@@ -2,7 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-import { Grid, Switch, Typography } from "@mui/material";
+import { Chip, Grid, Switch, Typography } from "@mui/material";
 import Menu from "ui-component/parking/parking-all/Menu";
 import Swal from "sweetalert2";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
@@ -32,7 +32,7 @@ export default function MyParkingAll(props) {
   const token = localStorage.getItem("token");
 
   const getCellValue = (params) => {
-    return params.value == null ? false : params.value;
+    return params.value ? params.value : "-----";
   };
 
   const handleSwitchToggle = async (params, field) => {
@@ -104,13 +104,27 @@ export default function MyParkingAll(props) {
   };
 
   const renderCellIsActive = (params) => {
-    const handleChange = () => {
-      handleSwitchToggle(params, "isActive");
-    };
-
-    return (
-      <Switch checked={params.value} onChange={handleChange} color="primary" />
-    );
+    if (params.value === true) {
+      return (
+        <Chip
+          color="success"
+          label="Có"
+          sx={{
+            padding: "10px 20px 10px 20px",
+            color: "#fff",
+            fontWeight: "bold",
+          }}
+        />
+      );
+    } else {
+      return (
+        <Chip
+          color="primary"
+          label="Không"
+          sx={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
+        />
+      );
+    }
   };
 
   const renderCellIsFull = (params) => {
@@ -128,10 +142,10 @@ export default function MyParkingAll(props) {
     {
       field: "name",
       headerName: "Tên bãi",
-      description: "This column has a value getter and is not sortable.",
+      // description: "This column has a value getter and is not sortable.",
       // sortable: false,
       width: 300,
-      valueGetter: (params) => `${params.row.name || ""}`,
+      valueGetter: (params) => `${params.row.name || "-----"}`,
     },
     { field: "address", headerName: "Địa chỉ", width: 450 },
     {
@@ -145,7 +159,7 @@ export default function MyParkingAll(props) {
       field: "isActive",
       headerName: "Hoạt động",
       width: 170,
-      valueGetter: getCellValue,
+      // valueGetter: getCellValue,
       sortable: false,
       disableColumnMenu: true,
       renderCell: renderCellIsActive,
@@ -154,7 +168,7 @@ export default function MyParkingAll(props) {
       field: "isFull",
       headerName: "Đã đầy",
       width: 170,
-      valueGetter: getCellValue,
+      // valueGetter: getCellValue,
       sortable: false,
       disableColumnMenu: true,
       renderCell: renderCellIsFull,

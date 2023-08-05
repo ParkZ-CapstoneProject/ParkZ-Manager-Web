@@ -3,12 +3,7 @@ import React, { useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import { Grid, OutlinedInput, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setNumCarColumns,
-  setNumCarRows,
-  setNumMotorbikeColumns,
-  setNumMotorbikeRows,
-} from "store/parkingModalSlice";
+import { setNumCarColumns, setNumCarRows } from "store/parkingModalSlice";
 import Swal from "sweetalert2";
 
 const FormInput = ({ floorIndex }) => {
@@ -139,7 +134,7 @@ const FormInput = ({ floorIndex }) => {
         alignItems="center"
         sx={{ padding: "20px" }}
       >
-        <Grid item>
+        {/* <Grid item>
           <label>
             <Typography
               color={theme.palette.secondary.dark}
@@ -182,7 +177,7 @@ const FormInput = ({ floorIndex }) => {
               }
             />
           </label>
-        </Grid>
+        </Grid> */}
         <Grid>
           <label>
             <Typography

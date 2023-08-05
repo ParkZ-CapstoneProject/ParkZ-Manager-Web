@@ -129,7 +129,7 @@ export default function Staff() {
   }, [rows]);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
-  const signalRUrl = process.env.REACT_APP_BASE_URL_SIGNALR;
+  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);

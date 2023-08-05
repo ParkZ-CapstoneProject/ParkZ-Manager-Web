@@ -14,7 +14,6 @@ const ParkingModalInFloor = () => {
   const dispatch = useDispatch();
 
   const [initialFloorsObj, setInitialFloorsObj] = useState(loadState());
-  console.log("initialFloorsObj", initialFloorsObj);
 
   const initialFloorsArr = Object.values(initialFloorsObj);
   console.log("initialFloorsArr", initialFloorsArr);
@@ -38,7 +37,6 @@ const ParkingModalInFloor = () => {
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
   const parkingId = localStorage.getItem("parkingId");
-  console.log("parkingId", parkingId);
 
   const handleSave = async () => {
     Swal.fire({
@@ -86,7 +84,6 @@ const ParkingModalInFloor = () => {
             floorIds.push(data.data);
             console.log("floorIds", floorIds);
           }
-          // console.log("initialFloorsArr 2", initialFloorsArr);
           // Create carSlots for each floor
           const promises = [];
           initialFloorsArr.forEach((floor, i) => {
@@ -99,8 +96,9 @@ const ParkingModalInFloor = () => {
                 trafficId: 1,
                 floorId: floorIds[i],
                 parkingId: parkingId,
+                isBackup: slot.type === "back-up" ? true : false,
               };
-              console.log("body", body);
+              // console.log("body", body);
               const promise = fetch(`${apiUrl}/parkingSlot/create`, {
                 method: "POST",
                 headers: {
@@ -153,32 +151,36 @@ const ParkingModalInFloor = () => {
   };
 
   return (
-    <div>
-      <Tabs
-        value={currentFloor}
-        onChange={handleTabChange}
-        variant="fullWidth"
-        aria-label="Parking Floors"
-      >
-        {floors?.map((floor, index) => (
-          <Tab key={index} label={`Tầng ${floor.floor}`} />
-        ))}
-      </Tabs>
-      <ParkingModal
-        floorIndex={currentFloor}
-        onModalDataChange={handleModalDataChange}
-      />
+    <>
+      <div>
+        <Tabs
+          value={currentFloor}
+          onChange={handleTabChange}
+          variant="fullWidth"
+          aria-label="Parking Floors"
+        >
+          {floors?.map((floor, index) => (
+            <Tab key={index} label={`Tầng ${floor.floor}`} />
+          ))}
+        </Tabs>
+        <ParkingModal
+          floorIndex={currentFloor}
+          onModalDataChange={handleModalDataChange}
+        />
+      </div>
+
       <Grid
         container
-        direction="row"
+        direction="column"
         justifyContent="flex-end"
-        alignItems="center"
-        xs={11.7}
-        sx={{ marginTop: "25px" }}
+        alignItems="flex-end"
+        sx={{ marginTop: "25px", paddingRight: "20px" }}
       >
-        <SaveButton onClick={handleSave} />
+        <Grid item xs={12}>
+          <SaveButton onClick={handleSave} />
+        </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 

@@ -36,7 +36,7 @@ const App = () => {
     })
     .catch((err) => console.log("err: ", err));
 
-  console.log("notification", notification);
+  // console.log("notification", notification);
 
   return (
     <StyledEngineProvider injectFirst>

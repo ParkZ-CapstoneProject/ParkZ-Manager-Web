@@ -302,7 +302,7 @@
 }
 
 canvas {
-  background: rgba(211, 211, 211, 0.655) !important;
+  background: rgba(120, 89, 89, 0.431) !important;
   border-radius: 10px !important;
 }
 
@@ -331,4 +331,36 @@ canvas {
 
 .swal2-container {
   z-index: 10000 !important;
+}
+
+// .css-1mlsene-MuiTypography-root {
+//   color: inherit;
+// }
+
+.css-126euq6-MuiButtonBase-root-MuiListItemButton-root:hover
+  .MuiListItemIcon-root {
+  color: #5e35b1;
+}
+
+.css-126euq6-MuiButtonBase-root-MuiListItemButton-root.Mui-selected {
+  background-color: #fff;
+}
+
+.css-126euq6-MuiButtonBase-root-MuiListItemButton-root:hover
+  .css-1mlsene-MuiTypography-root {
+  color: inherit;
+}
+
+.css-126euq6-MuiButtonBase-root-MuiListItemButton-root:hover {
+  svg {
+    color: inherit !important;
+  }
+}
+
+.css-14aglok-MuiButtonBase-root-MuiListItemButton-root.Mui-selected {
+  background-color: #fff;
+}
+
+.css-14aglok-MuiButtonBase-root-MuiListItemButton-root.Mui-selected svg {
+  color: #000 !important;
 }

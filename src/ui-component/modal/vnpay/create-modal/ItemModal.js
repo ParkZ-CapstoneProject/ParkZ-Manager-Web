@@ -34,7 +34,7 @@ const ItemModal = (props) => {
     const response = await fetch(`${apiUrl}/vnpay/${vnPayId}`, requestOptions);
 
     const data = await response.json();
-    console.log("data", data);
+    // console.log("data", data);
     setData(data.data);
   };
 
@@ -43,7 +43,7 @@ const ItemModal = (props) => {
       fetchDataParking();
     }
   }, []);
-  console.log("data", data);
+  // console.log("data", data);
 
   const handleCloseModal = () => {
     if (!edit) {

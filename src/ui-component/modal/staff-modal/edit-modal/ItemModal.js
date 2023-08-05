@@ -65,7 +65,7 @@ const ItemModal = ({ modalType }) => {
     );
 
     const responseData = await response.json();
-    console.log("responseData.data", responseData.data);
+    // console.log("responseData.data", responseData.data);
     if (responseData) {
       setData(responseData.data);
       setLoading(false);
@@ -84,11 +84,12 @@ const ItemModal = ({ modalType }) => {
     setLoading(false);
   };
 
-  console.log("avatar", avatar);
+  // console.log("avatar", avatar);
 
   useEffect(() => {
     fetchData();
     fetchDataParking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputPhone = (event) => {
@@ -154,7 +155,7 @@ const ItemModal = ({ modalType }) => {
       parkingId: value,
     }));
   };
-  console.log("data", data);
+  // console.log("data", data);
   // const handleOpenDialog = () => {
   //   setOpenDialog(true);
   // };
@@ -445,8 +446,6 @@ const ItemModal = ({ modalType }) => {
           </Grid>
         </Grid>
       </Grid>
-
-      {/* <DialogEdit open={openDialog} modalType={modalType} /> */}
     </>
   );
 };

@@ -69,7 +69,7 @@ const ProfileSection = () => {
       requestOptions
     );
     const data = await response.json();
-    console.log("data.data", data.data);
+    // console.log("data.data", data.data);
     setAvatar(data.data.avatar);
   };
 

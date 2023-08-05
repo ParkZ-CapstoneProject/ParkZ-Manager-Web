@@ -5,7 +5,7 @@ import * as signalR from "@microsoft/signalr";
 const ParkingPrice = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
-  const signalRUrl = process.env.REACT_APP_BASE_URL_SIGNALR;
+  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()

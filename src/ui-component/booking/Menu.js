@@ -13,7 +13,7 @@ const Menu = ({ id }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     dispatch(setBookingId(id));
-    console.log("id: ", id);
+    // console.log("id: ", id);
   };
 
   const handleClose = () => {

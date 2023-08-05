@@ -3,8 +3,9 @@ import { Tabs, Tab, Grid } from "@mui/material";
 import ParkingModal from "./ParkingModal";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeFloors } from "store/parkingModalSlice";
-import { loadState, saveState } from "utils/localStorageParkingModal";
+// import { loadState, saveState } from "utils/localStorageParkingModal";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
+import { saveState } from "utils/ParkingModalLocalStorage";
 
 const ParkingModalInFloor = () => {
   const [currentFloor, setCurrentFloor] = useState(0);
@@ -16,34 +17,34 @@ const ParkingModalInFloor = () => {
         floor: 1,
         numCarSlots: 10,
         numMotorbikeSlots: 5,
-        numMotorbikeRows: 1,
-        numMotorbikeColumns: 6,
+        // numMotorbikeRows: 1,
+        // numMotorbikeColumns: 6,
         numCarRows: 2,
         numCarColumns: 6,
         carSlots: [],
-        motorbikeSlots: [],
+        // motorbikeSlots: [],
       },
       {
         floor: 2,
         numCarSlots: 15,
         numMotorbikeSlots: 8,
-        numMotorbikeRows: 2,
-        numMotorbikeColumns: 6,
+        // numMotorbikeRows: 2,
+        // numMotorbikeColumns: 6,
         numCarRows: 3,
         numCarColumns: 6,
         carSlots: [],
-        motorbikeSlots: [],
+        // motorbikeSlots: [],
       },
       {
         floor: 3,
         numCarSlots: 20,
         numMotorbikeSlots: 10,
-        numMotorbikeRows: 2,
-        numMotorbikeColumns: 6,
+        // numMotorbikeRows: 2,
+        // numMotorbikeColumns: 6,
         numCarRows: 3,
         numCarColumns: 7,
         carSlots: [],
-        motorbikeSlots: [],
+        // motorbikeSlots: [],
       },
     ];
     dispatch(initializeFloors(initialState));

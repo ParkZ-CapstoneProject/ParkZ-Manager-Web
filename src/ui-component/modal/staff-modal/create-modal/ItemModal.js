@@ -1,6 +1,4 @@
 import {
-  Box,
-  Chip,
   FormControl,
   Grid,
   InputLabel,
@@ -21,7 +19,6 @@ import { closeModal } from "store/modalReducer";
 import validator from "validator";
 import Swal from "sweetalert2";
 import Loading from "ui-component/back-drop/Loading";
-import Spinner from "ui-component/back-drop/Spinner";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -47,7 +44,6 @@ const ItemModal = ({ modalType }) => {
   const [parkings, setParkings] = useState([]);
   const [parkingId, setParkingId] = useState();
   const [loading, setLoading] = useState(false);
-  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   const handleInputPhone = (event) => {
     const { value } = event.target;
@@ -107,6 +103,7 @@ const ItemModal = ({ modalType }) => {
 
   useEffect(() => {
     fetchDataParking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [gender, setGender] = useState("Nam");
@@ -120,7 +117,6 @@ const ItemModal = ({ modalType }) => {
   };
 
   const handleChangeParking = (e) => {
-    console.log("clicked");
     setParkingId(e.target.value);
   };
 
@@ -215,10 +211,6 @@ const ItemModal = ({ modalType }) => {
 
   if (loading) {
     return <Loading loading={loading} />;
-  }
-
-  if (loadingSpinner) {
-    return <Spinner />;
   }
 
   return (
@@ -441,8 +433,6 @@ const ItemModal = ({ modalType }) => {
           </Grid>
         </Grid>
       </Grid>
-
-      {/* <DialogCreate open={openDialog} modalType={modalType} /> */}
     </>
   );
 };
