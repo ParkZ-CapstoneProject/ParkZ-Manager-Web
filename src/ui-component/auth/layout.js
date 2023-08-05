@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 // import NextLink from 'next/link';
 import { Box, Typography, Grid, Stack } from "@mui/material";
-import Logo from "../Logo";
+import Logo from "../../assets/2.svg";
 import image from "../../assets/3.svg";
 import { useTheme } from "@mui/material/styles";
 
@@ -12,8 +12,6 @@ import "./layout.scss";
 export const Layout = (props) => {
   const theme = useTheme();
   const { children } = props;
-  const width = "230vw";
-  const height = "230vh";
 
   return (
     <Box
@@ -35,7 +33,7 @@ export const Layout = (props) => {
           }}
         >
           <Stack alignItems="center" marginTop="10%">
-            <Logo width={width} height={height} />
+            <img src={Logo} alt="logo" width={230} height={230} />
           </Stack>
           <Stack>{children}</Stack>
         </Grid>

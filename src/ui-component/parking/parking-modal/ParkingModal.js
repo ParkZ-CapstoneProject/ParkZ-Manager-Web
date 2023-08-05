@@ -7,8 +7,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { setCarSlots, setMotorbikeSlots } from "store/parkingModalSlice";
+import { setCarSlots } from "store/parkingModalSlice";
 import FormInput from "./FormInput";
+import { Box, Grid, Typography } from "@mui/material";
 
 const ParkingModal = ({ floorIndex }) => {
   const [draggingType, setDraggingType] = useState(null);
@@ -25,8 +26,8 @@ const ParkingModal = ({ floorIndex }) => {
   const {
     numCarSlots,
     numMotorbikeSlots,
-    numMotorbikeRows,
-    numMotorbikeColumns,
+    // numMotorbikeRows,
+    // numMotorbikeColumns,
     numCarRows,
     numCarColumns,
     carSlots,
@@ -40,12 +41,12 @@ const ParkingModal = ({ floorIndex }) => {
         floor: floorIndex + 1,
         numCarSlots,
         numMotorbikeSlots,
-        numMotorbikeRows,
-        numMotorbikeColumns,
+        // numMotorbikeRows,
+        // numMotorbikeColumns,
         numCarRows,
         numCarColumns,
         carSlots,
-        motorbikeSlots,
+        // motorbikeSlots,
       },
     };
     // Store the updatedParkingModal in localStorage
@@ -61,16 +62,16 @@ const ParkingModal = ({ floorIndex }) => {
     floorIndex,
     numCarSlots,
     numMotorbikeSlots,
-    numMotorbikeRows,
-    numMotorbikeColumns,
+    // numMotorbikeRows,
+    // numMotorbikeColumns,
     numCarRows,
     numCarColumns,
     carSlots,
-    motorbikeSlots,
+    // motorbikeSlots,
   ]);
 
-  const numRows = numCarRows + numMotorbikeRows;
-  const numColumns = Math.max(numCarColumns, numMotorbikeColumns);
+  const numRows = numCarRows;
+  const numColumns = Math.max(numCarColumns);
 
   const [stageWidth, setStageWidth] = useState(
     numColumns * (slotWidth + spacing) + stagePadding * 2
@@ -103,54 +104,59 @@ const ParkingModal = ({ floorIndex }) => {
   };
 
   useEffect(() => {
-    if (carSlots.length === 0 || motorbikeSlots.length === 0) {
-      const calculatedCarSlots = [];
-      for (let row = 0; row < numCarRows; row++) {
-        for (let col = 0; col < numCarColumns; col++) {
-          const slotIndex = row * numCarColumns + col;
-          if (slotIndex >= numCarSlots) break; // Stop creating slots if the limit is reached
+    // if (carSlots.length === 0 || motorbikeSlots.length === 0) {
+    const calculatedCarSlots = [];
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numColumns; col++) {
+        const slotIndex = row * numColumns + col;
+        if (slotIndex >= numCarSlots) break; // Stop creating slots if the limit is reached
 
-          calculatedCarSlots.push({
-            id: `car-${row}-${col}`,
-            trafficId: 1,
-            row: row,
-            column: col,
-            x: col * (slotWidth + spacing) + stagePadding,
-            y: row * (slotHeight + spacing) + stagePadding,
-            name: `C${slotIndex + 1}`,
-            isDragging: false,
-          });
-        }
+        // Set different type for motorbike slots within the numCarSlots range
+        const slotType =
+          slotIndex >= numCarSlots - numMotorbikeSlots ? "motorbike" : "car";
+
+        calculatedCarSlots.push({
+          id: `${slotType}-${row}-${col}`,
+          trafficId: slotType === "car" ? 1 : 2,
+          row: row,
+          column: col,
+          x: col * (slotWidth + spacing) + stagePadding,
+          y: row * (slotHeight + spacing) + stagePadding,
+          name: `${slotType === "car" ? "C" : "M"}${slotIndex + 1}`,
+          isDragging: false,
+          type: slotType, // Add the type property
+        });
       }
-      dispatch(
-        setCarSlots({ floorIndex: floorIndex, carSlots: calculatedCarSlots })
-      );
-
-      const calculatedMotorbikeSlots = [];
-      for (let row = numCarRows; row < numRows; row++) {
-        for (let col = 0; col < numMotorbikeColumns; col++) {
-          const slotIndex = numMotorbikeColumns * (row - numCarRows) + col;
-          if (slotIndex >= numMotorbikeSlots) break;
-
-          calculatedMotorbikeSlots.push({
-            id: `motorbike-${row}-${col}`,
-            trafficId: 2,
-            row: row,
-            column: col,
-            x: col * (slotWidth + spacing) + stagePadding,
-            y: row * (slotHeight + spacing) + stagePadding,
-            name: `M${slotIndex + 1}`,
-            isDragging: false,
-          });
-        }
-      }
-      dispatch(
-        setMotorbikeSlots({
-          floorIndex: floorIndex,
-          motorbikeSlots: calculatedMotorbikeSlots,
-        })
-      );
     }
+    dispatch(
+      setCarSlots({ floorIndex: floorIndex, carSlots: calculatedCarSlots })
+    );
+
+    //   const calculatedMotorbikeSlots = [];
+    //   for (let row = numCarRows; row < numRows; row++) {
+    //     for (let col = 0; col < numMotorbikeColumns; col++) {
+    //       const slotIndex = numMotorbikeColumns * (row - numCarRows) + col;
+    //       if (slotIndex >= numMotorbikeSlots) break;
+
+    //       calculatedMotorbikeSlots.push({
+    //         id: `motorbike-${row}-${col}`,
+    //         trafficId: 2,
+    //         row: row,
+    //         column: col,
+    //         x: col * (slotWidth + spacing) + stagePadding,
+    //         y: row * (slotHeight + spacing) + stagePadding,
+    //         name: `M${slotIndex + 1}`,
+    //         isDragging: false,
+    //       });
+    //     }
+    //   }
+    //   dispatch(
+    //     setMotorbikeSlots({
+    //       floorIndex: floorIndex,
+    //       motorbikeSlots: calculatedMotorbikeSlots,
+    //     })
+    //   );
+    // }
 
     const newStageWidth = numColumns * (slotWidth + spacing) + stagePadding * 2;
     const newStageHeight = numRows * (slotHeight + spacing) + stagePadding * 2;
@@ -160,8 +166,8 @@ const ParkingModal = ({ floorIndex }) => {
   }, [
     numRows,
     numColumns,
-    numMotorbikeColumns,
-    numMotorbikeRows,
+    // numMotorbikeColumns,
+    // numMotorbikeRows,
     numCarColumns,
     numCarRows,
     numCarSlots,
@@ -182,15 +188,15 @@ const ParkingModal = ({ floorIndex }) => {
     });
     setCarSlots(updatedCarSlots);
 
-    const updatedMotorbikeSlots = motorbikeSlots.map((slot) => {
-      if (slot.id === slotId) {
-        setDraggingType("motorbike");
-        return { ...slot, isDragging: true };
-      }
-      return slot;
-    });
-    console.log("draggingType", draggingType);
-    setMotorbikeSlots(updatedMotorbikeSlots);
+    // const updatedMotorbikeSlots = motorbikeSlots.map((slot) => {
+    //   if (slot.id === slotId) {
+    //     setDraggingType("motorbike");
+    //     return { ...slot, isDragging: true };
+    //   }
+    //   return slot;
+    // });
+    // console.log("draggingType", draggingType);
+    // setMotorbikeSlots(updatedMotorbikeSlots);
   };
 
   const handleDragEnd = (e, slotId) => {
@@ -270,22 +276,64 @@ const ParkingModal = ({ floorIndex }) => {
         carSlots: updatedSlots.filter((slot) => slot.id.startsWith("car")),
       })
     );
-    dispatch(
-      setMotorbikeSlots({
-        floorIndex: floorIndex,
-        motorbikeSlots: updatedSlots.filter((slot) =>
-          slot.id.startsWith("motorbike")
-        ),
-      })
-    );
+    // dispatch(
+    //   setMotorbikeSlots({
+    //     floorIndex: floorIndex,
+    //     motorbikeSlots: updatedSlots.filter((slot) =>
+    //       slot.id.startsWith("motorbike")
+    //     ),
+    //   })
+    // );
 
     saveParkingModalState();
+  };
+
+  const handleOnClick = () => {
+    console.log("clicked");
   };
 
   return (
     <div className="scrollable-container">
       <div className="stage-container">
         <FormInput floorIndex={floorIndex} />
+
+        <Grid
+          container
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ marginLeft: "20px", width: "50%" }}
+        >
+          <Grid item>
+            <Box
+              sx={{
+                width: 60,
+                height: 50,
+                backgroundColor: "#145365",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" fontSize={15}>
+              Vị trí dự phòng
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Box
+              sx={{
+                width: 60,
+                height: 50,
+                backgroundColor: "#1939B7",
+                padding: "10px",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" fontSize={15}>
+              Vị trí hiện thực
+            </Typography>
+          </Grid>
+        </Grid>
 
         <div className="scrollable-stage">
           <Stage width={stageWidth} height={stageHeight} draggable>
@@ -297,26 +345,28 @@ const ParkingModal = ({ floorIndex }) => {
                     y={slot.y}
                     width={slotWidth}
                     height={slotHeight}
-                    fill={slot.isDragging ? "red" : "lightblue"}
-                    stroke="black"
-                    strokeWidth={1}
+                    fill={slot.type === "motorbike" ? "#145365" : "#1939B7"}
+                    stroke="#ffd800"
+                    strokeWidth={3}
                     draggable={!slot.isDragging}
                     onDragStart={() => handleDragStart(slot.id)}
                     onDragEnd={(e) => handleDragEnd(e, slot.id)}
                     dash={[5, 5]}
                     cornerRadius={10}
+                    onClick={handleOnClick}
                   />
                   <Text
                     x={slot.x + 5}
                     y={slot.y - 25}
-                    fill="#5e35b1"
+                    fill="#ffd700"
                     width={slotWidth - 10}
                     height={slotHeight - 10}
                     text={slot.name}
-                    fontSize={14}
+                    fontSize={15}
                     align="center"
                     verticalAlign="middle"
                     fontStyle="bold"
+                    onClick={handleOnClick}
                   />
                   {carImage && (
                     <Image
@@ -327,14 +377,15 @@ const ParkingModal = ({ floorIndex }) => {
                       width={slotWidth - 75} // Adjust the size as needed
                       height={slotHeight - 75} // Adjust the size as needed
                       draggable
-                      dash={[5, 5]}
+                      // dash={[5, 5]}
                       onDragStart={() => handleDragStart(slot.id)}
                       onDragEnd={(e) => handleDragEnd(e, slot.id)}
+                      onClick={handleOnClick}
                     />
                   )}
                 </Fragment>
               ))}
-              {motorbikeSlots ? (
+              {/* {motorbikeSlots ? (
                 <>
                   {motorbikeSlots?.map((slot) => (
                     <Fragment key={slot.id}>
@@ -382,7 +433,7 @@ const ParkingModal = ({ floorIndex }) => {
                 </>
               ) : (
                 <></>
-              )}
+              )} */}
             </Layer>
           </Stage>
         </div>

@@ -6,7 +6,7 @@ import { closeModal } from "store/modalReducer";
 import GridItem from "./GridItem";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 import Swal from "sweetalert2";
-import Spinner from "ui-component/back-drop/Spinner";
+import Loading from "ui-component/back-drop/Loading";
 
 const ItemModal = ({ modalType }) => {
   const theme = useTheme();
@@ -34,7 +34,7 @@ const ItemModal = ({ modalType }) => {
       requestOptions
     );
     const data = await response.json();
-    console.log("booking", data.data);
+    // console.log("booking", data.data);
 
     if (data.data) {
       setData(data.data);
@@ -49,6 +49,7 @@ const ItemModal = ({ modalType }) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCloseModal = () => {
@@ -101,7 +102,7 @@ const ItemModal = ({ modalType }) => {
   };
 
   if (loading) {
-    <Spinner />;
+    return <Loading loading={loading} />;
   }
 
   return (

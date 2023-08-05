@@ -14,7 +14,7 @@ import { MENU_OPEN } from "store/actions";
 const LogoSection = () => {
   const defaultId = useSelector((state) => state.customization.defaultId);
   const dispatch = useDispatch();
-  const width = "100vww";
+  const width = "90vww";
   const height = "80vh";
   return (
     <ButtonBase

@@ -1,19 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import carIcon from "../../../../assets/images/Car.svg";
-import {
-  initializeFloors,
-  setCarSlots,
-  setNumCarColumns,
-  setNumCarRows,
-} from "store/parkingModalSlice";
+// import {
+//   initializeFloors,
+//   setCarSlots,
+//   setNumCarColumns,
+//   setNumCarRows,
+// } from "store/parkingModalSlice";
 import FormInput from "./FormInput";
 import { Image, Layer, Rect, Stage, Text } from "react-konva";
 import Swal from "sweetalert2";
+import { Box, Grid, Typography } from "@mui/material";
 
 const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const slotWidth = 150;
   const slotHeight = 120;
   const spacing = 15;
@@ -63,8 +64,9 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
       column: slot.columnIndex,
       x: slot.columnIndex * (slotWidth + spacing) + stagePadding,
       y: slot.rowIndex * (slotHeight + spacing) + stagePadding,
-      name: slot.name.substring(0, 4),
+      name: slot.name.substring(0, 6),
       isDragging: false,
+      type: slot.isBackup,
     }));
     setCarSlotsCurrent(calculatedCarSlots);
 
@@ -75,15 +77,15 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
     setStageHeight(newStageHeight);
   }, [slotWidth, slotHeight, spacing, stagePadding, listCarSlots]);
 
-  const handleDragStart = (slotId) => {
-    const updatedCarSlots = carSlotsCurrent.map((slot) => {
-      if (slot.id === slotId) {
-        return { ...slot, isDragging: true };
-      }
-      return slot;
-    });
-    setCarSlotsCurrent(updatedCarSlots);
-  };
+  // const handleDragStart = (slotId) => {
+  //   const updatedCarSlots = carSlotsCurrent.map((slot) => {
+  //     if (slot.id === slotId) {
+  //       return { ...slot, isDragging: true };
+  //     }
+  //     return slot;
+  //   });
+  //   setCarSlotsCurrent(updatedCarSlots);
+  // };
 
   // useEffect(() => {
   //   if (edit) {
@@ -98,70 +100,108 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
   //   }
   // }, [floorIndex, listCarSlots, edit]);
 
-  const handleDragEnd = (e, slotId) => {
-    const updatedSlots = carSlotsCurrent.map((slot) => {
-      if (slot.id === slotId) {
-        const { x, y } = e.target.position();
-        const row = Math.floor((y - stagePadding) / (slotHeight + spacing));
-        const col = Math.floor((x - stagePadding) / (slotWidth + spacing));
+  // const handleDragEnd = (e, slotId) => {
+  //   const updatedSlots = carSlotsCurrent.map((slot) => {
+  //     if (slot.id === slotId) {
+  //       const { x, y } = e.target.position();
+  //       const row = Math.floor((y - stagePadding) / (slotHeight + spacing));
+  //       const col = Math.floor((x - stagePadding) / (slotWidth + spacing));
 
-        if (row < 0 || row >= numCarRows || col < 0 || col >= numCarCols) {
-          Swal.fire({
-            icon: "error",
-            title: "Sai vị trí",
-            text: "Chỉ kéo vị trí trong khoảng hàng, cột chính",
-          });
-          e.target.setAttrs({
-            x: slot.x + 40,
-            y: slot.y + 55,
-          });
-          return {
-            ...slot,
-            isDragging: false,
-          };
-        }
+  //       if (row < 0 || row >= numCarRows || col < 0 || col >= numCarCols) {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Sai vị trí",
+  //           text: "Chỉ kéo vị trí trong khoảng hàng, cột chính",
+  //         });
+  //         e.target.setAttrs({
+  //           x: slot.x + 40,
+  //           y: slot.y + 55,
+  //         });
+  //         return {
+  //           ...slot,
+  //           isDragging: false,
+  //         };
+  //       }
 
-        const targetSlot = carSlotsCurrent.find(
-          (s) => s.column === col && s.row === row
-        );
-        if (targetSlot && targetSlot.id !== slotId) {
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi",
-            text: "Vị trí này đã có xe đỗ",
-          });
-          e.target.setAttrs({
-            x: slot.x + 40,
-            y: slot.y + 55,
-          });
-          return {
-            ...slot,
-            isDragging: false,
-          };
-        }
+  //       const targetSlot = carSlotsCurrent.find(
+  //         (s) => s.column === col && s.row === row
+  //       );
+  //       if (targetSlot && targetSlot.id !== slotId) {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Lỗi",
+  //           text: "Vị trí này đã có xe đỗ",
+  //         });
+  //         e.target.setAttrs({
+  //           x: slot.x + 40,
+  //           y: slot.y + 55,
+  //         });
+  //         return {
+  //           ...slot,
+  //           isDragging: false,
+  //         };
+  //       }
 
-        const newX = col * (slotWidth + spacing) + stagePadding;
-        const newY = row * (slotHeight + spacing) + stagePadding;
+  //       const newX = col * (slotWidth + spacing) + stagePadding;
+  //       const newY = row * (slotHeight + spacing) + stagePadding;
 
-        return {
-          ...slot,
-          row,
-          column: col,
-          x: newX,
-          y: newY,
-          isDragging: false,
-        };
-      }
-      return slot;
-    });
+  //       return {
+  //         ...slot,
+  //         row,
+  //         column: col,
+  //         x: newX,
+  //         y: newY,
+  //         isDragging: false,
+  //       };
+  //     }
+  //     return slot;
+  //   });
 
-    setCarSlotsCurrent(updatedSlots);
-  };
+  //   setCarSlotsCurrent(updatedSlots);
+  // };
 
   return (
     <div className="scrollable-container">
       <div className="stage-container">
         {edit && <FormInput floorIndex={floorIndex} />}
+
+        <Grid
+          container
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ paddingTop: "20px", width: "50%" }}
+        >
+          <Grid item>
+            <Box
+              sx={{
+                width: 60,
+                height: 50,
+                backgroundColor: "#145365",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" fontSize={15}>
+              Vị trí dự phòng
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Box
+              sx={{
+                width: 60,
+                height: 50,
+                backgroundColor: "#1939B7",
+                padding: "10px",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" fontSize={15}>
+              Vị trí hiện thực
+            </Typography>
+          </Grid>
+        </Grid>
 
         <div className="scrollable-stage">
           <Stage width={stageWidth} height={stageHeight} draggable={edit}>
@@ -173,23 +213,23 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
                     y={slot.y}
                     width={slotWidth}
                     height={slotHeight}
-                    fill={slot.isDragging ? "red" : "lightblue"}
+                    fill={slot.type ? "#145365" : "#1939B7"}
                     stroke="black"
                     strokeWidth={1}
                     draggable={!slot.isDragging && edit}
-                    onDragStart={() => handleDragStart(slot.id)}
-                    onDragEnd={(e) => handleDragEnd(e, slot.id)}
+                    // onDragStart={() => handleDragStart(slot.id)}
+                    // onDragEnd={(e) => handleDragEnd(e, slot.id)}
                     dash={[5, 5]}
                     cornerRadius={10}
                   />
                   <Text
                     x={slot.x + 8}
                     y={slot.y - 25}
-                    fill="#5e35b1"
+                    fill="#ffd700"
                     width={slotWidth - 10}
                     height={slotHeight - 10}
                     text={slot.name}
-                    fontSize={14}
+                    fontSize={15}
                     align="center"
                     verticalAlign="middle"
                     fontStyle="bold"
@@ -203,9 +243,8 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
                       width={slotWidth - 75} // Adjust the size as needed
                       height={slotHeight - 75} // Adjust the size as needed
                       draggable={edit}
-                      dash={[5, 5]}
-                      onDragStart={() => handleDragStart(slot.id)}
-                      onDragEnd={(e) => handleDragEnd(e, slot.id)}
+                      // onDragStart={() => handleDragStart(slot.id)}
+                      // onDragEnd={(e) => handleDragEnd(e, slot.id)}
                     />
                   )}
                 </Fragment>

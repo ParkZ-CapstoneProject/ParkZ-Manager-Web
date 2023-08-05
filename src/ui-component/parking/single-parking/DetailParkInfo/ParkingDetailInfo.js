@@ -2,13 +2,16 @@ import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import LeftItem from "./LeftItem";
 import RightItem from "./RightItem";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Loading from "ui-component/back-drop/Loading";
+import Swal from "sweetalert2";
 
 const ParkingDetailInfo = () => {
   const { id } = useParams();
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
@@ -26,10 +29,20 @@ const ParkingDetailInfo = () => {
     const response = await fetch(`${apiUrl}/parkings/${id}`, requestOptions);
 
     const data = await response.json();
-    // console.log("data", data);
-    // console.log("data.data.parkingEntity", data.data.parkingEntity);
-    setData(data.data.parkingEntity);
-    setLoading(false);
+    if (data.data) {
+      setData(data.data.parkingEntity);
+      setLoading(false);
+    } else {
+      Swal.fire({
+        icon: "error",
+        text: data.message,
+        confirmButtonText: "Trở lại",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/parkings");
+        }
+      });
+    }
   };
   useEffect(() => {
     fetchData();

@@ -16,7 +16,7 @@ import Breadcrumbs from "ui-component/extend/Breadcrumbs";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Customization from "../Customization";
-import navigation from "menu-items";
+import Menu from "menu-items";
 import { drawerWidth } from "store/constant";
 import { SET_MENU } from "store/actions";
 
@@ -81,6 +81,8 @@ const MainLayout = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
 
+  const navigation = Menu();
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -97,7 +99,12 @@ const MainLayout = () => {
             : "none",
         }}
       >
-        <Toolbar style={{ paddingBottom: "0", paddingTop: "8px" }}>
+        <Toolbar
+          style={{
+            paddingBottom: "0",
+            paddingTop: "2px",
+          }}
+        >
           <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
         </Toolbar>
       </AppBar>

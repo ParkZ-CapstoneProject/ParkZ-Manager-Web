@@ -188,7 +188,7 @@ const DataTableItem = (props) => {
           <Typography
             variant="h1"
             color="#21130d"
-            sx={{ textAlign: "center", marginTop: "15%" }}
+            sx={{ textAlign: "center", marginTop: "9%" }}
           >
             Không tìm thấy dữ liệu
           </Typography>

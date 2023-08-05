@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, TextField, IconButton, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 const CardInput = (props) => {
   const {
@@ -31,31 +31,6 @@ const CardInput = (props) => {
     onInputChange(index, inputIndex + 1, newValue);
   };
 
-  // useEffect(() => {
-  //   if (values[1] && values[2] && values[1] >= values[2]) {
-  //     let errorFieldName = "";
-  //     if (values[1] >= values[2]) {
-  //       errorFieldName = "end time";
-  //     } else {
-  //       errorFieldName = "start time";
-  //     }
-  //     Swal.fire({
-  //       icon: "error",
-  //       text: `Thời gian bắt đầu phải nhỏ hơn kết thúc! Vui lòng kiểm tra lại.`,
-  //     }).then(() => {
-  //       // clear the input value for the time field that caused the error
-  //       const newValues = [...values];
-  //       if (errorFieldName === "start time") {
-  //         newValues[1] = "";
-  //       } else {
-  //         newValues[2] = "";
-  //       }
-  //       setValues(newValues);
-  //     });
-  //     return;
-  //   }
-  // }, [values]);
-
   const handleReset = () => {
     setValues(inputValues);
   };
@@ -77,7 +52,7 @@ const CardInput = (props) => {
     <>
       <Grid
         container
-        direction="column"
+        direction="row"
         alignItems="flex-start"
         spacing={2}
         sx={{
@@ -85,15 +60,16 @@ const CardInput = (props) => {
           borderRadius: "7px",
           padding: "0px 0px 30px 5px",
           marginBottom: "15px",
+          width: "100%",
         }}
       >
-        <Grid item>
+        <Grid item xs={11} sx={{ textAlign: "center" }}>
           <Typography color={theme.palette.secondary.dark} variant="h3">
             Khung giờ {index + 1}
           </Typography>
         </Grid>
         {index !== 0 && (
-          <Grid item sx={{ marginLeft: "auto", marginTop: "-52px" }}>
+          <Grid item sx={{ marginLeft: "auto", marginTop: "-18px" }}>
             <IconButton onClick={() => onRemove(index)}>
               <CloseIcon
                 sx={{
@@ -106,7 +82,54 @@ const CardInput = (props) => {
           </Grid>
         )}
 
-        <Grid item xs={12}>
+        <Grid item container direction="row" spacing={4} xs={11}>
+          <Grid item xs={6}>
+            <Typography color={theme.palette.common.black} variant="subtitle1">
+              Từ giờ
+            </Typography>
+            <TextField
+              type="time" // Change type to "number"
+              label="giờ"
+              value={values[1]}
+              disabled={!isExtraFree || isWholeDay}
+              onChange={(event) => handleInputChange(event, 1)}
+              sx={
+                !isExtraFree || isWholeDay
+                  ? { width: "100%", opacity: 0.5 }
+                  : { width: "100%" }
+              }
+              InputProps={{
+                inputProps: {
+                  style: { textAlign: "center" },
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography color={theme.palette.common.black} variant="subtitle1">
+              Đến giờ
+            </Typography>
+            <TextField
+              type="time"
+              value={values[2]}
+              label="giờ"
+              disabled={!isExtraFree || isWholeDay}
+              onChange={(event) => handleInputChange(event, 2)}
+              sx={
+                !isExtraFree || isWholeDay
+                  ? { width: "100%", opacity: 0.5 }
+                  : { width: "100%" }
+              }
+              InputProps={{
+                inputProps: {
+                  style: { textAlign: "center" },
+                },
+              }}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid item container direction="row" xs={11}>
           <Typography color={theme.palette.common.black} variant="subtitle1">
             Giá cước
           </Typography>
@@ -116,54 +139,11 @@ const CardInput = (props) => {
             value={values[0]}
             onChange={(event) => handleInputChange(event, 0)}
             onBlur={handleReset}
-            sx={{ width: "180%" }}
+            sx={{ width: "100%" }}
           />
         </Grid>
-        <Grid item container direction="row" spacing={9}>
-          <Grid item>
-            <Typography color={theme.palette.common.black} variant="subtitle1">
-              Từ
-            </Typography>
-            <TextField
-              type="time" // Change type to "number"
-              value={values[1]}
-              disabled={!isExtraFree || isWholeDay}
-              onChange={(event) => handleInputChange(event, 1)}
-              sx={
-                !isExtraFree || isWholeDay
-                  ? { width: "120%", opacity: 0.5 }
-                  : { width: "120%" }
-              }
-              InputProps={{
-                inputProps: {
-                  style: { textAlign: "center" },
-                },
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography color={theme.palette.common.black} variant="subtitle1">
-              Đến
-            </Typography>
-            <TextField
-              type="time"
-              value={values[2]}
-              disabled={!isExtraFree || isWholeDay}
-              onChange={(event) => handleInputChange(event, 2)}
-              sx={
-                !isExtraFree || isWholeDay
-                  ? { width: "120%", opacity: 0.5 }
-                  : { width: "120%" }
-              }
-              InputProps={{
-                inputProps: {
-                  style: { textAlign: "center" },
-                },
-              }}
-            />
-          </Grid>
-        </Grid>
-        <Grid item>
+
+        <Grid item container direction="row" xs={11}>
           <Typography color={theme.palette.common.black} variant="subtitle1">
             Giá phụ phí
           </Typography>
@@ -175,7 +155,7 @@ const CardInput = (props) => {
             onChange={(event) => handleInputChange(event, 3)}
             onBlur={handleReset}
             sx={
-              !isExtraFree ? { width: "180%", opacity: 0.5 } : { width: "180%" }
+              !isExtraFree ? { width: "100%", opacity: 0.5 } : { width: "100%" }
             }
           />
         </Grid>

@@ -9,7 +9,7 @@ const PriceDetail = () => {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
-  const signalRUrl = process.env.REACT_APP_BASE_URL_SIGNALR;
+  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
@@ -51,7 +51,7 @@ const PriceDetail = () => {
     );
 
     const data = await res.json();
-    console.log("data", data.data);
+    // console.log("data", data.data);
 
     setRows(data.data);
     setLoading(false);

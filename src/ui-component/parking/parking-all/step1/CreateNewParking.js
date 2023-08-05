@@ -27,7 +27,6 @@ const CreateNewParking = () => {
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
-  console.log("userData", Number(userData._id));
 
   const navigate = useNavigate();
 
@@ -45,6 +44,7 @@ const CreateNewParking = () => {
     {
       floor: 1,
       numCarSlots: 0,
+      numCarSlotsBackUp: 0,
       numCarRows: 0,
       numCarCols: 0,
       carSlots: [],
@@ -73,6 +73,7 @@ const CreateNewParking = () => {
     const newFloor = {
       floor: floors.length + 1,
       numCarSlots: 0,
+      numCarSlotsBackUp: 0,
       numCarRows: 0,
       numCarCols: 0,
       carSlots: [],
@@ -199,7 +200,7 @@ const CreateNewParking = () => {
       });
       return;
     } else {
-      console.log("data", data);
+      // console.log("data", data);
       localStorage.setItem("parkingId", data.data);
       return data.data;
     }
@@ -223,14 +224,12 @@ const CreateNewParking = () => {
         body: JSON.stringify(request),
       };
 
-      return fetch(`${apiUrl}/parking-spot-image`, requestOptions)
-        .then((response) => {
-          console.log("response", response);
+      return fetch(`${apiUrl}/parking-spot-image`, requestOptions).then(
+        (response) => {
+          // console.log("response", response);
           return response.json();
-        })
-        .then((data) => {
-          console.log("data", data);
-        });
+        }
+      );
     });
 
     return Promise.all(uploadPromises).then(() => {
@@ -276,13 +275,14 @@ const CreateNewParking = () => {
           <Grid item xs={6}>
             <Typography
               color={theme.palette.secondary.dark}
-              variant="subtitle1"
+              variant="h4"
               sx={{ padding: "7px" }}
             >
-              Tên
+              Tên bãi xe
             </Typography>
             <TextField
               type="text"
+              required
               fullWidth
               color="secondary"
               label="Tên"
@@ -345,7 +345,7 @@ const CreateNewParking = () => {
           <Grid item xs={6}>
             <Typography
               color={theme.palette.secondary.dark}
-              variant="subtitle1"
+              variant="h4"
               sx={{ padding: "7px" }}
             >
               Mô tả
@@ -367,7 +367,7 @@ const CreateNewParking = () => {
           <Grid item xs={6}>
             <Typography
               color={theme.palette.secondary.dark}
-              variant="subtitle1"
+              variant="h4"
               sx={{ padding: "7px" }}
             >
               Địa chỉ
@@ -379,7 +379,7 @@ const CreateNewParking = () => {
               rows={3}
               type="text"
               name="address"
-              label="Địa chỉ(Số, đường, quận, TP Hô Chí Minh)"
+              label="Địa chỉ (Số, đường, quận, TP Hô Chí Minh)"
               color="secondary"
               value={parking.address}
               onChange={handleAddressChange}
@@ -420,7 +420,7 @@ const CreateNewParking = () => {
         <Grid item>
           <Typography
             color={theme.palette.secondary.dark}
-            variant="subtitle1"
+            variant="h4"
             sx={{ padding: "7px" }}
           >
             Chọn hình ảnh
@@ -431,7 +431,9 @@ const CreateNewParking = () => {
           />
         </Grid>
 
-        <div style={{ marginLeft: "89%", marginTop: "-1%" }}>
+        <div
+          style={{ marginLeft: "89%", marginTop: "-1%", paddingBottom: "20px" }}
+        >
           <NextButton onClick={handleContinue} />
         </div>
       </MainCard>

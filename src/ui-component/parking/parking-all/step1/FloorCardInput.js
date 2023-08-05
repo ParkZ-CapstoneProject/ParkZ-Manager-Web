@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
 import { Grid, IconButton, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,7 +28,21 @@ const FloorCardInput = (props) => {
       setError(true);
       Swal.fire({
         icon: "error",
-        text: "Số hàng không được vượt quá số vị trí",
+        text: "Số vị trí dự phòng không được vượt quá tổng số vị trí",
+      }).then(() => {
+        // Clear the input value for the row field
+        const newValues = [...values];
+        newValues[2] = 0;
+        setValues(newValues);
+      });
+    } else {
+      setError(false);
+    }
+    if (values[3] > values[1]) {
+      setError(true);
+      Swal.fire({
+        icon: "error",
+        text: "Số hàng không được vượt quá tổng số vị trí",
       }).then(() => {
         // Clear the input value for the row field
         const newValues = [...values];
@@ -40,11 +53,11 @@ const FloorCardInput = (props) => {
       setError(false);
     }
 
-    if (values[3] > values[1]) {
+    if (values[4] > values[1]) {
       setError(true);
       Swal.fire({
         icon: "error",
-        text: "Số cột không được vượt quá số vị trí",
+        text: "Số cột không được vượt quá tổng số vị trí",
       }).then(() => {
         // Clear the input value for the column field
         const newValues = [...values];
@@ -54,19 +67,7 @@ const FloorCardInput = (props) => {
     } else {
       setError(false);
     }
-
-    // if (
-    //   values[1] &&
-    //   values[2] &&
-    //   values[3] &&
-    //   values[1] > values[2] * values[3]
-    // ) {
-    //   setError(true);
-    //   Swal.fire({
-    //     icon: "error",
-    //     text: "Tích số cột và hàng không thể nhỏ hơn số vị trí! Vui lòng kiểm tra lại",
-    //   });
-    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
   const handleReset = () => {
@@ -78,16 +79,16 @@ const FloorCardInput = (props) => {
       <Grid
         container
         direction="column"
-        alignItems="flex-start"
         spacing={2}
         sx={{
           border: "1px dashed gray",
           borderRadius: "7px",
-          padding: "0px 0px 30px 5px",
+          padding: "5px 20px 30px 5px",
           marginBottom: "15px",
+          // width: "100%",
         }}
       >
-        <Grid item>
+        <Grid item sx={{ textAlign: "center" }}>
           <Typography color={theme.palette.secondary.dark} variant="h3">
             Tầng {index + 1}
           </Typography>
@@ -106,45 +107,88 @@ const FloorCardInput = (props) => {
           </Grid>
         )}
 
-        <Grid item xs={12}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
-            Số vị trí
-          </Typography>
-          <TextField
-            type="number"
-            fullWidth
-            inputProps={{ min: 0 }} // Set min value to 0
-            value={values[1]}
-            onChange={(event) => handleInputChange(event, 1)}
-            onBlur={handleReset}
-          />
+        <Grid item container direction="row" spacing={2.5} alignItems="center">
+          <Grid item xs={6}>
+            <Typography
+              color={theme.palette.common.black}
+              variant="subtitle1"
+              sx={{ fontSize: "16px" }}
+            >
+              Tổng số vị trí
+            </Typography>
+            <TextField
+              type="number"
+              fullWidth
+              inputProps={{ min: 0 }} // Set min value to 0
+              value={values[1]}
+              onChange={(event) => handleInputChange(event, 1)}
+              onBlur={handleReset}
+              // sx={{
+              //   width: "100%",
+              // }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography
+              color={theme.palette.common.black}
+              variant="subtitle1"
+              sx={{ fontSize: "16px" }}
+            >
+              Vị trí dự phòng
+            </Typography>
+            <TextField
+              type="number"
+              fullWidth
+              inputProps={{ min: 0 }} // Set min value to 0
+              value={values[2]}
+              onChange={(event) => handleInputChange(event, 2)}
+              onBlur={handleReset}
+              // sx={{
+              //   width: "100%",
+              // }}
+            />
+          </Grid>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
+          <Typography
+            color={theme.palette.common.black}
+            variant="subtitle1"
+            sx={{ fontSize: "16px" }}
+          >
             Số hàng
           </Typography>
           <TextField
             type="number"
             fullWidth
             inputProps={{ min: 0 }} // Set min value to 0
-            value={values[2]}
-            onChange={(event) => handleInputChange(event, 2)}
+            value={values[3]}
+            onChange={(event) => handleInputChange(event, 3)}
             onBlur={handleReset}
+            sx={{
+              width: "100%",
+            }}
           />
         </Grid>
 
         <Grid item xs={12}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
+          <Typography
+            color={theme.palette.common.black}
+            variant="subtitle1"
+            sx={{ fontSize: "16px" }}
+          >
             Số cột
           </Typography>
           <TextField
             fullWidth
             type="number"
             inputProps={{ min: 0 }} // Set min value to 0
-            value={values[3]}
-            onChange={(event) => handleInputChange(event, 3)}
+            value={values[4]}
+            onChange={(event) => handleInputChange(event, 4)}
             onBlur={handleReset}
+            sx={{
+              width: "100%",
+            }}
           />
         </Grid>
       </Grid>

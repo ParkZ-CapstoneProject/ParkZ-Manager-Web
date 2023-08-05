@@ -282,20 +282,23 @@ const CreateNewPrice = () => {
 
   return (
     <MainCard title="Tạo mới cước phí">
-      <Grid container direction="row" justifyContent="space-around">
-        <Grid item xs={5.5}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
-            Tên cước phí
-          </Typography>
-          <TextField
-            type="text"
-            value={parkingPrice.name}
-            onChange={handleNameChange}
-            sx={{ width: "100%" }}
-          />
-        </Grid>
-        <Grid item xs={5.5}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
+      <Grid item container xs={5.5} sx={{ marginLeft: "2%" }}>
+        <Typography
+          color={theme.palette.common.black}
+          variant="h4"
+          sx={{ paddingBottom: "6px" }}
+        >
+          Tên cước phí
+        </Typography>
+        <TextField
+          type="text"
+          value={parkingPrice.name}
+          onChange={handleNameChange}
+          sx={{ width: "100%" }}
+        />
+      </Grid>
+      {/* <Grid item xs={5.5}>
+          <Typography color={theme.palette.common.black} variant="h4">
             Loại xe
           </Typography>
           <Select
@@ -306,17 +309,8 @@ const CreateNewPrice = () => {
             <MenuItem value={1}>Xe hơi</MenuItem>
             <MenuItem value={2}>Xe máy</MenuItem>
           </Select>
-        </Grid>
-      </Grid>
-      <Grid
-        item
-        container
-        direction="row"
-        alignItems="center"
-        spacing={10}
-        sx={{ padding: "5px" }}
-      >
-        <Grid item sx={{ marginLeft: "33px" }}>
+        </Grid> */}
+      {/* <Grid item sx={{ marginLeft: "33px" }}>
           <FormControlLabel
             control={
               <Checkbox
@@ -332,34 +326,22 @@ const CreateNewPrice = () => {
               },
             }}
           />
-        </Grid>
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={parkingPrice.isExtraFree}
-                onChange={handleCheckboxChange}
-              />
-            }
-            label="Phụ phí"
-            sx={{
-              "& .MuiFormControlLabel-label": {
-                fontWeight: "bold",
-                fontSize: 17,
-              },
-            }}
-          />
-        </Grid>
-      </Grid>
+        </Grid> */}
+
       <Grid
         container
         direction="row"
         justifyContent="space-around"
-        marginTop="2px"
+        marginTop="5px"
+        spacing={2}
       >
         <Grid item xs={5.5}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
-            Số giờ bắt đầu tính phí
+          <Typography
+            color={theme.palette.common.black}
+            variant="h4"
+            sx={{ paddingBottom: "6px" }}
+          >
+            Số tiếng tính phí đầu
           </Typography>
           <TextField
             type="number"
@@ -370,8 +352,12 @@ const CreateNewPrice = () => {
           />
         </Grid>
         <Grid item xs={5.5}>
-          <Typography color={theme.palette.common.black} variant="subtitle1">
-            Bước thời gian
+          <Typography
+            color={theme.palette.common.black}
+            variant="h4"
+            sx={{ paddingBottom: "6px" }}
+          >
+            Số tiếng tính phí tiếp theo
           </Typography>
           <TextField
             type="number"
@@ -382,12 +368,31 @@ const CreateNewPrice = () => {
           />
         </Grid>
       </Grid>
+
+      <Grid item sx={{ marginLeft: "2.2%", paddingTop: "5px" }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={parkingPrice.isExtraFree}
+              onChange={handleCheckboxChange}
+            />
+          }
+          label="Phụ phí"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontWeight: "bold",
+              fontSize: 17,
+            },
+          }}
+        />
+      </Grid>
+
       <Grid
         container
         direction="row"
         alignItems="center"
         spacing={6}
-        sx={{ marginTop: "3px", marginLeft: "1px" }}
+        sx={{ marginTop: "1px", marginLeft: "1px" }}
       >
         {cards.map((card, index) => (
           <Grid item xs={3.5} key={index}>
@@ -406,7 +411,7 @@ const CreateNewPrice = () => {
             />
           </Grid>
         ))}
-        {cards.length < 5 && !parkingPrice.isWholeDay && (
+        {cards.length < 5 && (
           <Grid item>
             <AddButton onClick={handleAddCard} />
           </Grid>
@@ -419,7 +424,7 @@ const CreateNewPrice = () => {
             onChange={handlePenaltyCheck}
           />
         }
-        label="Phạt qua giờ"
+        label="Tiền phạt (Sẽ được áp dụng khi khách hàng đậu xe quá giờ đặt)"
         sx={{
           marginLeft: "20px",
           "& .MuiFormControlLabel-label": {
@@ -435,14 +440,18 @@ const CreateNewPrice = () => {
           justifyContent="space-around"
           sx={{
             border: "1px dashed gray",
-            borderRadius: "7px",
+            borderRadius: "8px",
             width: "97%",
-            padding: "10px 10px 30px 10px",
+            padding: "15px 10px 30px 10px",
             marginLeft: "23px",
           }}
         >
           <Grid item xs={5.5}>
-            <Typography color={theme.palette.common.black} variant="subtitle1">
+            <Typography
+              color={theme.palette.common.black}
+              variant="h4"
+              sx={{ paddingBottom: "6px" }}
+            >
               Giá tiền phạt
             </Typography>
             <TextField
@@ -454,8 +463,12 @@ const CreateNewPrice = () => {
             />
           </Grid>
           <Grid item xs={5.5}>
-            <Typography color={theme.palette.common.black} variant="subtitle1">
-              Bước thời gian
+            <Typography
+              color={theme.palette.common.black}
+              variant="h4"
+              sx={{ paddingBottom: "6px" }}
+            >
+              Cộng thêm sau mỗi
             </Typography>
             <TextField
               type="number"

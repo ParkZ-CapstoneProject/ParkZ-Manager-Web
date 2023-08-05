@@ -48,6 +48,10 @@ const Modal = Loadable(
   lazy(() => import("ui-component/parking/parking-all/step3/Index"))
 );
 
+const PhysicalModal = Loadable(
+  lazy(() => import("ui-component/parking/parking-modal/Index"))
+);
+
 const NotFound = Loadable(
   lazy(() => import("ui-component/not-found/NotFound"))
 );
@@ -92,6 +96,10 @@ const AuthenticationRoutes = {
     {
       path: user ? "modal" : "login",
       element: <Modal />,
+    },
+    {
+      path: "modal-2",
+      element: <PhysicalModal />,
     },
     {
       path: "*",

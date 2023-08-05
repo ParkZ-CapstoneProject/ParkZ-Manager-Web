@@ -2,7 +2,7 @@ import { IconButton, List, ListItem, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import { MoreVert } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import NoEncryptionGmailerrorredIcon from "@mui/icons-material/NoEncryptionGmailerrorred";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useDispatch } from "react-redux";
 import { openModal, setBookingId, setStaffId } from "store/modalReducer";
@@ -67,6 +67,16 @@ const Menu = ({ id }) => {
               Chi tiết
             </Typography>
           </ListItem>
+
+          <ListItem onClick={handleDetail}>
+            <NoEncryptionGmailerrorredIcon
+              sx={{ marginRight: "3%", color: "#2196f3" }}
+            />
+            <Typography color="primary" variant="subtitle1">
+              Tắt bãi
+            </Typography>
+          </ListItem>
+
           <ListItem onClick={() => handleOpenModalDelete("modalStaffDelete")}>
             <DeleteIcon sx={{ marginRight: "3%", color: "#f44336" }} />
             <Typography color="error" variant="subtitle1">
