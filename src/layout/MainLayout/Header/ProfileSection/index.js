@@ -104,7 +104,7 @@ const ProfileSection = () => {
   const handleListItemClickWallet = (event, index) => {
     setSelectedIndex(index);
     handleClose(event);
-    setIsOpenWallet(true);
+    navigate("/wallet");
   };
 
   const handleListItemProfileClick = (event, index, route) => {

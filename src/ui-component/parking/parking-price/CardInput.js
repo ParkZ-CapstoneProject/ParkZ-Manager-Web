@@ -84,7 +84,11 @@ const CardInput = (props) => {
 
         <Grid item container direction="row" spacing={4} xs={11}>
           <Grid item xs={6}>
-            <Typography color={theme.palette.common.black} variant="subtitle1">
+            <Typography
+              color={theme.palette.common.black}
+              variant="subtitle1"
+              sx={{ paddingBottom: "7px" }}
+            >
               Từ giờ
             </Typography>
             <TextField
@@ -106,7 +110,11 @@ const CardInput = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <Typography color={theme.palette.common.black} variant="subtitle1">
+            <Typography
+              color={theme.palette.common.black}
+              variant="subtitle1"
+              sx={{ paddingBottom: "7px" }}
+            >
               Đến giờ
             </Typography>
             <TextField

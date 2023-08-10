@@ -227,8 +227,8 @@ const ParkingModal = ({ floorIndex, onModalDataChange }) => {
           <Grid item>
             <Box
               sx={{
-                width: 60,
-                height: 50,
+                width: 30,
+                height: 30,
                 backgroundColor: "#145365",
               }}
             />
@@ -241,8 +241,8 @@ const ParkingModal = ({ floorIndex, onModalDataChange }) => {
           <Grid item>
             <Box
               sx={{
-                width: 60,
-                height: 50,
+                width: 30,
+                height: 30,
                 backgroundColor: "#1939B7",
                 padding: "10px",
               }}

@@ -1,0 +1,21 @@
+.btn-recharge {
+  border: 1px solid #24b4fb;
+  background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border-radius: 1.9em;
+  padding: 0.8em 1.2em 0.8em 1em;
+  transition: all ease-in-out 0.2s;
+  font-size: 16px;
+}
+
+.btn-recharge span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: 500;
+}
+
+.btn-recharge:hover {
+  background: linear-gradient(144deg, #8d4abd, #30218d 50%, #5fdde6);
+  transform: scaleX(1.1);
+}

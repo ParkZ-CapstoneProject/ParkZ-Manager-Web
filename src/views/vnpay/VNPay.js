@@ -61,6 +61,7 @@ export default function MyVNPay(props) {
       headerName: "",
       width: 100,
       sortable: false,
+      align: "center",
       disableColumnMenu: true,
       renderCell: (params) => <Menu vnPayId={params.id} />,
     },

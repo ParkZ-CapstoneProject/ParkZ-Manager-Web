@@ -175,8 +175,8 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
           <Grid item>
             <Box
               sx={{
-                width: 60,
-                height: 50,
+                width: 30,
+                height: 30,
                 backgroundColor: "#145365",
               }}
             />
@@ -189,8 +189,8 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
           <Grid item>
             <Box
               sx={{
-                width: 60,
-                height: 50,
+                width: 30,
+                height: 30,
                 backgroundColor: "#1939B7",
                 padding: "10px",
               }}
@@ -214,8 +214,8 @@ const SinglePhysicalModal = ({ floorIndex, edit, listCarSlots }) => {
                     width={slotWidth}
                     height={slotHeight}
                     fill={slot.type ? "#145365" : "#1939B7"}
-                    stroke="black"
-                    strokeWidth={1}
+                    stroke="#ffd800"
+                    strokeWidth={3}
                     draggable={!slot.isDragging && edit}
                     // onDragStart={() => handleDragStart(slot.id)}
                     // onDragEnd={(e) => handleDragEnd(e, slot.id)}

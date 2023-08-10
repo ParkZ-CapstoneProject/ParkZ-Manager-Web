@@ -1,21 +1,23 @@
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-import { Chip, Grid, Switch, Typography } from "@mui/material";
+import { Chip, Grid, Typography } from "@mui/material";
 import Menu from "ui-component/parking/parking-all/Menu";
 import Swal from "sweetalert2";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import { useNavigate } from "react-router";
 import { ImFilesEmpty } from "react-icons/im";
-import { useRef } from "react";
-import { useEffect } from "react";
+import DisableModal from "ui-component/modal/disable-parking/Disable/DisableModal";
 
 export default function MyParkingAll(props) {
   const { rows } = props;
 
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [parkingId, setParkingId] = useState();
+  // console.log("parkingId", parkingId);
 
   const dataGridRef = useRef(null);
 
@@ -48,30 +50,31 @@ export default function MyParkingAll(props) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          if (field === "isActive") {
-            const requestOptions = {
-              method: "DELETE",
-              headers: {
-                Authorization: `bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            };
-            const response = await fetch(
-              `${apiUrl}/parkings/parking/${params.id}`,
-              requestOptions
-            );
-            if (response.status === 204) {
-              Swal.fire({
-                icon: "success",
-                text: "Cập nhật trạng thái thành công!",
-              });
-            } else {
-              Swal.fire({
-                icon: "error",
-                text: "Cập nhật trạng thái thất bạij!",
-              });
-            }
-          } else {
+          // if (field === "isActive") {
+          //   const requestOptions = {
+          //     method: "DELETE",
+          //     headers: {
+          //       Authorization: `bearer ${token}`,
+          //       "Content-Type": "application/json",
+          //     },
+          //   };
+          //   const response = await fetch(
+          //     `${apiUrl}/parkings/parking/${params.id}`,
+          //     requestOptions
+          //   );
+          //   if (response.status === 204) {
+          //     Swal.fire({
+          //       icon: "success",
+          //       text: "Cập nhật trạng thái thành công!",
+          //     });
+          //   } else {
+          //     Swal.fire({
+          //       icon: "error",
+          //       text: "Cập nhật trạng thái thất bạij!",
+          //     });
+          //   }
+          // }
+          if (field === "isFull") {
             const requestOptions = {
               method: "PUT",
               headers: {
@@ -127,13 +130,31 @@ export default function MyParkingAll(props) {
     }
   };
 
-  const renderCellIsFull = (params) => {
+  const renderCellSwitch = (params) => {
     const handleChange = () => {
       handleSwitchToggle(params, "isFull");
     };
 
     return (
-      <Switch checked={params.value} onChange={handleChange} color="primary" />
+      // <Switch checked={params.value} onChange={handleChange} color="primary" />
+      <label className="switch">
+        <input type="checkbox" checked={params.value} onChange={handleChange} />
+        <span className="slider"></span>
+      </label>
+    );
+  };
+
+  const renderCellSwitchAvailable = (params, parkingId) => {
+    const handleChange = () => {
+      setIsOpen(true);
+      setParkingId(parkingId);
+    };
+    return (
+      // <Switch checked={params.value} onChange={handleChange} color="primary" />
+      <label className="switch">
+        <input type="checkbox" checked={params.value} onChange={handleChange} />
+        <span className="slider"></span>
+      </label>
     );
   };
 
@@ -144,15 +165,15 @@ export default function MyParkingAll(props) {
       headerName: "Tên bãi",
       // description: "This column has a value getter and is not sortable.",
       // sortable: false,
-      width: 300,
+      width: 280,
       valueGetter: (params) => `${params.row.name || "-----"}`,
     },
-    { field: "address", headerName: "Địa chỉ", width: 450 },
+    { field: "address", headerName: "Địa chỉ", width: 420 },
     {
       field: "carSpot",
       headerName: "Tổng số vị trí",
       // type: "number",
-      width: 180,
+      width: 120,
       valueGetter: getCellValue,
     },
     {
@@ -165,13 +186,23 @@ export default function MyParkingAll(props) {
       renderCell: renderCellIsActive,
     },
     {
-      field: "isFull",
-      headerName: "Đã đầy",
-      width: 170,
+      field: "isAvailable",
+      headerName: "Bãi xe bận",
+      width: 140,
       // valueGetter: getCellValue,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: renderCellIsFull,
+      renderCell: (params) =>
+        renderCellSwitchAvailable(params, params.row.parkingId),
+    },
+    {
+      field: "isFull",
+      headerName: "Đã đầy",
+      width: 140,
+      // valueGetter: getCellValue,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: renderCellSwitch,
     },
     {
       field: "action",
@@ -230,6 +261,12 @@ export default function MyParkingAll(props) {
           </>
         )}
       </MainCard>
+
+      <DisableModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        parkingId={parkingId}
+      />
     </>
   );
 }

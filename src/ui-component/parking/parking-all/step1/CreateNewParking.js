@@ -149,7 +149,7 @@ const CreateNewParking = () => {
           });
           const parkingId = await handleCreateNewPark();
           if (parkingId) {
-            const done = await handleUploadImage(parkingId);
+            const done = await handleUploadImage(3);
             if (done) {
               saveState(floors);
               localStorage.setItem("address", parking.address);
@@ -209,32 +209,39 @@ const CreateNewParking = () => {
   const handleUploadImage = async (parkingId) => {
     const imageUrls = await handleUploadAllImage();
 
-    const uploadPromises = imageUrls.map((image, index) => {
-      const request = {
-        imgPath: image,
-        parkingId: parkingId,
-      };
+    if (imageUrls) {
+      const uploadPromises = imageUrls.map((image) => {
+        const request = {
+          imgPath: image,
+          parkingId: parkingId,
+        };
 
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-        body: JSON.stringify(request),
-      };
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify(request),
+        };
 
-      return fetch(`${apiUrl}/parking-spot-image`, requestOptions).then(
-        (response) => {
-          // console.log("response", response);
-          return response.json();
-        }
-      );
-    });
+        return fetch(`${apiUrl}/parking-spot-image`, requestOptions).then(
+          (response) => {
+            // console.log("response", response);
+            return response.json();
+          }
+        );
+      });
 
-    return Promise.all(uploadPromises).then(() => {
-      return true;
-    });
+      return Promise.all(uploadPromises).then(() => {
+        return true;
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        text: "Hình ảnh tải lên bị thất bại! Vui lòng thử lại",
+      });
+    }
   };
 
   const handleUploadAllImage = () => {
