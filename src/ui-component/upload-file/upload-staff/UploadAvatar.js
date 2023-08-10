@@ -50,9 +50,7 @@ const UploadAvatar = (props) => {
     return (
       <>
         <BoxUpload>
-          <div className="sc-eLqIir kfxCXk">
-            <Spinner />
-          </div>
+          <Spinner />
         </BoxUpload>
       </>
     );
