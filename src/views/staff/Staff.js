@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
-import { Avatar, Chip, Grid, Skeleton } from "@mui/material";
+import { Avatar, Chip, Grid, Skeleton, Typography } from "@mui/material";
 import Menu from "ui-component/staff/Menu";
 import CreateButton from "ui-component/buttons/create-button/CreateButton";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
@@ -15,6 +15,7 @@ import { useState } from "react";
 import SubCard from "ui-component/cards/SubCard";
 import Loading from "ui-component/back-drop/Loading";
 import { useRef } from "react";
+import { ImFilesEmpty } from "react-icons/im";
 
 const renderAvatarCell = (params) => {
   return (
@@ -179,7 +180,7 @@ export default function Staff() {
     // Render the Skeleton components or any other loading indicator
     return (
       <>
-        <MainCard title={"Lịch đặt"}>
+        <MainCard title={"Tất cả nân viên"}>
           <Grid item xs={12}>
             <SubCard>
               {/* Render the Skeleton components for the search section */}
@@ -202,7 +203,7 @@ export default function Staff() {
 
   return (
     <>
-      <MainCard title={"Nhân viên"}>
+      <MainCard title={"Tất cả nân viên"}>
         <Grid item xs={12}>
           <SubCardStaff
             startComponent={<SearchSection />}
@@ -213,24 +214,44 @@ export default function Staff() {
             }
           ></SubCardStaff>
         </Grid>
-        <div id="outer-div">
-          <DataGrid
-            rows={rows}
-            rowHeight={70}
-            autoHeight
-            getRowId={(row) => row.userId}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            checkboxSelection
-            style={{ paddingTop: "12px" }}
-            ref={dataGridRef}
-          />
-        </div>
+        {rows ? (
+          <div id="outer-div">
+            <DataGrid
+              rows={rows}
+              rowHeight={70}
+              autoHeight
+              getRowId={(row) => row.userId}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 10 },
+                },
+              }}
+              pageSizeOptions={[5, 10, 25]}
+              checkboxSelection
+              style={{ paddingTop: "12px" }}
+              ref={dataGridRef}
+            />
+          </div>
+        ) : (
+          <>
+            <Typography
+              variant="h1"
+              color="#21130d"
+              sx={{ textAlign: "center", marginTop: "5%" }}
+            >
+              Không có nhân viên
+            </Typography>
+            <ImFilesEmpty
+              style={{
+                fontSize: "150px",
+                marginTop: "5%",
+                marginLeft: "46%",
+                padding: "5px",
+              }}
+            />
+          </>
+        )}
       </MainCard>
 
       <CreateModalStaff modalType="createModalStaff" />

@@ -5,6 +5,7 @@ import ParkingDetailInfo from "ui-component/parking/single-parking/DetailParkInf
 import Tabs from "ui-component/parking/single-parking/Tabs";
 import HistoryBooking from "ui-component/parking/single-parking/HistoryParking/HistoryBooking";
 import FloorParking from "ui-component/parking/single-parking/PhysicalModalParking/FloorParking";
+import DisableDateHistory from "ui-component/parking/single-parking/DisableDateHistory/DisableDateHistory";
 
 const tabs = [
   {
@@ -22,6 +23,10 @@ const tabs = [
   {
     label: "Lịch sử đặt",
     component: <HistoryBooking />,
+  },
+  {
+    label: "Lịch sử ngưng hoạt động",
+    component: <DisableDateHistory />,
   },
 ];
 

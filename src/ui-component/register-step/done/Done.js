@@ -48,12 +48,12 @@ const Done = () => {
         </Grid>
         <Grid item>
           <Typography color={theme.palette.secondary.dark} variant="h2">
-            Yêu cầu của bạn đang chờ duyệt!
+            Chúc mừng bạn đã trở thành đối tác doanh nghiệp của chúng tôi
           </Typography>
         </Grid>
         <Grid item>
           <Typography color={theme.palette.secondary.dark} variant="h2">
-            Vui lòng kiểm tra Email để nhận thông báo
+            Vui lòng trở lại để đăng nhập
           </Typography>
         </Grid>
         <Stack sx={{ marginTop: "6px" }}>

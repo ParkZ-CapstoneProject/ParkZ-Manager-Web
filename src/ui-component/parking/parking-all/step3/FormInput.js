@@ -126,7 +126,7 @@ const FormInput = ({ floorIndex }) => {
               color={theme.palette.secondary.dark}
               variant="subtitle1"
             >
-              Hàng xe hơi:
+              Số hàng xe
             </Typography>
             <OutlinedInput
               type="number"
@@ -141,7 +141,7 @@ const FormInput = ({ floorIndex }) => {
               color={theme.palette.secondary.dark}
               variant="subtitle1"
             >
-              Cột xe hơi:
+              Số cột xe
             </Typography>
             <OutlinedInput
               type="number"

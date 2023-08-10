@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CardInput from "./CardInput";
 import {
   Checkbox,
   FormControlLabel,
   Grid,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -35,8 +33,6 @@ const CreateNewPrice = () => {
       extraFree: 0,
     },
   ]);
-
-  console.log("cards", cards);
 
   const initialState = {
     name: "",
@@ -73,8 +69,8 @@ const CreateNewPrice = () => {
     startingTime: parkingPrice.startingTime ? parkingPrice.startingTime : null,
     hasPenaltyPrice: parkingPrice.isPenaltyChecked,
     penaltyPrice: parkingPrice.penaltyPrice ? parkingPrice.penaltyPrice : null,
-    penaltyPriceStepTime: parkingPrice.penaltyPriceStepTime
-      ? parkingPrice.penaltyPriceStepTime
+    penaltyPriceStepTime: parkingPrice.penaltyPriceStep
+      ? parkingPrice.penaltyPriceStep
       : null,
     isExtrafee: parkingPrice.isExtraFree,
     extraTimeStep: parkingPrice.timeStep,
@@ -102,11 +98,12 @@ const CreateNewPrice = () => {
     }
     if (
       parkingPrice.isPenaltyChecked === false ||
-      parkingPrice.penaltyPrice === 0
+      parkingPrice.penaltyPrice === 0 ||
+      parkingPrice.penaltyPriceStep === 0
     ) {
       Swal.fire({
         icon: "warning",
-        text: "Vui lòng chọn phạt quá giờ và phí phạt!",
+        text: "Vui lòng chọn phạt quá giờ, nhập phí phạt và số giờ tính phí!",
       });
       return;
     }
@@ -241,17 +238,8 @@ const CreateNewPrice = () => {
     setParkingPrice({ ...parkingPrice, name: e.target.value });
   };
 
-  const handleVehicleTypeChange = (event) => {
-    const value = parseInt(event.target.value);
-    setParkingPrice({ ...parkingPrice, vehicleType: value });
-  };
-
   const handleCheckboxChange = (event) => {
     setParkingPrice({ ...parkingPrice, isExtraFree: event.target.checked });
-  };
-
-  const handleCheckboxWholeChange = (event) => {
-    setParkingPrice({ ...parkingPrice, isWholeDay: event.target.checked });
   };
 
   const handleStartingTimeChange = (e) => {
@@ -297,36 +285,6 @@ const CreateNewPrice = () => {
           sx={{ width: "100%" }}
         />
       </Grid>
-      {/* <Grid item xs={5.5}>
-          <Typography color={theme.palette.common.black} variant="h4">
-            Loại xe
-          </Typography>
-          <Select
-            value={parkingPrice.vehicleType}
-            onChange={handleVehicleTypeChange}
-            sx={{ width: "100%" }}
-          >
-            <MenuItem value={1}>Xe hơi</MenuItem>
-            <MenuItem value={2}>Xe máy</MenuItem>
-          </Select>
-        </Grid> */}
-      {/* <Grid item sx={{ marginLeft: "33px" }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={parkingPrice.isWholeDay}
-                onChange={handleCheckboxWholeChange}
-              />
-            }
-            label="Cùng giá cho cả ngày"
-            sx={{
-              "& .MuiFormControlLabel-label": {
-                fontWeight: "bold",
-                fontSize: 17,
-              },
-            }}
-          />
-        </Grid> */}
 
       <Grid
         container

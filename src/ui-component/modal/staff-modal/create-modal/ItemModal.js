@@ -385,7 +385,7 @@ const ItemModal = ({ modalType }) => {
                 input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
                 MenuProps={MenuProps}
               >
-                {parkings.map((parking) => (
+                {parkings?.map((parking) => (
                   <MenuItem
                     key={parking.parkingId}
                     value={parking.parkingId}

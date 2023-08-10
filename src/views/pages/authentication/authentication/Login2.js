@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { updateToken } from "store/tokenSlice";
+// import jwt from "jsonwebtoken";
 
 const Page = () => {
   const theme = useTheme();
@@ -68,14 +69,20 @@ const Page = () => {
 
             Swal.fire({
               icon: "error",
-              title: "Đăng nhập sai",
+              title: "Đăng nhập thất bại! Vui lòng thử lại!",
               text: res.message,
             });
           } else {
             const parts = data.data.token.split(".");
+            const payload = parts[1];
+            const urlDecodedPayload = decodeURIComponent(payload);
+            const decodedPayload = atob(urlDecodedPayload);
 
+            const user = JSON.parse(decodedPayload);
+
+            // console.log("Decoded Payload:", payloadObject);
             // Decode the payload using the base64-decoding function
-            const user = JSON.parse(atob(parts[1]));
+            // const user = JSON.parse(atob(parts[1]));
             const request = {
               userId: user._id,
               devicetoken: FCMToken,
@@ -156,7 +163,7 @@ const Page = () => {
               </Box>
             </Stack>
             <form method="post" onSubmit={handleLogin}>
-              <Stack spacing={1}>
+              <Stack spacing={2}>
                 <TextField
                   sx={{ borderRadius: "5px" }}
                   required
@@ -170,9 +177,23 @@ const Page = () => {
                   type="text"
                   onChange={handleChangeEmail}
                 />
+
+                <TextField
+                  required
+                  value={password}
+                  inputProps={{ maxLength: 150 }}
+                  error={password.length >= 150}
+                  helperText={password.length > 150 ? "Tối đa 150 ký tự" : ""}
+                  fullWidth
+                  label="Mật khẩu"
+                  name="password"
+                  type="password"
+                  onChange={handleChangePassword}
+                />
+
                 <Typography
                   color={theme.palette.secondary.dark}
-                  variant="subtitle2"
+                  variant="subtitle1"
                   sx={{
                     cursor: "pointer",
                     textAlign: "end",
@@ -180,21 +201,9 @@ const Page = () => {
                 >
                   <a href="/input-email">Bạn quên mật khẩu?</a>
                 </Typography>
-                <TextField
-                  required
-                  value={password}
-                  inputProps={{ maxLength: 100 }}
-                  error={password.length > 100}
-                  helperText={password.length > 100 ? "Tối đa 100 ký tự" : ""}
-                  fullWidth
-                  label="Mật khẩu"
-                  name="password"
-                  type="password"
-                  onChange={handleChangePassword}
-                />
               </Stack>
 
-              <Stack sx={{ marginTop: "5%" }}>
+              <Stack sx={{ marginTop: "2%" }}>
                 <LoginButton />
               </Stack>
 

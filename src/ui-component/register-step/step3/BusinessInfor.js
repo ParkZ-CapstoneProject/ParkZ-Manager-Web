@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import {
-  Button,
   Checkbox,
   Grid,
   TextField,
@@ -28,15 +27,12 @@ const BusinessInfor = () => {
   const dispatch = useDispatch();
   const currentStep = useSelector((state) => state.multiStep.currentStep);
   const userData = useSelector((state) => state.multiStep.userData);
-  console.log("userData", userData);
+
   const [isChecked, setIsChecked] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
   const [businessLicenseUrl, setBusinessLicenseUrl] = useState([]);
 
   const [errorBusinessName, setErrorBusinessName] = useState(false);
-  // console.log("userData[front]", userData["frontSide"]);
-  // console.log("userData[back]", userData["backSide"]);
-  // console.log("userData[avatar]", userData["avatar"]);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
 
@@ -80,15 +76,17 @@ const BusinessInfor = () => {
         title: "Điền tất cả ô nhập",
         text: "Bạn phải nhập thông tin và đồng ý các chính sách",
       });
-    } else if (isChecked === false) {
-      if (userData.businessLicenseUrl.length === 0) {
-        Swal.fire({
-          icon: "warning",
-          text: "Vui lòng cập nhật hình ảnh giấy phép kinh doanh!",
-        });
-        return;
-      }
-    } else {
+    }
+    // else if (isChecked === false) {
+    //   if (userData.businessLicenseUrl.length === 0) {
+    //     Swal.fire({
+    //       icon: "warning",
+    //       text: "Vui lòng cập nhật hình ảnh giấy phép kinh doanh!",
+    //     });
+    //     return;
+    //   }
+    // }
+    else {
       Swal.fire({
         icon: "info",
         title: "Đang gửi yêu cầu...",
