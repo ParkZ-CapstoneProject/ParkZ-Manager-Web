@@ -36,8 +36,8 @@ const StepRegister = Loadable(
   lazy(() => import("views/register/RegisterForBus"))
 );
 
-const QrCodeScan = Loadable(
-  lazy(() => import("ui-component/qr-scan-code/QRScanCode"))
+const FailRecharge = Loadable(
+  lazy(() => import("ui-component/wallet/FailRecharge"))
 );
 
 const Maps = Loadable(
@@ -100,6 +100,10 @@ const AuthenticationRoutes = {
     {
       path: "modal-2",
       element: <PhysicalModal />,
+    },
+    {
+      path: "failed",
+      element: <FailRecharge />,
     },
     {
       path: "*",

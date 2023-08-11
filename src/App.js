@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { CssBaseline, StyledEngineProvider } from "@mui/material";
-
+import { CssBaseline, Snackbar, StyledEngineProvider } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 // routing
 import Routes from "routes";
 
@@ -16,16 +16,24 @@ import { getMessagingToken, onMessageListener } from "utils/config";
 // import StepContext from "context/StepContext";
 
 // ==============================|| APP ||============================== //
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 const App = () => {
   const customization = useSelector((state) => state.customization);
   const [notification, setNotification] = useState({ title: "", body: "" });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   // const [token, setToken] = useState();
   // console.log('message token: ' ,messaging);
   useEffect(() => {
     getMessagingToken();
-  }, []);
+
+    if (notification) {
+      setSnackbarOpen(true);
+    }
+  }, [notification]);
 
   onMessageListener()
     .then((payload) => {
@@ -36,7 +44,20 @@ const App = () => {
     })
     .catch((err) => console.log("err: ", err));
 
-  // console.log("notification", notification);
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  <Snackbar
+    open={snackbarOpen}
+    autoHideDuration={6000}
+    onClose={handleSnackbarClose}
+  >
+    <Alert onClose={handleSnackbarClose} severity="info">
+      <h2>{notification.title}</h2>
+      <p>{notification.body}</p>
+    </Alert>
+  </Snackbar>;
 
   return (
     <StyledEngineProvider injectFirst>
