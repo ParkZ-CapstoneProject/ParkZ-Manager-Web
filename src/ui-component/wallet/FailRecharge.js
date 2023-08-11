@@ -4,9 +4,9 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom/dist";
 import ContinueLogin from "ui-component/buttons/continue-login/ContinueLogin";
 import Lottie from "react-lottie";
-import animationData from "../../../assets/json/88860-success-animation.json";
+import animationData from "../../assets/json/animation_ll60aohe.json";
 
-const Done = () => {
+const FailReCharge = () => {
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Done = () => {
   };
 
   const handleOnclick = () => {
-    navigate("/login");
+    navigate("/wallet");
   };
   return (
     <>
@@ -31,6 +31,7 @@ const Done = () => {
         justifyContent="center"
         alignItems="center"
         spacing={3}
+        marginTop={10}
       >
         <Grid item>
           <Lottie
@@ -43,25 +44,25 @@ const Done = () => {
         </Grid>
         <Grid item>
           <Typography color={theme.palette.primary.main} variant="h1">
-            Hoàn Thành
+            Giao dịch thất bại
           </Typography>
         </Grid>
         <Grid item>
           <Typography color={theme.palette.secondary.dark} variant="h2">
-            Chúc mừng bạn đã trở thành đối tác doanh nghiệp của chúng tôi
+            Rất tiếc vì giao dịch của bạn đã hủy và thất bại
           </Typography>
         </Grid>
         <Grid item>
           <Typography color={theme.palette.secondary.dark} variant="h2">
-            Vui lòng trở lại để đăng nhập
+            Vui lòng trở lại ví để nạp tiền!
           </Typography>
         </Grid>
-        <Stack sx={{ marginTop: "6px" }}>
-          <ContinueLogin onClick={handleOnclick} text="Tiếp Tục Đăng nhập" />
+        <Stack sx={{ marginTop: "12px" }}>
+          <ContinueLogin onClick={handleOnclick} text="Trở Lại Ví" />
         </Stack>
       </Grid>
     </>
   );
 };
 
-export default Done;
+export default FailReCharge;
