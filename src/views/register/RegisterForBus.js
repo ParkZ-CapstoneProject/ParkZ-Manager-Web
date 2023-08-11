@@ -5,14 +5,13 @@ import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-// import Check from "@mui/icons-material/Check";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import AccountInfor from "ui-component/register-step/step1/AccountInfor";
 import PersonalInfor from "ui-component/register-step/step2/PersonalInfor";
 import BusinessInfor from "ui-component/register-step/step3/BusinessInfor";

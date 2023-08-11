@@ -67,6 +67,20 @@ const ItemModal = ({ modalType }) => {
     }
   };
 
+  const calculateAge = (birthdate) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
+
   const handleDateOfBirthChange = (e) => {
     setDateOfBirth(e.target.value);
   };
@@ -124,6 +138,32 @@ const ItemModal = ({ modalType }) => {
     e.preventDefault();
     if (errorEmail) {
       return;
+    } else if (avatar.trim().length === 0) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng tải hình đại diện!",
+      });
+    }
+
+    const age = calculateAge(dateOfBirth);
+    if (age < 15) {
+      Swal.fire({
+        icon: "warning",
+        text: "Bạn phải ít nhất 15 tuổi để đăng ký nhân viên.",
+      });
+      return;
+    }
+
+    if (
+      name.trim().length === 0 ||
+      email.trim().length === 0 ||
+      dateOfBirth.trim().length === 0 ||
+      phone.trim().length === 0
+    ) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng điền tất cả các field!",
+      });
     }
 
     Swal.fire({
@@ -148,62 +188,54 @@ const ItemModal = ({ modalType }) => {
           },
         });
 
-        if (avatar) {
-          const request = {
-            name: name,
-            email: email,
-            phone: phone,
-            dateOfBirth: dateOfBirth,
-            gender: gender,
-            avatar: avatar,
-            managerId: userData._id,
-            parkingId: parkingId,
-          };
+        const request = {
+          name: name,
+          email: email,
+          phone: phone,
+          dateOfBirth: dateOfBirth,
+          gender: gender,
+          avatar: avatar,
+          managerId: userData._id,
+          parkingId: parkingId,
+        };
 
-          const requestOptions = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `bearer ${token}`,
-            },
-            body: JSON.stringify(request),
-          };
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify(request),
+        };
 
-          const response = await fetch(
-            `${apiUrl}/keeper-account-management/register`,
-            requestOptions
-          );
+        const response = await fetch(
+          `${apiUrl}/keeper-account-management/register`,
+          requestOptions
+        );
 
-          const data = await response.json();
+        const data = await response.json();
 
-          if (data.statusCode === 201) {
-            dispatch(closeModal(modalType));
+        if (data.statusCode === 201) {
+          dispatch(closeModal(modalType));
 
-            Swal.fire({
-              icon: "success",
-              text: "Tạo mới bảo vệ thành công",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                setDateOfBirth("");
-                setName("");
-                setPhone("");
-                setEmail();
-                setAvatar("");
-                setParkingId(0);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              text: data.message,
-            });
-          }
+          Swal.fire({
+            icon: "success",
+            text: "Tạo mới bảo vệ thành công",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setDateOfBirth("");
+              setName("");
+              setPhone("");
+              setEmail();
+              setAvatar("");
+              setParkingId(0);
+            }
+          });
         } else {
           Swal.fire({
-            icon: "warning",
-            text: "Vui lòng đợi giây lát để lấy link hình!",
+            icon: "error",
+            text: data.message,
           });
-          return;
         }
       }
     });
@@ -247,7 +279,11 @@ const ItemModal = ({ modalType }) => {
           <Grid item xs={7}>
             <TextField
               fullWidth
+              required
               label="Tên NV"
+              inputProps={{
+                maxLength: 50,
+              }}
               type="text"
               value={name}
               onChange={handleChangeName}
@@ -270,10 +306,14 @@ const ItemModal = ({ modalType }) => {
           <Grid item xs={7}>
             <TextField
               fullWidth
+              required
               type="date"
               value={dateOfBirth}
               onChange={handleDateOfBirthChange}
-              // inputProps={{ step: 1 }}
+              error={calculateAge(dateOfBirth) < 16}
+              helperText={
+                calculateAge(dateOfBirth) < 15 ? "Ít nhất 15 tuổi" : ""
+              }
             />
           </Grid>
         </Grid>
@@ -293,6 +333,7 @@ const ItemModal = ({ modalType }) => {
           <Grid item xs={7}>
             <TextField
               fullWidth
+              required
               label="Email"
               type="email"
               value={email}
@@ -318,6 +359,7 @@ const ItemModal = ({ modalType }) => {
           <Grid item xs={7}>
             <TextField
               fullWidth
+              required
               type="number"
               label="SĐT"
               value={phone}

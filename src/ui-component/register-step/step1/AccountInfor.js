@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Grid, TextField, Typography, useMediaQuery } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { setCurrentStep, setUserData } from "store/stepReducer";
@@ -37,6 +31,11 @@ const AccountInfor = () => {
         icon: "warning",
         title: "Nhập tất cả",
         text: "Bạn phải nhập hết tất cả các ô nhập",
+      });
+    } else if (errorEmail) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng nhập đúng Email",
       });
     } else {
       dispatch(setCurrentStep(currentStep + 1));
@@ -129,6 +128,9 @@ const AccountInfor = () => {
                 onChange={handleInputEmail}
                 error={errorEmail}
                 helperText={errorEmail ? "Vui lòng nhập đúng email" : ""}
+                inputProps={{
+                  maxLength: 100,
+                }}
               />
             </Stack>
             <Stack spacing={1}>
@@ -153,6 +155,9 @@ const AccountInfor = () => {
                 helperText={
                   errorPassword ? "Vui lòng không nhập khoảng trống" : ""
                 }
+                inputProps={{
+                  maxLength: 100,
+                }}
               />
             </Stack>
             <Stack spacing={1}>
@@ -175,33 +180,12 @@ const AccountInfor = () => {
                 onChange={handleConfirmPasswordChange}
                 error={!passwordsMatch}
                 helperText={!passwordsMatch ? "Mật khẩu không khớp" : ""}
+                inputProps={{
+                  maxLength: 100,
+                }}
               />
             </Stack>
             <Stack sx={{ marginTop: "8%" }}>
-              {/* <Button
-                fullWidth
-                size="large"
-                sx={{
-                  mt: 3,
-                  borderRadius: "10px",
-                  backgroundColor: "#063970",
-                  ":is(:hover, :focus)": {
-                    backgroundColor: "#478be9",
-                    outline: "3px solid #478be9",
-                    outlineOffset: "1px",
-                  },
-                }}
-                type="submit"
-                variant="contained"
-                onClick={handleNext}
-                disabled={
-                  userData.email === undefined ||
-                  userData.password === undefined ||
-                  userData.confirmPassword === undefined
-                }
-              >
-                Tiếp theo
-              </Button> */}
               <ContinueButton
                 width="100%"
                 disable="true"

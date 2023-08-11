@@ -1,22 +1,21 @@
 import { IconButton, List, ListItem, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import { MoreVert } from "@mui/icons-material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import HistoryIcon from "@mui/icons-material/History";
-import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
-import { useNavigate } from "react-router";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import Swal from "sweetalert2";
+import { useParams } from "react-router";
 
-const Menu = ({ id, value }) => {
+const Menu = ({ id }) => {
+  const { priceId } = useParams();
+  console.log("priceId", priceId);
   const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate();
   // const dispatch = useDispatch();
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    console.log("parking has price", id);
   };
 
   const handleClose = () => {
@@ -25,9 +24,7 @@ const Menu = ({ id, value }) => {
 
   const handleDisablePrice = async () => {
     Swal.fire({
-      text: value
-        ? "Bạn có chắc chắn ngưng sử dụng gói giá này!"
-        : "Bạn có chắc chắn kích hoạt lại gói giá này!",
+      text: "Bạn có chắc chắn ngưng gói giá đối với bãi xe này!",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -46,21 +43,17 @@ const Menu = ({ id, value }) => {
             Swal.showLoading();
           },
         });
-        const request = {
-          parkingPriceId: id,
-        };
 
         const requestOptions = {
-          method: "PUT",
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `bearer ${token}`,
           },
-          body: JSON.stringify(request),
         };
 
         const response = await fetch(
-          `${apiUrl}/parking-price/disable-or-enable-parking-price`,
+          `${apiUrl}/parkingHasPrice/v2/${id}/${priceId}`,
           requestOptions
         );
 
@@ -97,8 +90,8 @@ const Menu = ({ id, value }) => {
           horizontal: "center",
         }}
       >
-        <List sx={{ width: "140px" }}>
-          <ListItem onClick={() => navigate(`/price-detail/${id}`)}>
+        <List sx={{ width: "180px" }}>
+          {/* <ListItem onClick={() => navigate(`/price-detail/${id}`)}>
             <RemoveRedEyeIcon sx={{ marginRight: "3%", color: "#673ab7" }} />
             <Typography color="secondary" variant="subtitle1">
               Chi tiết
@@ -109,17 +102,11 @@ const Menu = ({ id, value }) => {
             <Typography color="primary" variant="subtitle1">
               Đã áp dụng
             </Typography>
-          </ListItem>
+          </ListItem> */}
           <ListItem onClick={handleDisablePrice}>
-            {value ? (
-              <DeleteIcon sx={{ marginRight: "3%", color: "#f44336" }} />
-            ) : (
-              <LibraryAddCheckIcon
-                sx={{ marginRight: "3%", color: "#f44336" }}
-              />
-            )}
+            <DoDisturbIcon sx={{ marginRight: "3%", color: "#f44336" }} />
             <Typography color="error" variant="subtitle1">
-              {value ? "Ngưng dùng" : "Kích hoạt"}
+              Ngưng áp dụng gói
             </Typography>
           </ListItem>
         </List>

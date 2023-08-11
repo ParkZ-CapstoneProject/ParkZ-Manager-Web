@@ -247,7 +247,7 @@ const PersonalInfor = () => {
                     sx={{ width: "520px" }}
                     type="text"
                     name="name"
-                    inputProps={{ maxLength: 100 }}
+                    inputProps={{ maxLength: 200 }}
                     label="Họ và tên"
                     color="secondary"
                     value={userData["name"]}

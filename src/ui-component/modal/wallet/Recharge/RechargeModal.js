@@ -54,10 +54,17 @@ const RechargeModal = (props) => {
   };
 
   const handleRechargeMooney = async () => {
+    if (mooney < 1000) {
+      Swal.fire({
+        icon: "warning",
+        text: "Số tiền không được nhỏ hơn 1000 VNĐ!",
+      });
+      return;
+    }
     Swal.fire({
       title: "Xác nhận?",
-      text: "Bạn có chắc chắn muốn lưu!",
-      icon: "warning",
+      text: "Bạn có chắc chắn muốn nạp số tiền này!",
+      icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -177,6 +184,9 @@ const RechargeModal = (props) => {
                   type="number"
                   value={mooney}
                   onChange={handleChangeMooney}
+                  inputProps={{
+                    min: 1000,
+                  }}
                 />
               </Grid>
             </Grid>

@@ -76,17 +76,7 @@ const BusinessInfor = () => {
         title: "Điền tất cả ô nhập",
         text: "Bạn phải nhập thông tin và đồng ý các chính sách",
       });
-    }
-    // else if (isChecked === false) {
-    //   if (userData.businessLicenseUrl.length === 0) {
-    //     Swal.fire({
-    //       icon: "warning",
-    //       text: "Vui lòng cập nhật hình ảnh giấy phép kinh doanh!",
-    //     });
-    //     return;
-    //   }
-    // }
-    else {
+    } else {
       Swal.fire({
         icon: "info",
         title: "Đang gửi yêu cầu...",
@@ -231,6 +221,7 @@ const BusinessInfor = () => {
             name="businessName"
             label="Tên doanh nghiệp"
             color="secondary"
+            maxLength={200}
             onChange={handleInputBusinessName}
             value={userData["businessName"]}
             error={errorBusinessName}
@@ -246,7 +237,7 @@ const BusinessInfor = () => {
             variant={matchDownSM ? "h5" : "h4"}
             marginTop="5%"
           >
-            Địa chỉ văn phòng(Optional)
+            Địa chỉ văn phòng
           </Typography>
           <TextField
             fullWidth
@@ -263,6 +254,7 @@ const BusinessInfor = () => {
             }
             label="Địa chỉ(Số, đường, quận, TP Hô Chí Minh)"
             color="secondary"
+            maxLength={300}
           />
         </Stack>
 

@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Avatar, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "store/modalReducer";
 import GridItem from "./GridItem";
@@ -311,20 +311,6 @@ const ItemModal = ({ modalType }) => {
         <Grid item>
           <CancelButton onClick={handleCloseModal} />
         </Grid>
-        {/* <Grid item>
-          {accept === true && (
-            <AcceptButton value="Chấp nhận" onClick={handleOpenDialog} />
-          )}
-          {checkIn === true && (
-            <AcceptButton value="Check in" onClick={handleOpenDialog} />
-          )}
-          {checkOut === true && (
-            <AcceptButton value="Check out" onClick={handleOpenDialog} />
-          )}
-          {cancel === true && (
-            <AcceptButton value="Hủy đơn" onClick={handleOpenDialog} />
-          )}
-        </Grid> */}
       </Grid>
     </>
   );
