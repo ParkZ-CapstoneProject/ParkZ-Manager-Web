@@ -46,16 +46,15 @@ export default function MyParkingPrice(props) {
       return (
         <Chip
           color="success"
-          label="true"
+          label="Có"
           sx={{ padding: "0 5px", color: "#fff", fontWeight: "bold" }}
         />
       );
-    }
-    if (params.value === false) {
+    } else {
       return (
         <Chip
           color="secondary"
-          label="false"
+          label="Không"
           sx={{ padding: "5px", color: "#fff", fontWeight: "bold" }}
         />
       );
@@ -69,14 +68,17 @@ export default function MyParkingPrice(props) {
   };
 
   const renderCellApply = (params) => {
-    return (
-      <button
-        onClick={() => handleApply(params)}
-        className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
-      >
-        Áp dụng
-      </button>
-    );
+    if (params.row.isActive === true) {
+      return (
+        <button
+          onClick={() => handleApply(params)}
+          className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+        >
+          Áp dụng
+        </button>
+      );
+    }
+    return null;
   };
 
   const columns = [
@@ -105,7 +107,9 @@ export default function MyParkingPrice(props) {
       sortable: false,
       disableColumnMenu: true,
       align: "center",
-      renderCell: (params) => <Menu id={params.row.parkingPriceId} />,
+      renderCell: (params) => (
+        <Menu id={params.row.parkingPriceId} value={params.row.isActive} />
+      ),
     },
     {
       field: "apply",

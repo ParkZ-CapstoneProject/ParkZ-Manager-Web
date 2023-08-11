@@ -141,7 +141,7 @@ const ItemModal = ({ setIsOpen, priceId, priceName, isDetail }) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          marginTop: "5%",
+          marginTop: "3%",
         }}
       >
         <Typography variant="h2" color={theme.palette.primary.main}>
@@ -153,8 +153,8 @@ const ItemModal = ({ setIsOpen, priceId, priceName, isDetail }) => {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        spacing={10}
-        sx={{ marginTop: "5%" }}
+        spacing={5}
+        sx={{ marginTop: "2%" }}
       >
         <Grid
           item

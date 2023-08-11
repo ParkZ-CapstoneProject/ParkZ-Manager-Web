@@ -34,7 +34,7 @@ const FailReCharge = () => {
         sx={{
           width: "100%",
           height: "955px",
-          background: "rgb(137 156 171 / 50%)",
+          background: "rgb(137 156 171 / 40%)",
         }}
       >
         <Grid item>

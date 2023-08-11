@@ -7,6 +7,7 @@ import Loading from "ui-component/back-drop/Loading";
 import MainCard from "ui-component/cards/MainCard";
 import SubCardStaff from "ui-component/cards/SubCardStaff";
 import ApplyParking from "ui-component/modal/parking-price-apply/ApplyParking";
+import Menu from "ui-component/parking-apply/Menu";
 import SearchSection from "ui-component/search-section";
 
 const ParkingPriceOfParking = () => {
@@ -19,7 +20,16 @@ const ParkingPriceOfParking = () => {
 
   const columns = [
     { field: "parkingId", headerName: "ID", width: 100 },
-    { field: "parkingName", headerName: "Tên bãi xe", width: 300 },
+    { field: "parkingName", headerName: "Tên bãi xe", width: 500 },
+    {
+      field: "action",
+      headerName: "",
+      width: 100,
+      sortable: false,
+      disableColumnMenu: true,
+      align: "center",
+      renderCell: (params) => <Menu id={params.id} />,
+    },
   ];
 
   const token = localStorage.getItem("token");
@@ -33,6 +43,7 @@ const ParkingPriceOfParking = () => {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     const response = await fetch(
       `${apiUrl}/parkings/parking-price/${priceId}`,
       requestOptions
@@ -40,6 +51,7 @@ const ParkingPriceOfParking = () => {
 
     const data = await response.json();
     setRows(data.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -55,12 +67,16 @@ const ParkingPriceOfParking = () => {
     return (
       <button
         onClick={handleCreate}
-        class="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-4 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+        className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
       >
         Áp dụng
       </button>
     );
   };
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
 
   return (
     <>
@@ -77,7 +93,7 @@ const ParkingPriceOfParking = () => {
             />
           </Grid>
           {rows ? (
-            <div style={{ height: "500px", width: "100%" }}>
+            <div style={{ height: "300px", width: "100%" }}>
               <DataGrid
                 rows={rows}
                 rowHeight={70}

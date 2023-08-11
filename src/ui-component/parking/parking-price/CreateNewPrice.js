@@ -108,6 +108,23 @@ const CreateNewPrice = () => {
       return;
     }
     const isValid = cards.every((card, index) => {
+      if (!card.startTime || !card.endTime) {
+        Swal.fire({
+          icon: "error",
+          text: `Thời gian bắt đầu và kết thúc không thể để trống cho khung giờ ${
+            index + 1
+          }`,
+        });
+        return false;
+      }
+
+      if (!card.price) {
+        Swal.fire({
+          icon: "error",
+          text: `Vui lòng nhập giá cho khung giờ ${index + 1}`,
+        });
+      }
+
       if (index > 0) {
         const prevEndTime = cards[index - 1].endTime;
         const currStartTime = card.startTime;
