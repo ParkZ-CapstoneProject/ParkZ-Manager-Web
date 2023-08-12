@@ -101,6 +101,14 @@ export default function MyParkingPrice(props) {
       disableColumnMenu: true,
     },
     {
+      field: "apply",
+      headerName: "",
+      width: 120,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: renderCellApply,
+    },
+    {
       field: "action",
       headerName: "",
       width: 150,
@@ -110,14 +118,6 @@ export default function MyParkingPrice(props) {
       renderCell: (params) => (
         <Menu id={params.row.parkingPriceId} value={params.row.isActive} />
       ),
-    },
-    {
-      field: "apply",
-      headerName: "",
-      width: 120,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: renderCellApply,
     },
   ];
 

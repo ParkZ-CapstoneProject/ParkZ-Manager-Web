@@ -180,7 +180,7 @@ export default function Staff() {
     // Render the Skeleton components or any other loading indicator
     return (
       <>
-        <MainCard title={"Tất cả nân viên"}>
+        <MainCard title={"Tất cả nhân viên"}>
           <Grid item xs={12}>
             <SubCard>
               {/* Render the Skeleton components for the search section */}
@@ -203,7 +203,7 @@ export default function Staff() {
 
   return (
     <>
-      <MainCard title={"Tất cả nân viên"}>
+      <MainCard title={"Tất cả nhân viên"}>
         <Grid item xs={12}>
           <SubCardStaff
             startComponent={<SearchSection />}

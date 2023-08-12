@@ -19,12 +19,12 @@ const ParkingPriceOfParking = () => {
   const [isDetail, setIsDetail] = useState(false);
 
   const columns = [
-    { field: "parkingId", headerName: "ID", width: 100 },
-    { field: "parkingName", headerName: "Tên bãi xe", width: 500 },
+    { field: "parkingId", headerName: "ID", width: 150 },
+    { field: "parkingName", headerName: "Tên bãi xe", width: 700 },
     {
       field: "action",
       headerName: "",
-      width: 100,
+      width: 200,
       sortable: false,
       disableColumnMenu: true,
       align: "center",

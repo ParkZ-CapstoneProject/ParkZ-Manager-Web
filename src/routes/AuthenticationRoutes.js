@@ -1,8 +1,10 @@
+import React from "react";
 import { lazy } from "react";
 
 // project imports
 import Loadable from "ui-component/Loadable";
 import MinimalLayout from "layout/MinimalLayout";
+import { useSelector } from "react-redux";
 // import { Layout } from "ui-component/auth/layout";
 
 // login option 3 routing
@@ -57,9 +59,7 @@ const NotFound = Loadable(
 );
 // const Layout = Loadable(lazy(() => import("ui-component/auth/layout")));
 
-// ==============================|| AUTHENTICATION ROUTING ||============================== //
-
-const user = localStorage.getItem("user"); // Set the authentication status here
+// ==============================|| AUTHENTICATION ROUTING ||============================== // Set the authentication status here
 
 const AuthenticationRoutes = {
   path: "/",
@@ -90,11 +90,11 @@ const AuthenticationRoutes = {
       element: <NewPassword />,
     },
     {
-      path: user ? "maps" : "login",
+      path: "maps",
       element: <Maps />,
     },
     {
-      path: user ? "modal" : "login",
+      path: "modal",
       element: <Modal />,
     },
     {

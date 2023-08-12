@@ -7,6 +7,7 @@ import profile from "./profile";
 import vnpay from "./vnpay";
 import wallet from "./wallet";
 import { useSelector } from "react-redux";
+import history from "./history";
 // import utilities from "./utilities";
 // import other from "./other";
 
@@ -16,7 +17,7 @@ const Menu = () => {
   const token = useSelector((state) => state.token.token);
   const menuItems = {
     items: token
-      ? [dashboard, profile, booking, parking, staff, vnpay, wallet]
+      ? [dashboard, profile, booking, parking, staff, vnpay, wallet, history]
       : [],
   };
 
