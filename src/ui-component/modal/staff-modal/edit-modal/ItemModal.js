@@ -191,14 +191,14 @@ const ItemModal = ({ modalType }) => {
       });
     }
 
-    if (!data.dateOfBirth) {
-      // Check if dateOfBirth is empty
-      Swal.fire({
-        icon: "warning",
-        text: "Vui lòng chọn ngày sinh!",
-      });
-      return;
-    }
+    // if (!data.dateOfBirth) {
+    //   // Check if dateOfBirth is empty
+    //   Swal.fire({
+    //     icon: "warning",
+    //     text: "Vui lòng chọn ngày sinh!",
+    //   });
+    //   return;
+    // }
 
     Swal.fire({
       title: "Xác nhận?",
@@ -239,16 +239,18 @@ const ItemModal = ({ modalType }) => {
               body: JSON.stringify(body),
             }
           );
-          const dataRes = await response.json();
-          if (dataRes.statusCode === 204) {
+
+          // console.log("response", response);
+          if (response.status === 204) {
             Swal.fire({
               icon: "success",
               text: "Cập nhật thông tin nhân viên thành công!",
             });
-          } else {
+          }
+          if (response.status === 400) {
             Swal.fire({
               icon: "error",
-              text: dataRes.message,
+              text: "Yêu cầu nhật tất cả các ô!",
             });
           }
         } catch (error) {
