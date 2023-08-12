@@ -149,7 +149,7 @@ const CreateNewParking = () => {
           });
           const parkingId = await handleCreateNewPark();
           if (parkingId) {
-            const done = await handleUploadImage(3);
+            const done = await handleUploadImage(parkingId);
             if (done) {
               saveState(floors);
               localStorage.setItem("address", parking.address);

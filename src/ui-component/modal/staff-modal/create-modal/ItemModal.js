@@ -146,10 +146,10 @@ const ItemModal = ({ modalType }) => {
     }
 
     const age = calculateAge(dateOfBirth);
-    if (age < 15) {
+    if (age < 18) {
       Swal.fire({
         icon: "warning",
-        text: "Bạn phải ít nhất 15 tuổi để đăng ký nhân viên.",
+        text: "Bạn phải ít nhất 18 tuổi để đăng ký nhân viên.",
       });
       return;
     }
@@ -157,12 +157,18 @@ const ItemModal = ({ modalType }) => {
     if (
       name.trim().length === 0 ||
       email.trim().length === 0 ||
-      dateOfBirth.trim().length === 0 ||
       phone.trim().length === 0
     ) {
       Swal.fire({
         icon: "warning",
         text: "Vui lòng điền tất cả các field!",
+      });
+    }
+
+    if (!dateOfBirth) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng chọn năm sinh!",
       });
     }
 
@@ -273,7 +279,7 @@ const ItemModal = ({ modalType }) => {
         >
           <Grid item xs={5}>
             <Typography color={theme.palette.secondary.main} variant="h4">
-              Tên NV
+              Tên nhân viên
             </Typography>
           </Grid>
           <Grid item xs={7}>
@@ -310,9 +316,9 @@ const ItemModal = ({ modalType }) => {
               type="date"
               value={dateOfBirth}
               onChange={handleDateOfBirthChange}
-              error={calculateAge(dateOfBirth) < 16}
+              error={calculateAge(dateOfBirth) < 18}
               helperText={
-                calculateAge(dateOfBirth) < 15 ? "Ít nhất 15 tuổi" : ""
+                calculateAge(dateOfBirth) < 18 ? "Ít nhất 18 tuổi" : ""
               }
             />
           </Grid>

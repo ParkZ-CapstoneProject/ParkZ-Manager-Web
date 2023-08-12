@@ -39,10 +39,11 @@ const ItemModal = ({ modalType }) => {
 
   const [data, setData] = useState(defaultData);
   const [parkings, setParkings] = useState([]);
-  const [errorEmail, setErrorEmail] = useState(false);
+  // const [errorEmail, setErrorEmail] = useState(false);
   const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState(false);
   const edit = true;
+  const [isDataChanged, setIsDataChanged] = useState(false);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");
@@ -101,22 +102,7 @@ const ItemModal = ({ modalType }) => {
         ...prevData,
         phone: phoneNumber.substring(0, 10),
       }));
-    }
-  };
-
-  const handleInputEmail = (event) => {
-    const { value } = event.target;
-
-    const startsWithSpace = /^\s/.test(value);
-    // Remove any spaces from the input value
-    if (!startsWithSpace) {
-      setData((prevData) => ({
-        ...prevData,
-        email: value,
-      }));
-      setErrorEmail(!validator.isEmail(value));
-    } else {
-      setErrorEmail(true);
+      setIsDataChanged(true);
     }
   };
 
@@ -126,6 +112,7 @@ const ItemModal = ({ modalType }) => {
       ...prevData,
       dateOfBirth: value,
     }));
+    setIsDataChanged(true);
   };
 
   const handleChangeName = (event) => {
@@ -134,6 +121,7 @@ const ItemModal = ({ modalType }) => {
       ...prevData,
       name: value,
     }));
+    setIsDataChanged(true);
   };
 
   const handleCloseModal = () => {
@@ -146,6 +134,7 @@ const ItemModal = ({ modalType }) => {
       ...prevData,
       gender: value,
     }));
+    setIsDataChanged(true);
   };
 
   const handleChangeParking = (event) => {
@@ -154,13 +143,63 @@ const ItemModal = ({ modalType }) => {
       ...prevData,
       parkingId: value,
     }));
+    setIsDataChanged(true);
   };
-  // console.log("data", data);
-  // const handleOpenDialog = () => {
-  //   setOpenDialog(true);
-  // };
+  const calculateAge = (birthdate) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
 
   const handleSubmit = async () => {
+    if (!isDataChanged) {
+      dispatch(closeModal(modalType)); // Close modal if no changes
+      return;
+    }
+    if (data.avatar.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng tải hình đại diện!",
+      });
+    }
+
+    const age = calculateAge(data.dateOfBirth);
+    if (age < 18) {
+      Swal.fire({
+        icon: "warning",
+        text: "Bạn phải ít nhất 18 tuổi để đăng ký nhân viên.",
+      });
+      return;
+    }
+
+    if (
+      data.name.length === 0 ||
+      data.email.length === 0 ||
+      data.phone.length === 0
+    ) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng điền tất cả các ô dữ liệu!",
+      });
+    }
+
+    if (!data.dateOfBirth) {
+      // Check if dateOfBirth is empty
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng chọn ngày sinh!",
+      });
+      return;
+    }
+
     Swal.fire({
       title: "Xác nhận?",
       text: "Bạn có chắc chắn muốn lưu!",
@@ -252,13 +291,13 @@ const ItemModal = ({ modalType }) => {
         >
           <Grid item xs={5}>
             <Typography color={theme.palette.secondary.main} variant="h4">
-              Tên NV
+              Tên nhân viên
             </Typography>
           </Grid>
           <Grid item xs={7}>
             <TextField
               fullWidth
-              label="Tên NV"
+              label="Nhân viên"
               type="text"
               value={data.name}
               onChange={handleChangeName}
@@ -284,6 +323,10 @@ const ItemModal = ({ modalType }) => {
               type="date"
               value={data.dateOfBirth.substring(0, 10)}
               onChange={handleDateOfBirthChange}
+              error={calculateAge(data.dateOfBirth) < 18}
+              helperText={
+                calculateAge(data.dateOfBirth) < 18 ? "Ít nhất 18 tuổi" : ""
+              }
             />
           </Grid>
         </Grid>
@@ -306,9 +349,6 @@ const ItemModal = ({ modalType }) => {
               label="Email"
               type="email"
               value={data.email}
-              onChange={handleInputEmail}
-              error={errorEmail}
-              helperText={errorEmail ? "Vui lòng nhập đúng email" : ""}
               InputProps={{
                 readOnly: true,
               }}
@@ -335,6 +375,9 @@ const ItemModal = ({ modalType }) => {
               label="SĐT"
               value={data.phone}
               onChange={handleInputPhone}
+              InputProps={{
+                readOnly: true,
+              }}
             />
           </Grid>
         </Grid>
