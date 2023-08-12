@@ -408,9 +408,10 @@ const CreateNewParking = () => {
                 setError={setError}
                 inputValues={[
                   floor.floor,
-                  floor.numSlots,
-                  floor.numRow,
-                  floor.numCol,
+                  floor.numCarSlots,
+                  floor.numCarSlotsBackUp,
+                  floor.numCarRows,
+                  floor.numCarCols,
                 ]}
                 onInputChange={handleInputChange}
                 onRemove={handleRemoveFloor}

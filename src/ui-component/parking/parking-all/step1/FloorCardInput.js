@@ -9,6 +9,7 @@ const FloorCardInput = (props) => {
   const { index, inputValues, onInputChange, onRemove, setError } = props;
   const theme = useTheme();
   const [values, setValues] = useState(inputValues);
+  console.log("values", values);
 
   const handleInputChange = (event, inputIndex) => {
     const newValue = Number(event.target.value);
@@ -30,15 +31,12 @@ const FloorCardInput = (props) => {
         icon: "error",
         text: "Số vị trí dự phòng không được vượt quá tổng số vị trí",
       }).then(() => {
-        // Clear the input value for the row field
+        // Clear the input value for the backup position field
         const newValues = [...values];
         newValues[2] = 0;
         setValues(newValues);
       });
-    } else {
-      setError(false);
-    }
-    if (values[3] > values[1]) {
+    } else if (values[3] > values[1]) {
       setError(true);
       Swal.fire({
         icon: "error",
@@ -46,14 +44,10 @@ const FloorCardInput = (props) => {
       }).then(() => {
         // Clear the input value for the row field
         const newValues = [...values];
-        newValues[2] = 0;
+        newValues[3] = 0;
         setValues(newValues);
       });
-    } else {
-      setError(false);
-    }
-
-    if (values[4] > values[1]) {
+    } else if (values[4] > values[1]) {
       setError(true);
       Swal.fire({
         icon: "error",
@@ -61,14 +55,29 @@ const FloorCardInput = (props) => {
       }).then(() => {
         // Clear the input value for the column field
         const newValues = [...values];
-        newValues[3] = 0;
+        newValues[4] = 0;
         setValues(newValues);
       });
-    } else {
-      setError(false);
+    } else if (values[3] > 0 && values[4] > 0) {
+      if (values[4] * values[3] < values[1]) {
+        setError(true);
+        Swal.fire({
+          icon: "error",
+          text: "Tổng số vị trí phải nhỏ hơn hoặc bằng tích hàng và cột!",
+        }).then(() => {
+          // Clear the input value for the column and row fields
+          const newValues = [...values];
+          newValues[4] = 0;
+          setValues(newValues);
+        });
+      } else {
+        setError(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
+
+  // ...
 
   const handleReset = () => {
     setValues(inputValues);

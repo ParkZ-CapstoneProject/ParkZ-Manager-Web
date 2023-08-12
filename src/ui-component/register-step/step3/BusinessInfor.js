@@ -52,6 +52,7 @@ const BusinessInfor = () => {
       businessLicense: userData.businessLicenseUrl
         ? userData.businessLicenseUrl
         : null,
+      feeId: isChecked ? 1 : 2,
     },
   };
 
@@ -76,6 +77,12 @@ const BusinessInfor = () => {
         title: "Điền tất cả ô nhập",
         text: "Bạn phải nhập thông tin và đồng ý các chính sách",
       });
+    }
+    if (isChecked === false && businessLicenseUrl.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        text: "Doanh nghiệp thì cần phải có giấy phép kinh doanh! Vui lòng thử lại!",
+      });
     } else {
       Swal.fire({
         icon: "info",
@@ -90,8 +97,9 @@ const BusinessInfor = () => {
 
       if (businessLicenseUrl.length !== 0) {
         const url = await uploadBusinessLicenseImage();
+        // console.log("url", url);
 
-        dispatch({ ...userData, businessLicenseUrl: url });
+        dispatch(setUserData({ ...userData, businessLicenseUrl: url }));
       }
 
       fetch(
@@ -140,6 +148,7 @@ const BusinessInfor = () => {
         .then((response) => {
           const { data } = response;
           resolve(data.link);
+          console.log("data.link", data.link);
         })
         .catch((error) => {
           console.log("Error uploading image:", error);
@@ -283,7 +292,7 @@ const BusinessInfor = () => {
               variant={matchDownSM ? "h6" : "h5"}
               marginTop="2%"
             >
-              Hộ kinh doanh gia đình
+              Hộ kinh doanh gia đình(Tư nhân)
             </Typography>
           </Grid>
         </Grid>
