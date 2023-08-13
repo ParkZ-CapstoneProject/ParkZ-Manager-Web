@@ -54,6 +54,7 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const [avatar, setAvatar] = useState();
+  const [data, setData] = useState([]);
 
   const requestOptions = {
     method: "GET",
@@ -69,7 +70,8 @@ const ProfileSection = () => {
       requestOptions
     );
     const data = await response.json();
-    // console.log("data.data", data.data);
+    console.log("data.data", data.data);
+    setData(data.data);
     setAvatar(data.data.avatar);
   };
 
@@ -223,7 +225,7 @@ const ProfileSection = () => {
                           variant="h4"
                           sx={{ fontWeight: 400 }}
                         >
-                          {userData.name}
+                          {data?.name}
                         </Typography>
                       </Stack>
                       <Typography variant="subtitle2">
