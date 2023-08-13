@@ -123,7 +123,18 @@ const CreateNewParking = () => {
   };
 
   const handleContinue = async () => {
-    if (error) {
+    const hasInvalidFloor = floors.some(
+      (floor) => floor.numCarSlotsBackUp === 0
+    );
+
+    if (error || hasInvalidFloor) {
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: hasInvalidFloor
+          ? "Số lượng vị trí dự phòng không được bằng 0"
+          : "Vui lòng kiểm tra thông tin và sửa lỗi trước khi tiếp tục.",
+      });
       return;
     } else {
       Swal.fire({
