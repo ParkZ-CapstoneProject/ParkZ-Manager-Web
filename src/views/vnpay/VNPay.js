@@ -81,7 +81,7 @@ export default function MyVNPay(props) {
           ></SubCardStaff>
         </Grid>
 
-        {rows.length !== 0 ? (
+        {rows && Object.keys(rows).length > 0 ? (
           <div id="outer-div">
             <DataGrid
               rows={[rows]}
