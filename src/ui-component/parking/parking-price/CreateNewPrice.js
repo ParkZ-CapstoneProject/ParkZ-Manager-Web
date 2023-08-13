@@ -275,7 +275,23 @@ const CreateNewPrice = () => {
   };
 
   const handlePenaltyPrice = (e) => {
-    setParkingPrice({ ...parkingPrice, penaltyPrice: Number(e.target.value) });
+    const newPenaltyPrice = Number(e.target.value);
+
+    // Calculate the maximum price from the cards array
+    const maxCardPrice = cards.reduce(
+      (max, card) => Math.max(max, card.price),
+      0
+    );
+
+    if (newPenaltyPrice > maxCardPrice * 2) {
+      Swal.fire({
+        icon: "warning",
+        text: "Giá tiền phạt không vượt quá 200% giá khung giờ!",
+      });
+      return;
+    }
+
+    setParkingPrice({ ...parkingPrice, penaltyPrice: newPenaltyPrice });
   };
 
   const handlePenaltyPriceStep = (e) => {
