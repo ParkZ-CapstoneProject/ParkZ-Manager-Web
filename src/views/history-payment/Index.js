@@ -4,6 +4,7 @@ import MainCard from "ui-component/cards/MainCard";
 import { Chip, Skeleton, Typography } from "@mui/material";
 import Loading from "ui-component/back-drop/Loading";
 import { ImFilesEmpty } from "react-icons/im";
+import * as signalR from "@microsoft/signalr";
 
 const getCellValue = (params) => {
   return params.value ? params.value : "-------";
@@ -120,13 +121,31 @@ export default function HistoryPayment() {
   }, [rows]);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
-  //   const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
+  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 
   useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(`${signalRUrl}`)
+      .build();
+    console.log("connection", connection);
+
+    connection
+      .start()
+      .then(() => console.log("Connection started!"))
+      .catch((err) => console.error("Error: ", err));
+
+    connection.on("LoadHistoryInManager", () => {
+      fetchData();
+    });
+
     fetchData();
+
+    return () => {
+      connection.stop();
+    };
   }, []);
 
   const requestOptions = {
