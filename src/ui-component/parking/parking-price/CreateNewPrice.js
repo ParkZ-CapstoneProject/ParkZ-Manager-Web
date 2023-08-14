@@ -203,6 +203,7 @@ const CreateNewPrice = () => {
             extraFee: card.extraFree ? card.extraFree : null,
             parkingPriceId: data.data,
           };
+          console.log("timeRequest", timeRequest);
 
           const requestOptionsTime = {
             method: "POST",
