@@ -83,7 +83,7 @@ const columns = [
     valueGetter: (params) => `${params.row.name || ""}`,
   },
   { field: "email", headerName: "Email", width: 250 },
-  { field: "phone", headerName: "SĐT", width: 140 },
+  { field: "phone", headerName: "Số điện thoại", width: 140 },
   {
     field: "dateOfBirth",
     headerName: "Ngày sinh",

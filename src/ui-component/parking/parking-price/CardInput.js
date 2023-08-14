@@ -69,7 +69,7 @@ const CardInput = (props) => {
           </Typography>
         </Grid>
         {index !== 0 && (
-          <Grid item sx={{ marginLeft: "auto", marginTop: "-18px" }}>
+          <Grid item sx={{ marginLeft: "auto", marginTop: "-60px" }}>
             <IconButton onClick={() => onRemove(index)}>
               <CloseIcon
                 sx={{
@@ -93,7 +93,6 @@ const CardInput = (props) => {
             </Typography>
             <TextField
               type="time" // Change type to "number"
-              label="giờ"
               value={values[1]}
               disabled={!isExtraFree || isWholeDay}
               onChange={(event) => handleInputChange(event, 1)}
@@ -120,7 +119,6 @@ const CardInput = (props) => {
             <TextField
               type="time"
               value={values[2]}
-              label="giờ"
               disabled={!isExtraFree || isWholeDay}
               onChange={(event) => handleInputChange(event, 2)}
               sx={

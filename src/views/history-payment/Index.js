@@ -10,11 +10,20 @@ const getCellValue = (params) => {
 };
 
 const renderCellStatus = (params) => {
-  if (params.value) {
+  if (params.value === "Nap_tien_vao_vi_thanh_cong") {
     return (
       <Chip
         color="primary"
-        label={params.value}
+        label="Nạp tiền vào ví"
+        sx={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
+      />
+    );
+  }
+  if (params.value === "Da_thanh_toan") {
+    return (
+      <Chip
+        color="success"
+        label="Đã thanh toán"
         sx={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
       />
     );
@@ -45,26 +54,41 @@ const columns = [
   { field: "transactionId", headerName: "ID", width: 70 },
   {
     field: "price",
-    headerName: "Số tiền nạp",
+    headerName: "Số tiền giao dịch",
     width: 200,
-    renderCell: (params) =>
-      params.row.price ? formatPrice(params.row.price) : "-----",
+    renderCell: (params) => {
+      if (params.row.price) {
+        if (
+          params.row.description === "Hoàn tiền cho khách hàng" ||
+          params.row.description === "Hệ thống trừ tiền sử dụng dịch vụ"
+        ) {
+          return "-" + formatPrice(params.row.price);
+        } else {
+          return "+" + formatPrice(params.row.price);
+        }
+      } else {
+        return "-----";
+      }
+    },
   },
   {
     field: "paymentMethod",
-    headerName: "Pương thức than toán",
-    width: 400,
-    valueGetter: getCellValue,
+    headerName: "Phương thức thanh toán",
+    width: 350,
+    renderCell: (params) =>
+      params.row.paymentMethod === "thanh_toan_online"
+        ? "Thanh toán online"
+        : "Thanh toán tiền mặt",
   },
   {
     field: "description",
     headerName: "Mô tả",
-    width: 400,
+    width: 350,
     valueGetter: getCellValue,
   },
   {
     field: "createdDate",
-    headerName: "Ngày nạp tiền",
+    headerName: "Ngày tạo",
     width: 250,
     valueGetter: (params) =>
       params.row.createdDate ? formatDate(params.row.createdDate) : "----",
@@ -72,7 +96,7 @@ const columns = [
   {
     field: "status",
     headerName: "Trạng thái",
-    width: 120,
+    width: 220,
     valueGetter: getCellValue,
     renderCell: renderCellStatus,
     sortable: false,
@@ -129,7 +153,7 @@ export default function HistoryPayment() {
     // Render the Skeleton components or any other loading indicator
     return (
       <>
-        <MainCard title={"Lịch sử nạp tiền"}>
+        <MainCard title={"Lịch sử giao dịch"}>
           <div style={{ height: "300px", width: "100%" }}>
             {/* Render the Skeleton components for the data grid */}
             <Skeleton animation="wave" height={300} />
@@ -142,7 +166,7 @@ export default function HistoryPayment() {
 
   return (
     <>
-      <MainCard title={"Lịch sử nạp tiền"}>
+      <MainCard title={"Lịch sử giao dịch"}>
         {rows.length !== 0 ? (
           <div id="outer-div">
             <DataGrid

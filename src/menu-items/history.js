@@ -13,7 +13,7 @@ const history = {
   children: [
     {
       id: "history",
-      title: "Lịch sử nạp tiền",
+      title: "Lịch sử giao dịch",
       type: "item",
       url: "/history",
       icon: icons.FaHistory,

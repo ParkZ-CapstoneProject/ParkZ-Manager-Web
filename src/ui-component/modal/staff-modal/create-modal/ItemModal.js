@@ -359,7 +359,7 @@ const ItemModal = ({ modalType }) => {
         >
           <Grid item xs={5}>
             <Typography color={theme.palette.secondary.main} variant="h4">
-              SĐT
+              Số điện thoại
             </Typography>
           </Grid>
           <Grid item xs={7}>
@@ -367,7 +367,7 @@ const ItemModal = ({ modalType }) => {
               fullWidth
               required
               type="number"
-              label="SĐT"
+              label="Số điện thoại"
               value={phone}
               onChange={handleInputPhone}
             />
