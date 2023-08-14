@@ -15,6 +15,7 @@ import AddButton from "ui-component/buttons/add-button/AddButton";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { icon } from "leaflet";
 
 const CreateNewPrice = () => {
   const theme = useTheme();
@@ -192,53 +193,59 @@ const CreateNewPrice = () => {
       }
       const data = await response.json();
 
-      if (data !== null) {
-        cards.map((card, index) => {
-          const timeRequest = {
-            name: `Khung giờ ${index + 1}`,
-            price: card.price,
-            description: `Khung giờ ${index + 1}`,
-            startTime: card.startTime ? card.startTime : "",
-            endTime: card.endTime ? card.endTime : "",
-            extraFee: card.extraFree ? card.extraFree : null,
-            parkingPriceId: data.data,
-          };
-          console.log("timeRequest", timeRequest);
-
-          const requestOptionsTime = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `bearer ${token}`,
-            },
-            body: JSON.stringify(timeRequest),
-          };
-
-          fetch(`${apiUrl}/timeline-management`, requestOptionsTime)
-            .then((response) => {
-              if (!response.ok) {
-                console.log("response", response);
-              }
-              return response.json();
-            })
-            .then((data) => {
-              console.log("data", data);
-              Swal.close();
-              Swal.fire({
-                icon: "success",
-                text: "Tạo mới giá và khung giờ cho giá thành công!",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  navigate("/prices");
-                }
-              });
-            });
-          return data;
-        });
-      }
+      await createNewTimeLine(data.data);
       // console.log("Response data:", data);
     } catch (error) {
       console.log("error", error);
+    }
+  };
+
+  const createNewTimeLine = async (parkingPriceId) => {
+    try {
+      for (const [index, card] of cards.entries()) {
+        const timeRequest = {
+          name: `Khung giờ ${index + 1}`,
+          price: card.price,
+          description: `Khung giờ ${index + 1}`,
+          startTime: card.startTime ? card.startTime : "",
+          endTime: card.endTime ? card.endTime : "",
+          extraFee: card.extraFree ? card.extraFree : null,
+          parkingPriceId: parkingPriceId,
+        };
+
+        const requestOptionsTime = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify(timeRequest),
+        };
+
+        const response = await fetch(
+          `${apiUrl}/timeline-management`,
+          requestOptionsTime
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          Swal.fire({
+            icon: "success",
+            text: "Tạo mới gói cước thành công!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate("/prices");
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            text: data.message,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
   };
 
