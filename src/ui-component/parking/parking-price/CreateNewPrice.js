@@ -228,7 +228,7 @@ const CreateNewPrice = () => {
         );
         const data = await response.json();
 
-        if (response.ok) {
+        if (data) {
           Swal.fire({
             icon: "success",
             text: "Tạo mới gói cước thành công!",
