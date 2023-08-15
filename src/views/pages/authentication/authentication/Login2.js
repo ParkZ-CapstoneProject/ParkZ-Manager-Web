@@ -69,7 +69,7 @@ const Page = () => {
 
             Swal.fire({
               icon: "error",
-              title: "Đăng nhập thất bại! Vui lòng thử lại!",
+              title: "Đăng nhập thất bại!",
               text: res.message,
             });
           } else {

@@ -3,11 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import MainCard from "ui-component/cards/MainCard";
 import SearchSection from "ui-component/search-section";
 import SubCard from "ui-component/cards/SubCard";
-import { Chip, Grid, Skeleton } from "@mui/material";
+import { Chip, Grid, Skeleton, Typography } from "@mui/material";
 import Menu from "ui-component/booking/Menu";
 import Loading from "ui-component/back-drop/Loading";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { ImFilesEmpty } from "react-icons/im";
 
 const getCellValue = (params) => {
   return params.value ? params.value : "-------";
@@ -104,20 +105,20 @@ const columns = [
   { field: "licensePlate", headerName: "Biển số xe", width: 110 },
   { field: "parkingName", headerName: "Bãi xe", width: 130 },
   {
-    field: "checkInTime",
+    field: "checkinTime",
     headerName: "Giờ vào",
     width: 120,
     // valueGetter: getCellValue,
     renderCell: (params) =>
-      params.value ? formatTime(params.row.checkInTime) : "-----",
+      params.value ? formatTime(params.row.checkinTime) : "-----",
   },
   {
-    field: "checkOutTime",
+    field: "checkoutTime",
     headerName: "Giờ ra",
     width: 120,
     // valueGetter: getCellValue,
     renderCell: (params) =>
-      params.value ? formatTime(params.row.checkOutTime) : "-----",
+      params.value ? formatTime(params.row.checkoutTime) : "-----",
   },
   {
     field: "paymentMethod",
@@ -199,24 +200,44 @@ export default function DataTable(props) {
             <SearchSection />
           </SubCard>
         </Grid>
-        <div id="outer-div">
-          <DataGrid
-            rows={rows}
-            rowHeight={70}
-            autoHeight
-            columns={columns}
-            getRowId={(row) => row.bookingId}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            checkboxSelection
-            style={{ paddingTop: "12px" }}
-            ref={dataGridRef}
-          />
-        </div>
+        {rows ? (
+          <div id="outer-div">
+            <DataGrid
+              rows={rows}
+              rowHeight={70}
+              autoHeight
+              columns={columns}
+              getRowId={(row) => row.bookingId}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 10 },
+                },
+              }}
+              pageSizeOptions={[5, 10, 25]}
+              checkboxSelection
+              style={{ paddingTop: "12px" }}
+              ref={dataGridRef}
+            />
+          </div>
+        ) : (
+          <>
+            <Typography
+              variant="h1"
+              color="#21130d"
+              sx={{ textAlign: "center", marginTop: "5%" }}
+            >
+              Không có đơn đặt
+            </Typography>
+            <ImFilesEmpty
+              style={{
+                fontSize: "150px",
+                marginTop: "5%",
+                marginLeft: "46%",
+                padding: "5px",
+              }}
+            />
+          </>
+        )}
       </MainCard>
     </>
   );

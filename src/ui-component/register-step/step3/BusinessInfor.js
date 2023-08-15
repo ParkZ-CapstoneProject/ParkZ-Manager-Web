@@ -67,21 +67,28 @@ const BusinessInfor = () => {
   const handleNext = async (e) => {
     e.preventDefault();
 
-    if (
-      userData.businessName === undefined ||
-      userData.address === undefined ||
-      isAgree === false
-    ) {
+    if (!userData.businessName || userData.businessName.trim() === "") {
       Swal.fire({
         icon: "warning",
-        title: "Điền tất cả ô nhập",
-        text: "Bạn phải nhập thông tin và đồng ý các chính sách",
+        title: "Điền tên doanh nghiệp",
+        text: "Vui lòng nhập tên doanh nghiệp",
       });
-    }
-    if (isChecked === false && businessLicenseUrl.length === 0) {
+    } else if (!userData.address || userData.address.trim() === "") {
       Swal.fire({
         icon: "warning",
-        text: "Doanh nghiệp thì cần phải có giấy phép kinh doanh! Vui lòng thử lại!",
+        title: "Điền địa chỉ",
+        text: "Vui lòng nhập địa chỉ",
+      });
+    } else if (!isAgree) {
+      Swal.fire({
+        icon: "warning",
+        title: "Đồng ý các chính sách",
+        text: "Vui lòng đồng ý các chính sách",
+      });
+    } else if (!isChecked && businessLicenseUrl.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        text: "Doanh nghiệp phải có giấy phép kinh doanh! Vui lòng thử lại!",
       });
     } else {
       Swal.fire({
@@ -97,7 +104,6 @@ const BusinessInfor = () => {
 
       if (businessLicenseUrl.length !== 0) {
         const url = await uploadBusinessLicenseImage();
-        // console.log("url", url);
 
         dispatch(setUserData({ ...userData, businessLicenseUrl: url }));
       }
@@ -120,7 +126,6 @@ const BusinessInfor = () => {
             text: "Yêu cầu của bạn đã được gửi đi",
             showConfirmButton: false,
           });
-          Swal.close();
           dispatch(setCurrentStep(currentStep + 1));
 
           console.log(data);
@@ -130,7 +135,7 @@ const BusinessInfor = () => {
           Swal.close();
           Swal.fire({
             icon: "error",
-            text: data.message,
+            text: error.message,
           });
           console.error(error);
         });
@@ -321,7 +326,7 @@ const BusinessInfor = () => {
         <Grid
           item
           container
-          style={{ marginTop: "5%" }}
+          style={{ marginTop: "1%" }}
           direction="row"
           justifyContent="center"
           alignItems="center"
@@ -337,7 +342,7 @@ const BusinessInfor = () => {
               color={theme.palette.secondary.dark}
               gutterBottom
               variant={matchDownSM ? "h6" : "h5"}
-              marginTop="2%"
+              marginTop="7px"
             >
               Tôi đã đọc và đồng ý với <a href="#">chính sách phí</a> và{" "}
               <a href="#">hợp đồng cung cấp dịch vụ</a>
