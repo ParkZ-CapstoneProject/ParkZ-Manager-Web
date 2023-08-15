@@ -18,18 +18,18 @@ const Personal = (props) => {
         justifyContent="space-evenly"
         alignItems="center"
       >
-        <Grid item xs={2}>
+        <Grid item xs={1}>
           <Avatar
             alt="avatar"
             src={data?.avatar}
             variant="circular"
-            sx={{ width: "50%", height: "25%" }}
+            sx={{ width: "105%", height: "150px" }}
           />
         </Grid>
         <Grid
           item
           container
-          xs={3}
+          xs={2.4}
           direction="row"
           alignItems="center"
           justifyContent="center"
@@ -38,12 +38,12 @@ const Personal = (props) => {
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={8}
           container
           direction="row"
           justifyContent="space-around"
           alignItems="center"
-          sx={{ width: "55%" }}
+          // sx={{ width: "55%" }}
         >
           <Grid item xs={4}>
             <Typography
@@ -57,7 +57,7 @@ const Personal = (props) => {
               alt="front"
               src={data?.frontIdentification}
               variant="rounded"
-              sx={{ width: "100%", height: "30%" }}
+              sx={{ width: "400px", height: "300px" }}
             />
           </Grid>
           <Grid item xs={4}>
@@ -72,7 +72,7 @@ const Personal = (props) => {
               alt="bback"
               src={data?.backIdentification}
               variant="rounded"
-              sx={{ width: "100%", height: "30%" }}
+              sx={{ width: "400px", height: "300px" }}
             />
           </Grid>
         </Grid>

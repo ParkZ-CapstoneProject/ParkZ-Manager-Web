@@ -207,8 +207,8 @@ const ItemModal = ({ modalType }) => {
                 variant="h3"
                 sx={{ fontSize: "25px" }}
               >
-                {data?.data?.actualPrice
-                  ? formatPrice(data?.data?.actualPrice)
+                {data?.totalPrice
+                  ? formatPrice(data?.totalPrice)
                   : "Chưa tính tiền"}
               </Typography>
             </Grid>
@@ -294,8 +294,8 @@ const ItemModal = ({ modalType }) => {
 
           <Grid item container direction="row" justifyContent="space-between">
             <GridItem
-              title="Số tiền dự tính"
-              value={formatPrice(data?.totalPrice)}
+              title="Tiền chưa thanh toán"
+              value={formatPrice(data?.unPaidMoney)}
             />
           </Grid>
         </Grid>

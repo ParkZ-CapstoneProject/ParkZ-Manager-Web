@@ -12,11 +12,11 @@ const FeeCardBusiness = () => {
             <div className="bg-title">Phí</div>
             <div className="feature size">
               <div>Doanh nghiệp:</div>
-              <span>90,000đ/thang</span>
+              <span>500,000đ/thang</span>
             </div>
             <div className="feature color">
               <div>tư nhân:</div>
-              <span>10,000đ/thang</span>
+              <span>100,000đ/thang</span>
             </div>
           </div>
         </div>

@@ -7,14 +7,6 @@ const Information = (props) => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
-  let { name, position, email, phone, dob, gender } = props;
-  name = "Nguyễn Trần Duy Minh";
-  position = "Chủ doanh nghiệp";
-  email = "nguyentranduynam@gmail.com";
-  phone = "01234123412";
-  dob = "11/12/1999";
-  gender = "Nam";
-
   return (
     <>
       <Grid container direction="row" justifyContent="space-between">
