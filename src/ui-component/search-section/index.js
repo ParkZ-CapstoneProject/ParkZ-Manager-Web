@@ -135,9 +135,9 @@ MobileSearch.propTypes = {
 
 // ==============================|| SEARCH INPUT ||============================== //
 
-const SearchSection = () => {
+const SearchSection = (props) => {
   const theme = useTheme();
-  const [value, setValue] = useState("");
+  const { value, setValue } = props;
 
   return (
     <>

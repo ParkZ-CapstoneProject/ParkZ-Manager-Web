@@ -1,22 +1,22 @@
 import React from "react";
-import "./FeeCardBusiness.scss";
+import "./FeeCardPerson.scss";
 
-const FeeCardBusiness = () => {
+const FeeCardPerson = () => {
   return (
     <>
-      <section className="product-container product-1">
-        <div className="card">
+      <section className="product-container-person product-2">
+        <div className="card-person">
           <div className="photo"></div>
           <div className="content">
-            <div className="title">Cước phí doanh nghiệp</div>
+            <div className="title">Cước phí tư nhân</div>
             <div className="bg-title">Phí</div>
             <div className="feature size">
               <div>Giá:</div>
-              <span>500,000đ/tháng</span>
+              <span>100,000đ/tháng</span>
             </div>
             <div className="feature color">
               <div>số bãi:</div>
-              <span>Không giới hạn</span>
+              <span>Một bãi</span>
             </div>
           </div>
         </div>
@@ -25,4 +25,4 @@ const FeeCardBusiness = () => {
   );
 };
 
-export default FeeCardBusiness;
+export default FeeCardPerson;

@@ -145,7 +145,7 @@ const ItemModal = ({ setIsOpen, priceId, priceName, isDetail }) => {
         }}
       >
         <Typography variant="h2" color={theme.palette.primary.main}>
-          Tạo mới gói cước cho bãi xe
+          Áp dụng gói cước cho bãi xe
         </Typography>
       </Grid>
       <Grid

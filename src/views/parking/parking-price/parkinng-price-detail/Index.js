@@ -53,7 +53,7 @@ const PriceDetail = () => {
     const data = await res.json();
     // console.log("data", data.data);
 
-    setRows(data.data);
+    setRows(data.data.lstTimeLineRes);
     setLoading(false);
   };
 
