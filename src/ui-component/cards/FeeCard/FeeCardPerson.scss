@@ -1,8 +1,8 @@
-.product-container {
+.product-container-person {
   position: relative;
 }
 
-.card {
+.card-person {
   font-family: Arial, Helvetica, sans-serif;
   position: relative;
   width: 260px;
@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-.card:before {
+.card-person:before {
   content: "";
   position: absolute;
   top: 0;
@@ -24,7 +24,7 @@
   transition: 0.5s ease-in-out;
 }
 
-.card:hover:before {
+.card-person:hover:before {
   clip-path: circle(300px at 80% -20%);
 }
 
@@ -48,7 +48,7 @@
   transition: 0.6s;
 }
 
-.card:hover .bg-title {
+.card-person:hover .bg-title {
   transform: translateY(60%);
 }
 
@@ -62,7 +62,7 @@
   transition: 0.5s;
 }
 
-.card:hover .photo {
+.card-person:hover .photo {
   top: 0%;
   transform: translateY(0%);
 }
@@ -76,7 +76,7 @@
   transition: 0.5s;
 }
 
-.card:hover .photo img {
+.card-person:hover .photo img {
   width: 260px;
   top: 56%;
 }
@@ -91,7 +91,7 @@
   z-index: 5;
 }
 
-.card:hover .content {
+.card-person:hover .content {
   height: 190px;
 }
 
@@ -106,7 +106,7 @@
   opacity: 0;
 }
 
-.card:hover .feature {
+.card-person:hover .feature {
   visibility: visible;
   opacity: 1;
   transition-delay: 0.5s;
@@ -142,8 +142,8 @@
   background: var(--product-color);
 }
 
-.product-1 {
-  --product-color: #eb6ca4;
+.product-2 {
+  --product-color: #310c90;
 }
 
 .size span {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import DataTable from "./Booking";
 import { useState } from "react";
-import * as signalR from "@microsoft/signalr";
+// import * as signalR from "@microsoft/signalr";
 
 const Booking = () => {
   const [rows, setRows] = useState([]);

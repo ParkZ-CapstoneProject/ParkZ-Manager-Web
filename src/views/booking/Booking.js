@@ -9,6 +9,7 @@ import Loading from "ui-component/back-drop/Loading";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { ImFilesEmpty } from "react-icons/im";
+import { useState } from "react";
 
 const getCellValue = (params) => {
   return params.value ? params.value : "-------";
@@ -16,8 +17,8 @@ const getCellValue = (params) => {
 
 const renderCellStatus = (params) => {
   const statusMap = {
-    Initial: { label: "Chưa xử lý", color: "#fff", bgColor: "gray" },
-    Done: { label: "Hoàn thành", color: "#fff", bgColor: "#4caf50" },
+    Initial: { label: "Khởi tạo", color: "#fff", bgColor: "gray" },
+    Done: { label: "Hoàn thành", color: "#fff", bgColor: "#1e88e5" },
     OverTime: { label: "Quá hạn", color: "#fff", bgColor: "#1976d2" },
     Check_In: { label: "Check in", color: "#fff", bgColor: "#f44336" },
     Check_Out: { label: "Check out", color: "#000", bgColor: "#ff9800" },
@@ -93,17 +94,9 @@ const columns = [
     renderCell: (params) =>
       params.row.totalPrice ? formatPrice(params.row.totalPrice) : "-----",
   },
-  {
-    field: "actualPrice",
-    headerName: "Giá thực tế",
-    // type: "number",
-    width: 100,
-    renderCell: (params) =>
-      params.row.actualPrice ? formatPrice(params.row.actualPrice) : "-----",
-  },
   { field: "phone", headerName: "Số điện thoại", width: 130 },
   { field: "licensePlate", headerName: "Biển số xe", width: 110 },
-  { field: "parkingName", headerName: "Bãi xe", width: 130 },
+  { field: "parkingName", headerName: "Bãi xe", width: 170 },
   {
     field: "checkinTime",
     headerName: "Giờ vào",
@@ -141,7 +134,7 @@ const columns = [
   {
     field: "status",
     headerName: "Trạng thái",
-    width: 120,
+    width: 140,
     valueGetter: getCellValue,
     renderCell: renderCellStatus,
     sortable: false,
@@ -161,6 +154,17 @@ const columns = [
 export default function DataTable(props) {
   const { rows, loading } = props;
   const dataGridRef = useRef(null);
+
+  const [value, setValue] = useState("");
+  const [filteredRows, setFilteredRows] = useState(rows);
+
+  useEffect(() => {
+    setFilteredRows(
+      rows.filter((row) =>
+        row.customerName.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }, [rows, value]);
 
   useEffect(() => {
     if (dataGridRef.current) {
@@ -197,13 +201,13 @@ export default function DataTable(props) {
       <MainCard title={"Lịch đặt"}>
         <Grid item xs={12}>
           <SubCard>
-            <SearchSection />
+            <SearchSection value={value} setValue={setValue} />
           </SubCard>
         </Grid>
         {rows ? (
           <div id="outer-div">
             <DataGrid
-              rows={rows}
+              rows={filteredRows}
               rowHeight={70}
               autoHeight
               columns={columns}

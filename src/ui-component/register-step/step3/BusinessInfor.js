@@ -17,8 +17,9 @@ import ContinueButton from "ui-component/buttons/continue-button-register/Contin
 import UploadBusinessLicense from "ui-component/upload-file-antd/UploadBusinessLicense";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { data } from "autoprefixer";
+// import { data } from "autoprefixer";
 import FeeCardBusiness from "ui-component/cards/FeeCard/FeeCardBusiness";
+import FeeCardPerson from "ui-component/cards/FeeCard/FeeCardPerson";
 
 const BusinessInfor = () => {
   const theme = useTheme();
@@ -230,7 +231,7 @@ const BusinessInfor = () => {
           <TextField
             fullWidth
             required
-            sx={{ width: "500px" }}
+            sx={{ width: "100%" }}
             type="text"
             name="businessName"
             label="Tên doanh nghiệp"
@@ -272,8 +273,19 @@ const BusinessInfor = () => {
           />
         </Stack>
 
-        <Grid item sx={{ marginTop: "20px" }}>
-          <FeeCardBusiness />
+        <Grid
+          item
+          container
+          direction="row"
+          spacing={3}
+          sx={{ marginTop: "20px" }}
+        >
+          <Grid item>
+            <FeeCardBusiness />
+          </Grid>
+          <Grid item>
+            <FeeCardPerson />
+          </Grid>
         </Grid>
 
         <Grid

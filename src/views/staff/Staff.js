@@ -120,6 +120,9 @@ export default function Staff() {
 
   const dataGridRef = useRef(null);
 
+  const [value, setValue] = useState("");
+  const [filteredRows, setFilteredRows] = useState(rows);
+
   useEffect(() => {
     if (dataGridRef.current) {
       // get the height of the DataGrid using the ref
@@ -176,6 +179,14 @@ export default function Staff() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    setFilteredRows(
+      rows?.filter((row) =>
+        row.name.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }, [rows, value]);
+
   if (loading) {
     // Render the Skeleton components or any other loading indicator
     return (
@@ -206,7 +217,7 @@ export default function Staff() {
       <MainCard title={"Tất cả nhân viên"}>
         <Grid item xs={12}>
           <SubCardStaff
-            startComponent={<SearchSection />}
+            startComponent={<SearchSection value={value} setValue={setValue} />}
             endComponent={
               <CreateButton
                 onClick={() => handleOpenModalCreate("createModalStaff")}
@@ -217,7 +228,7 @@ export default function Staff() {
         {rows ? (
           <div id="outer-div">
             <DataGrid
-              rows={rows}
+              rows={filteredRows}
               rowHeight={70}
               autoHeight
               getRowId={(row) => row.userId}

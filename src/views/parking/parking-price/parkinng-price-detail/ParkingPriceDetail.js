@@ -81,7 +81,7 @@ export default function ParkingPriceDetail(props) {
             />
           </Grid>
           {rows ? (
-            <div style={{ height: "500px", width: "100%" }}>
+            <div style={{ height: "300px", width: "100%" }}>
               <DataGrid
                 rows={rows}
                 rowHeight={70}
