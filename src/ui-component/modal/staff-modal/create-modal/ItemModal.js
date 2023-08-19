@@ -286,7 +286,7 @@ const ItemModal = ({ modalType }) => {
             <TextField
               fullWidth
               required
-              label="Tên NV"
+              label="Tên nhân viên"
               inputProps={{
                 maxLength: 50,
               }}
