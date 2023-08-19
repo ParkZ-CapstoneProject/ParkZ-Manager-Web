@@ -146,8 +146,10 @@ export default function MyParkingAll(props) {
 
   const renderCellSwitchAvailable = (params, parkingId) => {
     const handleChange = () => {
-      setIsOpen(true);
-      setParkingId(parkingId);
+      if (params.row.isActive) {
+        setIsOpen(true);
+        setParkingId(parkingId);
+      }
     };
     return (
       // <Switch checked={params.value} onChange={handleChange} color="primary" />
@@ -187,7 +189,7 @@ export default function MyParkingAll(props) {
     },
     {
       field: "isAvailable",
-      headerName: "Bãi xe bận",
+      headerName: "Đang hoạt động",
       width: 140,
       // valueGetter: getCellValue,
       sortable: false,
