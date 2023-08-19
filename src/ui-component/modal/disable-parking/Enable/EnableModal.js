@@ -14,6 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import SaveButton from "ui-component/buttons/save-button/SaveButton";
 import CancelButton from "ui-component/buttons/cancel-button/CancelButton";
 import Swal from "sweetalert2";
+import DeleteButton from "ui-component/buttons/delete-button/DeleteButton";
 
 const style = {
   position: "absolute",
@@ -30,8 +31,8 @@ const style = {
 };
 
 const EnableModal = (props) => {
-  const { isOpen, setIsOpen, id, disableDate } = props;
-  console.log("disableDate", disableDate);
+  const { isOpen, setIsOpen, id, disableDate, isDelete } = props;
+  // console.log("disableDate", disableDate);
   const theme = useTheme();
 
   const formatDate = (date) => {
@@ -42,6 +43,7 @@ const EnableModal = (props) => {
   };
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const token = localStorage.getItem("token");
 
   const handleClose = () => {
     setIsOpen(false);
@@ -50,8 +52,10 @@ const EnableModal = (props) => {
   const handleEnableParking = async () => {
     Swal.fire({
       title: "Xác nhận?",
-      text: "Bạn có chắc chắn hủy ngày ngưng này!",
-      icon: "warning",
+      text: isDelete
+        ? "Bạn có chắc chắn muốn xóa!"
+        : "Bạn có chắc chắn muốn hoạt động lại!",
+      icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -80,26 +84,58 @@ const EnableModal = (props) => {
         const requestOptions = {
           method: "PUT",
           headers: {
+            Authorization: `bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(request),
         };
 
-        const response = await fetch(
-          `${apiUrl}/parkings/enable-disable-parking`,
-          requestOptions
-        );
-        // const data = await response.json();
-        if (response.status === 204) {
-          Swal.fire({
-            icon: "success",
-            text: "Cập nhật hủy ngưng hoạt động bãi xe thành công!",
-          });
+        if (!isDelete) {
+          const response = await fetch(
+            `${apiUrl}/parkings/enable-disable-parking`,
+            requestOptions
+          );
+          // const data = await response.json();
+          if (response.status === 204) {
+            setIsOpen(false);
+            Swal.fire({
+              icon: "success",
+              text: "Cập nhật hủy ngưng hoạt động bãi xe thành công!",
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              text: response.message,
+            });
+          }
         } else {
-          Swal.fire({
-            icon: "error",
-            text: response.message,
-          });
+          const requestOptions = {
+            method: "DELETE",
+            headers: {
+              Authorization: `bearer ${token}`, // Replace `token` with your actual bearer token
+              "Content-Type": "application/json", // Replace with the appropriate content type
+            },
+            body: JSON.stringify(request),
+          };
+
+          const response = await fetch(
+            `${apiUrl}/parkings/cancel-disable-scheduled-parking`,
+            requestOptions
+          );
+          // console.log("response", response);
+          // const data = await response.json();
+          if (response.status === 204) {
+            setIsOpen(false);
+            Swal.fire({
+              icon: "success",
+              text: "Xóa ngày ngưng hoạt động thành công!",
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              text: response.message,
+            });
+          }
         }
       }
     });
@@ -161,9 +197,15 @@ const EnableModal = (props) => {
               <Grid item>
                 <CancelButton onClick={handleClose} />
               </Grid>
-              <Grid item>
-                <SaveButton onClick={handleEnableParking} />
-              </Grid>
+              {isDelete ? (
+                <Grid item>
+                  <DeleteButton onClick={handleEnableParking} />
+                </Grid>
+              ) : (
+                <Grid item>
+                  <SaveButton onClick={handleEnableParking} />
+                </Grid>
+              )}
             </Grid>
           </Box>
         </Fade>

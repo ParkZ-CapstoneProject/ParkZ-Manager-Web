@@ -4,22 +4,20 @@ import { MoreVert } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import NoEncryptionGmailerrorredIcon from "@mui/icons-material/NoEncryptionGmailerrorred";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useDispatch } from "react-redux";
-import { openModal, setBookingId, setStaffId } from "store/modalReducer";
-import EditModalStaff from "ui-component/modal/staff-modal/edit-modal/EditModalStaff";
-import DetailModalStaff from "ui-component/modal/staff-modal/detail-modal/DetailModalStaff";
-import DeleteModalStaff from "ui-component/modal/staff-modal/delete-modal/DeleteModalStaff";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import DisableRightNow from "ui-component/modal/disable-parking/Disable/DisableRightNow";
 
 const Menu = ({ id }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const token = localStorage.getItem("token");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    dispatch(setBookingId(id));
-    console.log("id: ", id);
   };
 
   const handleClose = () => {
@@ -31,9 +29,59 @@ const Menu = ({ id }) => {
     navigate(`/parking-detail/${id}`);
   };
 
-  const handleOpenModalDelete = (modalType) => {
-    dispatch(setStaffId(id));
-    dispatch(openModal(modalType));
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Xác nhận?",
+      text: "Bạn có chắc chắn muốn thay đổi!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Hủy",
+      confirmButtonText: "Xác nhận!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: "info",
+          title: "Đang xử lý thông tin...",
+          text: "Vui lòng chờ trong giây lát!",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        const requestOptions = {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          // body: JSON.stringify(requestBody),
+        };
+
+        const response = await fetch(
+          `${apiUrl}/parkings/parking/${id}`,
+          requestOptions
+        );
+        if (response.statusCode === 204) {
+          Swal.fire({
+            icon: "success",
+            text: "Xóa bãi xe thành công!",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            text: response.message,
+          });
+        }
+      }
+    });
+  };
+
+  const handleDisableRightNow = () => {
+    setIsOpen(true);
   };
 
   return (
@@ -54,13 +102,7 @@ const Menu = ({ id }) => {
           horizontal: "center",
         }}
       >
-        <List sx={{ width: "130px" }}>
-          {/* <ListItem onClick={() => handleOpenModalEdit("modalStaffEdit")}>
-            <EditIcon sx={{ marginRight: "3%", color: "#2196f3" }} />
-            <Typography color="primary" variant="subtitle1">
-              Chỉnh sửa
-            </Typography>
-          </ListItem> */}
+        <List sx={{ width: "145px" }}>
           <ListItem onClick={handleDetail}>
             <RemoveRedEyeIcon sx={{ marginRight: "3%", color: "#673ab7" }} />
             <Typography color="secondary" variant="subtitle1">
@@ -68,16 +110,16 @@ const Menu = ({ id }) => {
             </Typography>
           </ListItem>
 
-          <ListItem onClick={handleDetail}>
+          <ListItem onClick={() => handleDisableRightNow()}>
             <NoEncryptionGmailerrorredIcon
               sx={{ marginRight: "3%", color: "#2196f3" }}
             />
             <Typography color="primary" variant="subtitle1">
-              Tắt bãi
+              Tắt bãi ngay
             </Typography>
           </ListItem>
 
-          <ListItem onClick={() => handleOpenModalDelete("modalStaffDelete")}>
+          <ListItem onClick={handleDelete}>
             <DeleteIcon sx={{ marginRight: "3%", color: "#f44336" }} />
             <Typography color="error" variant="subtitle1">
               Xóa
@@ -86,9 +128,7 @@ const Menu = ({ id }) => {
         </List>
       </Popover>
 
-      <EditModalStaff modalType="modalStaffEdit" />
-      <DetailModalStaff modalType="modalStaffDetail" />
-      <DeleteModalStaff modalType="modalStaffDelete" />
+      <DisableRightNow isOpen={isOpen} setIsOpen={setIsOpen} parkingId={id} />
     </>
   );
 };

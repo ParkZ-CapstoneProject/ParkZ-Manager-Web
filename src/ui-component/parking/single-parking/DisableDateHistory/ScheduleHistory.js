@@ -3,8 +3,9 @@ import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useParams } from "react-router";
 import TableData from "./TableData";
+import DataTableSchedule from "./DataTableSchedule";
 
-const DisableDateHistory = () => {
+const ScheduleHistory = () => {
   const { id } = useParams();
   const theme = useTheme();
   const [rows, setRows] = useState([]);
@@ -24,7 +25,7 @@ const DisableDateHistory = () => {
   const fetchData = async () => {
     setLoading(true);
     const response = await fetch(
-      `${apiUrl}/parkings/successed-history-disable-parking?parkingId=${id}`,
+      `${apiUrl}/parkings/scheduled-history-disable-parking?parkingId=${id}`,
       requestOptions
     );
 
@@ -43,12 +44,12 @@ const DisableDateHistory = () => {
   return (
     <>
       <Typography color={theme.palette.secondary.main} variant="h3">
-        Lịch sử ngưng hoạt động bãi xe
+        Chờ ngưng hoạt động
       </Typography>
 
-      <TableData rows={rows} loading={loading} />
+      <DataTableSchedule rows={rows} loading={loading} />
     </>
   );
 };
 
-export default DisableDateHistory;
+export default ScheduleHistory;

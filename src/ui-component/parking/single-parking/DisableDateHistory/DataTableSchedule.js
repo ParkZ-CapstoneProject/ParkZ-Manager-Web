@@ -10,7 +10,7 @@ import { useParams } from "react-router";
 import EnableModal from "ui-component/modal/disable-parking/Enable/EnableModal";
 import Menu from "./Menu";
 
-export default function TableData(props) {
+export default function DataTableSchedule(props) {
   const { id } = useParams();
   const { rows, loading } = props;
 
@@ -55,18 +55,18 @@ export default function TableData(props) {
 
   const handleApply = (disableDate) => {
     setIsOpen(true);
-    setIsDelete(false);
+    setIsDelete(true);
     setDisableDate(disableDate);
   };
 
   const renderCellApply = (params) => {
-    if (params.row.state === "Succeeded") {
+    if (params.row.state === "Scheduled") {
       return (
         <button
           onClick={() => handleApply(params.row.disableDate)}
-          className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+          className="bg-red-500 hover:bg-red-600 active:scale-95 text-white font-bold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
         >
-          Hoạt động lại
+          Hủy lịch
         </button>
       );
     }
@@ -117,15 +117,15 @@ export default function TableData(props) {
       disableColumnMenu: true,
       renderCell: renderCellApply,
     },
-    {
-      field: "action",
-      headerName: "",
-      width: 90,
-      sortable: false,
-      disableColumnMenu: true,
-      align: "center",
-      renderCell: <Menu setIsOpen={setIsOpen} setIsDelete={setIsDelete} />,
-    },
+    // {
+    //   field: "action",
+    //   headerName: "",
+    //   width: 90,
+    //   sortable: false,
+    //   disableColumnMenu: true,
+    //   align: "center",
+    //   renderCell: <Menu setIsOpen={setIsOpen} setIsDelete={setIsDelete} />,
+    // },
   ];
 
   return (

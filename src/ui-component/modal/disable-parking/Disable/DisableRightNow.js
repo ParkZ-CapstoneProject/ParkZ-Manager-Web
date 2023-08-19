@@ -23,7 +23,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "25%",
-  height: "35%",
+  height: "27%",
   bgcolor: "background.paper",
   // border: "1px solid #000",
   borderRadius: "5px",
@@ -31,12 +31,13 @@ const style = {
   p: 4,
 };
 
-const DisableModal = (props) => {
+const DisableRightNow = (props) => {
   const { isOpen, setIsOpen, parkingId } = props;
-  const [date, setDate] = useState();
+  //   const [date, setDate] = useState();
   const [reason, setReason] = useState("");
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const token = localStorage.getItem("token");
 
   const handleClose = () => {
     setIsOpen(false);
@@ -46,14 +47,21 @@ const DisableModal = (props) => {
     setReason(e.target.value);
   };
 
-  const handleChangeDate = (e) => {
-    setDate(e.target.value);
-  };
+  //   const handleChangeDate = (e) => {
+  //     setDate(e.target.value);
+  //   };
 
   const handleDisableParking = async () => {
+    if (reason.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        text: "Vui lòng nhập lý do!",
+      });
+      return;
+    }
     Swal.fire({
       title: "Xác nhận?",
-      text: "Bạn có chắc chắn muốn ngưng!",
+      text: "Nếu tắt bãi xe ngay bây giờ thì tất cả đơn đặt chỗ sẽ bị hủy và sẽ bị hoàn tiền nếu khách hàng đã thanh toán trước, ảnh hưởng đến tất cả đơn đặt của bãi xe! Bạn có chắc chắn muốn khóa ngay bây giờ!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -73,32 +81,37 @@ const DisableModal = (props) => {
           },
         });
 
-        const request = {
+        const date = new Date();
+
+        const body = {
           parkingId: parkingId,
+          disableDate: date.toISOString(),
           reason: reason,
-          disableDate: date,
         };
 
         const requestOptions = {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
           },
-          body: JSON.stringify(request),
+          body: JSON.stringify(body),
         };
 
         const response = await fetch(
-          `${apiUrl}/parkings/disable-parking-by-date`,
+          `${apiUrl}/parkings/disable-parking-by-date-time`,
           requestOptions
         );
-        // const data = await response.json();
-        // console.log("response", response);
-        // const data = await response.json();
+
         if (response.status === 204) {
           setIsOpen(false);
           Swal.fire({
             icon: "success",
-            text: "Đặt lịch ngưng hoạt động bãi xe thành công!",
+            text: "Thành công",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.close();
+            }
           });
         } else {
           Swal.fire({
@@ -141,29 +154,6 @@ const DisableModal = (props) => {
             >
               <CloseIcon />
             </IconButton>
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-evenly"
-              alignItems="center"
-              spacing={3}
-              sx={{ marginTop: "10px" }}
-            >
-              <Grid item xs={5}>
-                <Typography color={theme.palette.common.black} variant="h4">
-                  Chọn ngày ngưng
-                </Typography>
-              </Grid>
-              <Grid item xs={7}>
-                <TextField
-                  fullWidth
-                  sx={{ width: "100%" }}
-                  type="date"
-                  value={date}
-                  onChange={handleChangeDate}
-                />
-              </Grid>
-            </Grid>
 
             <Grid
               container
@@ -182,6 +172,7 @@ const DisableModal = (props) => {
                 <TextField
                   fullWidth
                   type="text"
+                  rows={3}
                   placeholder="Nhập lý do"
                   value={reason}
                   onChange={handleChangeReason}
@@ -210,4 +201,4 @@ const DisableModal = (props) => {
   );
 };
 
-export default DisableModal;
+export default DisableRightNow;
