@@ -9,7 +9,6 @@ const FloorCardInput = (props) => {
   const { index, inputValues, onInputChange, onRemove, setError } = props;
   const theme = useTheme();
   const [values, setValues] = useState(inputValues);
-  console.log("values", values);
 
   const handleInputChange = (event, inputIndex) => {
     const newValue = Number(event.target.value);

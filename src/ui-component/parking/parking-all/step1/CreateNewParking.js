@@ -82,8 +82,6 @@ const CreateNewParking = () => {
     setFloors([...floors, newFloor]);
   };
 
-  console.log("floors", floors);
-
   const handleRemoveFloor = (index) => {
     setFloors(floors.filter((_, i) => i !== index));
   };

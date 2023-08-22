@@ -23,7 +23,6 @@ const OTP = () => {
   const [elapsedTime, setElapsedTime] = useState(0); // state variable to track elapsed time
   const location = useLocation();
   const { email } = location.state;
-  console.log(email);
 
   const apiLink = "https://parkzserver-001-site1.btempurl.com/api";
 
@@ -91,8 +90,6 @@ const OTP = () => {
       setElapsedTime(0);
     }
   }, [elapsedTime]);
-
-  console.log("otpGenerate", otpGenerate);
 
   const handleSubmit = (e) => {
     e.preventDefault();

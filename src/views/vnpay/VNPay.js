@@ -14,7 +14,6 @@ import { useEffect } from "react";
 
 export default function MyVNPay(props) {
   const { rows } = props;
-  console.log("rows", rows);
 
   const [open, setOpen] = useState(false);
 

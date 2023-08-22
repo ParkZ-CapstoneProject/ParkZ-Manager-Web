@@ -23,7 +23,6 @@ const NewImageCustom = ({ setIsOpen }) => {
   const [fileList, setFileList] = useState([]);
 
   const { id } = useParams();
-  console.log("id", id);
 
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
   const token = localStorage.getItem("token");

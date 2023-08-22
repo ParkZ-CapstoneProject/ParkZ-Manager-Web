@@ -49,7 +49,6 @@ const EmailInput = () => {
     const data = await response.json();
 
     if (data.message !== "Thành công") {
-      console.log("success", data.data);
       Swal.fire({
         icon: "error",
         title: "Không tìm thấy",

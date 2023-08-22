@@ -65,7 +65,6 @@ const ParkingModalInFloor = () => {
 
   const handleSave = () => {
     data.forEach((floor) => {
-      console.log("floor", floor);
       floor.carSlots.forEach((slot) => {
         const body = {
           name: slot.name,
