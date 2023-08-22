@@ -35,7 +35,6 @@ const ScheduleHistory = () => {
       setLoading(false);
     }
   };
-  console.log("disable", rows);
 
   useEffect(() => {
     fetchData();

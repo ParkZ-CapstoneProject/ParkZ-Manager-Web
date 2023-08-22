@@ -7,7 +7,6 @@ import { useParams } from "react-router";
 
 const Menu = ({ id }) => {
   const { priceId } = useParams();
-  console.log("priceId", priceId);
   const [anchorEl, setAnchorEl] = useState(null);
   // const dispatch = useDispatch();
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
@@ -15,7 +14,6 @@ const Menu = ({ id }) => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log("parking has price", id);
   };
 
   const handleClose = () => {

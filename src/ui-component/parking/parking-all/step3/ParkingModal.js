@@ -20,7 +20,6 @@ const ParkingModal = ({ floorIndex, onModalDataChange }) => {
   const storedParkingModal = localStorage.getItem("parkingModalState");
   const parsedParkingModal = JSON.parse(storedParkingModal);
   const initialParkingModal = parsedParkingModal ? parsedParkingModal : {};
-  console.log("initialParkingModal", initialParkingModal);
 
   const { numCarSlots, numCarSlotsBackUp, numCarRows, numCarCols, carSlots } =
     useSelector((state) => state.parkingModal[floorIndex]);

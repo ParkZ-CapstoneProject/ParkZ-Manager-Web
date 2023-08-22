@@ -59,7 +59,6 @@ const HistoryBooking = () => {
     );
     const data = await response.json();
     setRows(data.data);
-    console.log("data.data", data.data);
     setLoading(false);
   };
 
@@ -72,7 +71,6 @@ const HistoryBooking = () => {
     const data = await response.json();
     setDoneBooking(data.data.numberOfDoneBooking);
     setCancelBooking(data.data.numberOfCancelBooking);
-    console.log("data.data", data.data);
     setLoading(false);
   };
 
@@ -86,13 +84,13 @@ const HistoryBooking = () => {
     setTotalBooking(data.data.numberOfOrders);
     setBookingDay(data.data.numberOfOrdersInCurrentDay);
     setBookingWatining(data.data.waitingOrder);
-    console.log("data.data", data.data);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
     fetchBookingDoneCancel();
+    fetchBookingDayWatting();
   }, []);
 
   if (loading) {

@@ -52,7 +52,6 @@ const NewPassword = () => {
     event.preventDefault();
 
     let passwordEntity = { email: email, newPassword: newMk };
-    console.log("Email:", passwordEntity.email);
     fetch(`${apiLink}/password-management/forgot-password`, {
       method: "PUT",
       headers: {
@@ -68,14 +67,11 @@ const NewPassword = () => {
       })
       .then((data) => {
         if (data === 204) {
-          console.log("Thành công");
           Swal.fire({
             icon: "success",
             text: "Cập nhật mật khẩu thành công!",
           });
           navigate("/login");
-        } else {
-          console.log(data);
         }
       })
       .catch((error) => {

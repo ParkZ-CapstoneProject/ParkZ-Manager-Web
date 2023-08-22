@@ -128,8 +128,6 @@ const BusinessInfor = () => {
             showConfirmButton: false,
           });
           dispatch(setCurrentStep(currentStep + 1));
-
-          console.log(data);
         })
         .catch((error) => {
           // Handle any errors
@@ -154,7 +152,6 @@ const BusinessInfor = () => {
         .then((response) => {
           const { data } = response;
           resolve(data.link);
-          console.log("data.link", data.link);
         })
         .catch((error) => {
           console.log("Error uploading image:", error);

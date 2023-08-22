@@ -86,7 +86,6 @@ export default function MyParkingAll(props) {
               `${apiUrl}/parkings/parking/full/${params.id}`,
               requestOptions
             );
-            console.log("response", response.status);
             if (response.status === 204) {
               Swal.fire({
                 icon: "success",

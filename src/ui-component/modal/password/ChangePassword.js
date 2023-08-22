@@ -43,8 +43,6 @@ const ChangePassword = ({ isOpen, handleClose }) => {
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 
-  console.log("password", password);
-
   const handleOldPasswordChange = (event) => {
     const { value } = event.target;
 

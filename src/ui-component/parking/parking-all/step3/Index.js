@@ -16,7 +16,6 @@ const ParkingModalInFloor = () => {
   const [initialFloorsObj, setInitialFloorsObj] = useState(loadState());
 
   const initialFloorsArr = Object.values(initialFloorsObj);
-  console.log("initialFloorsArr", initialFloorsArr);
 
   const [floors, setFloors] = useState(() => {
     const initialState = initialFloorsArr;
@@ -82,7 +81,6 @@ const ParkingModalInFloor = () => {
             const data = await response.json();
 
             floorIds.push(data.data);
-            console.log("floorIds", floorIds);
           }
           // Create carSlots for each floor
           const promises = [];
@@ -113,9 +111,7 @@ const ParkingModalInFloor = () => {
                   }
                   return response.json();
                 })
-                .then((data) => {
-                  console.log("data", data);
-                });
+                .then((data) => {});
               promises.push(promise);
             });
           });

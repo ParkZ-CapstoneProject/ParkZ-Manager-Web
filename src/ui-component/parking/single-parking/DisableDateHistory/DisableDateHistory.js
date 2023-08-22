@@ -34,7 +34,6 @@ const DisableDateHistory = () => {
       setLoading(false);
     }
   };
-  console.log("disable", rows);
 
   useEffect(() => {
     fetchData();

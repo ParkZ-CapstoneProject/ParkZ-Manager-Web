@@ -54,7 +54,6 @@ const VNPay = () => {
       requestOptions
     );
     const data = await response.json();
-    console.log("data.data", data.data);
     setRows(data.data);
     setLoading(false);
   };
@@ -62,7 +61,6 @@ const VNPay = () => {
   if (loading) {
     return <Loading loading={loading} />;
   }
-  console.log("type: ", typeof rows);
 
   return (
     <>

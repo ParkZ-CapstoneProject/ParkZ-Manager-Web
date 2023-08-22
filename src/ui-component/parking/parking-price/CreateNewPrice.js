@@ -188,8 +188,6 @@ const CreateNewPrice = () => {
           title: "Có lỗi xảy ra",
           text: errorMessage,
         });
-
-        console.log("response", response.json());
       }
       const data = await response.json();
 
