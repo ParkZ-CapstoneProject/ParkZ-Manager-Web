@@ -178,15 +178,6 @@ export default function MyParkingAll(props) {
       valueGetter: getCellValue,
     },
     {
-      field: "isActive",
-      headerName: "Hoạt động",
-      width: 170,
-      // valueGetter: getCellValue,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: renderCellIsActive,
-    },
-    {
       field: "isAvailable",
       headerName: "Đang hoạt động",
       width: 140,
@@ -204,6 +195,15 @@ export default function MyParkingAll(props) {
       sortable: false,
       disableColumnMenu: true,
       renderCell: renderCellSwitch,
+    },
+    {
+      field: "isActive",
+      headerName: "Đã duyệt",
+      width: 170,
+      // valueGetter: getCellValue,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: renderCellIsActive,
     },
     {
       field: "action",
