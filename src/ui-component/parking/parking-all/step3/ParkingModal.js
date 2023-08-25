@@ -131,6 +131,7 @@ const ParkingModal = ({ floorIndex, onModalDataChange }) => {
     slotHeight,
     spacing,
     stagePadding,
+    floorIndex,
   ]);
 
   const handleDragStart = (slotId) => {

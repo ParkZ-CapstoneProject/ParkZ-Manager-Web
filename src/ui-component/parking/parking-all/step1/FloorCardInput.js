@@ -35,28 +35,6 @@ const FloorCardInput = (props) => {
         newValues[2] = 0;
         setValues(newValues);
       });
-    } else if (values[3] > values[1]) {
-      setError(true);
-      Swal.fire({
-        icon: "error",
-        text: "Số hàng không được vượt quá tổng số vị trí",
-      }).then(() => {
-        // Clear the input value for the row field
-        const newValues = [...values];
-        newValues[3] = 0;
-        setValues(newValues);
-      });
-    } else if (values[4] > values[1]) {
-      setError(true);
-      Swal.fire({
-        icon: "error",
-        text: "Số cột không được vượt quá tổng số vị trí",
-      }).then(() => {
-        // Clear the input value for the column field
-        const newValues = [...values];
-        newValues[4] = 0;
-        setValues(newValues);
-      });
     } else if (values[3] > 0 && values[4] > 0) {
       if (values[4] * values[3] < values[1]) {
         setError(true);
