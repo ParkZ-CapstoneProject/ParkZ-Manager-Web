@@ -33,8 +33,6 @@ const BusinessInfor = () => {
   const [isAgree, setIsAgree] = useState(false);
   const [businessLicenseUrl, setBusinessLicenseUrl] = useState([]);
 
-  const [errorBusinessName, setErrorBusinessName] = useState(false);
-
   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
 
   const requestBody = {
@@ -170,10 +168,8 @@ const BusinessInfor = () => {
     const startsWithSpace = /^\s/.test(value);
 
     if (startsWithSpace) {
-      setErrorBusinessName(true);
       return;
     } else {
-      setErrorBusinessName(false);
       dispatch(setUserData({ ...userData, businessName: value }));
     }
   };
@@ -184,10 +180,8 @@ const BusinessInfor = () => {
     const startsWithSpace = /^\s/.test(value);
 
     if (startsWithSpace) {
-      setErrorBusinessName(true);
       return;
     } else {
-      setErrorBusinessName(false);
       dispatch(setUserData({ ...userData, address: value }));
     }
   };
@@ -236,10 +230,10 @@ const BusinessInfor = () => {
             maxLength={200}
             onChange={handleInputBusinessName}
             value={userData["businessName"]}
-            error={errorBusinessName}
-            helperText={
-              errorBusinessName ? "Không nhập bát đầu bàng khoảng trắng" : ""
-            }
+            // error={errorBusinessName}
+            // helperText={
+            //   errorBusinessName ? "Không nhập bát đầu bàng khoảng trắng" : ""
+            // }
           />
         </Stack>
         <Stack spacing={1}>
@@ -260,10 +254,10 @@ const BusinessInfor = () => {
             type="text"
             name="address"
             onChange={handleInputAddress}
-            error={errorBusinessName}
-            helperText={
-              errorBusinessName ? "Không nhập bát đầu bàng khoảng trắng" : ""
-            }
+            // error={errorBusinessName}
+            // helperText={
+            //   errorBusinessName ? "Không nhập bát đầu bàng khoảng trắng" : ""
+            // }
             label="Địa chỉ(Số, đường, quận, TP Hô Chí Minh)"
             color="secondary"
             maxLength={300}
