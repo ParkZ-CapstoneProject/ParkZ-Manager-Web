@@ -323,7 +323,7 @@ const BusinessInfor = () => {
             variant={matchDownSM ? "h5" : "h4"}
             marginTop="2%"
           >
-            Giấy phép kinh doanh
+            Giấy phép kinh doanh(Đối với doanh nghiệp)
           </Typography>
           <UploadBusinessLicense
             businessLicenseUrl={businessLicenseUrl}
