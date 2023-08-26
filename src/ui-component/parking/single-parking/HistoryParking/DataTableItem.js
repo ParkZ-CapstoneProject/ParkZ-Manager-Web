@@ -1,9 +1,8 @@
-import { Avatar, Chip, Typography } from "@mui/material";
+import { Chip, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { ImFilesEmpty } from "react-icons/im";
 import Menu from "ui-component/booking/Menu";
-import MainCard from "ui-component/cards/MainCard";
 
 const getCellValue = (params) => {
   return params.value ? params.value : "-------";
@@ -11,24 +10,29 @@ const getCellValue = (params) => {
 
 const renderCellStatus = (params) => {
   const statusMap = {
-    Initial: { color: "#fff", bgColor: "gray" },
-    Done: { color: "#fff", bgColor: "#4caf50" },
-    OverTime: { color: "#fff", bgColor: "#1976d2" },
-    Check_In: { color: "#fff", bgColor: "#f44336" },
-    Check_Out: { color: "#000", bgColor: "#ff9800" },
-    Success: { color: "#fff", bgColor: "#2196f3" },
-    Cancel: { color: "#fff", bgColor: "#f44336" },
+    Initial: { label: "Khởi tạo", color: "#fff", bgColor: "gray" },
+    Done: { label: "Hoàn thành", color: "#fff", bgColor: "#1e88e5" },
+    OverTime: { label: "Quá hạn", color: "#fff", bgColor: "#1976d2" },
+    Check_In: { label: "Check in", color: "#fff", bgColor: "#f44336" },
+    Check_Out: { label: "Check out", color: "#000", bgColor: "#ff9800" },
+    Success: {
+      label: "Thành công",
+      color: "#fff",
+      bgColor: "rgb(56, 142, 60)",
+    },
+    Cancel: { label: "Hủy bỏ", color: "#fff", bgColor: "rgb(244, 67, 54)" },
   };
 
   const { value } = params;
   const statusStyle = statusMap[value] || {
+    label: value,
     color: "inherit",
     bgColor: "gray",
   };
 
   return (
     <Chip
-      label={value}
+      label={statusStyle.label}
       sx={{
         backgroundColor: statusStyle.bgColor,
         color: statusStyle.color,
@@ -70,24 +74,50 @@ const formatPrice = (number) => {
 };
 
 const columns = [
-  { field: "bookingId", headerName: "ID", width: 70 },
   {
-    field: "customerName",
+    field: "bookingId",
+    headerName: "ID",
+    width: 70,
+    valueGetter: (params) =>
+      params.row.bookingForGetAllBookingByParkingIdResponse?.bookingId ||
+      "----",
+  },
+  {
+    field: "name",
     headerName: "Tên khách hàng",
     description: "This column has a value getter and is not sortable.",
     sortable: false,
     width: 170,
-    valueGetter: (params) => `${params.row.customerName || ""}`,
+    valueGetter: (params) =>
+      `${params.row.userForGetAllBookingByParkingIdResponse?.name || "----"}`,
   },
-  { field: "position", headerName: "Vị trí", width: 100 },
+  {
+    field: "floor",
+    headerName: "Tầng",
+    width: 100,
+    valueGetter: (params) =>
+      `${params.row.floorDtoForAdmin?.floorName || "----"}`,
+  },
+  {
+    field: "position",
+    headerName: "Vị trí",
+    width: 100,
+    valueGetter: (params) => `${params.row.slotDtoForAdmin?.name || "----"}`,
+  },
   {
     field: "startTime",
     headerName: "Thời gian đặt",
     width: 200,
     valueGetter: getCellValue,
     renderCell: (params) =>
-      `${formatTime(params.row.startTime) || ""} - ${
-        formatTime(params.row.endTime) || ""
+      `${
+        formatTime(
+          params.row.bookingForGetAllBookingByParkingIdResponse?.startTime
+        ) || ""
+      } - ${
+        formatTime(
+          params.row.bookingForGetAllBookingByParkingIdResponse?.endTime
+        ) || ""
       }`,
   },
   {
@@ -96,26 +126,46 @@ const columns = [
     // type: "number",
     width: 100,
     renderCell: (params) =>
-      params.row.totalPrice ? formatPrice(params.row.totalPrice) : "-----",
+      params.row.bookingForGetAllBookingByParkingIdResponse?.totalPrice
+        ? formatPrice(
+            params.row.bookingForGetAllBookingByParkingIdResponse?.totalPrice
+          )
+        : "-----",
   },
   {
-    field: "actualPrice",
-    headerName: "Giá thực tế",
-    // type: "number",
-    width: 100,
-    renderCell: (params) =>
-      params.row.actualPrice ? formatPrice(params.row.actualPrice) : "-----",
+    field: "phone",
+    headerName: "Số điện thoại",
+    width: 130,
+    valueGetter: (params) =>
+      `${params.row.userForGetAllBookingByParkingIdResponse?.phone || "----"}`,
   },
-  { field: "phone", headerName: "Số điện thoại", width: 130 },
-  { field: "licensePlate", headerName: "Biển số xe", width: 110 },
-  { field: "parkingName", headerName: "Bãi xe", width: 130 },
+  {
+    field: "licensePlate",
+    headerName: "Biển số xe",
+    width: 110,
+    valueGetter: (params) =>
+      `${
+        params.row.vehicleForGetAllBookingByParkingIdResponse?.licensePlate ||
+        "----"
+      }`,
+  },
+  {
+    field: "parkingName",
+    headerName: "Bãi xe",
+    width: 130,
+    valueGetter: (params) => `${params.row.parkingDtoForAdmin?.name || "----"}`,
+  },
   {
     field: "checkInTime",
     headerName: "Giờ vào",
     width: 120,
     // valueGetter: getCellValue,
     renderCell: (params) =>
-      params.value ? formatTime(params.row.checkInTime) : "-----",
+      params.row.bookingForGetAllBookingByParkingIdResponse?.checkinTime
+        ? formatTime(
+            params.row.bookingForGetAllBookingByParkingIdResponse?.checkinTime
+          )
+        : "-----",
   },
   {
     field: "checkOutTime",
@@ -123,31 +173,20 @@ const columns = [
     width: 120,
     // valueGetter: getCellValue,
     renderCell: (params) =>
-      params.value ? formatTime(params.row.checkOutTime) : "-----",
-  },
-  {
-    field: "paymentMethod",
-    headerName: "Thanh toán",
-    width: 130,
-    valueGetter: getCellValue,
-  },
-  {
-    field: "guestName",
-    headerName: "Người đặt hộ",
-    width: 170,
-    valueGetter: getCellValue,
-  },
-  {
-    field: "guestPhone",
-    headerName: "SĐT đặt hộ",
-    width: 130,
-    valueGetter: getCellValue,
+      params.row.bookingForGetAllBookingByParkingIdResponse?.checkoutTime
+        ? formatTime(
+            params.row.bookingForGetAllBookingByParkingIdResponse?.checkoutTime
+          )
+        : "-----",
   },
   {
     field: "status",
     headerName: "Trạng thái",
-    width: 120,
-    valueGetter: getCellValue,
+    width: 160,
+    valueGetter: (params) =>
+      `${
+        params.row.bookingForGetAllBookingByParkingIdResponse?.status || "----"
+      }`,
     renderCell: renderCellStatus,
     sortable: false,
     disableColumnMenu: true,
@@ -164,7 +203,7 @@ const columns = [
 
 const DataTableItem = (props) => {
   const { rows } = props;
-
+  console.log("rows", rows);
   return (
     <>
       {rows ? (
@@ -172,6 +211,9 @@ const DataTableItem = (props) => {
           <DataGrid
             rows={rows}
             rowHeight={70}
+            getRowId={(row) =>
+              row.bookingForGetAllBookingByParkingIdResponse.bookingId
+            }
             columns={columns}
             initialState={{
               pagination: {
