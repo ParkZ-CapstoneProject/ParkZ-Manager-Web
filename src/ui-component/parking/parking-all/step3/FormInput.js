@@ -38,14 +38,14 @@ const FormInput = ({ floorIndex }) => {
     }
 
     // Check if the new number of car rows exceeds the number of car slots
-    if (newNumCarRows > carSlots.length) {
-      Swal.fire({
-        icon: "error",
-        title: "Sai giá trị",
-        text: "Số hàng xe hơi không thể lớn hơn số slot xe hơi",
-      });
-      return;
-    }
+    // if (newNumCarRows > carSlots.length) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Sai giá trị",
+    //     text: "Số hàng xe hơi không thể lớn hơn số slot xe hơi",
+    //   });
+    //   return;
+    // }
 
     dispatch(
       setNumCarRows({
@@ -73,14 +73,14 @@ const FormInput = ({ floorIndex }) => {
       return;
     }
     // Check if the new number of car rows exceeds the number of car slots
-    if (newNumCarColumns > carSlots.length) {
-      Swal.fire({
-        icon: "error",
-        title: "Sai giá trị",
-        text: "Số cột xe hơi không thể lớn hơn số slot xe hơi",
-      });
-      return;
-    }
+    // if (newNumCarColumns > carSlots.length) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Sai giá trị",
+    //     text: "Số cột xe hơi không thể lớn hơn số slot xe hơi",
+    //   });
+    //   return;
+    // }
 
     dispatch(
       setNumCarColumns({
