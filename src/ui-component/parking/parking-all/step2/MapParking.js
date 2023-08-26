@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   MapContainer,
   Marker,
@@ -12,7 +12,7 @@ import L from "leaflet";
 
 const icon = L.icon({
   iconUrl: "./placeholder.png",
-  iconSize: [38, 38],
+  iconSize: [45, 45],
 });
 
 const position = [10.80122, 106.7937];
@@ -65,7 +65,7 @@ export default function MapParking(props) {
         url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=5N4WkwdSs34jdmDsg2lc"
       />
       {searchResult && (
-        <Marker position={[searchResult.lat, searchResult.lon]}>
+        <Marker position={[searchResult.lat, searchResult.lon]} icon={icon}>
           <Popup>{searchResult.display_name}</Popup>
         </Marker>
       )}
