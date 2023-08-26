@@ -52,11 +52,11 @@ const formatPrice = (number) => {
 };
 
 const columns = [
-  { field: "transactionId", headerName: "ID", width: 70 },
+  { field: "transactionId", headerName: "ID", width: 120 },
   {
     field: "price",
     headerName: "Số tiền giao dịch",
-    width: 200,
+    width: 230,
     renderCell: (params) => {
       if (params.row.price) {
         if (
@@ -75,7 +75,7 @@ const columns = [
   {
     field: "paymentMethod",
     headerName: "Phương thức thanh toán",
-    width: 350,
+    width: 370,
     renderCell: (params) =>
       params.row.paymentMethod === "thanh_toan_online"
         ? "Thanh toán online"
@@ -84,16 +84,16 @@ const columns = [
   {
     field: "description",
     headerName: "Mô tả",
-    width: 350,
+    width: 450,
     valueGetter: getCellValue,
   },
-  {
-    field: "createdDate",
-    headerName: "Ngày tạo",
-    width: 250,
-    valueGetter: (params) =>
-      params.row.createdDate ? formatDate(params.row.createdDate) : "----",
-  },
+  // {
+  //   field: "createdDate",
+  //   headerName: "Ngày tạo",
+  //   width: 250,
+  //   valueGetter: (params) =>
+  //     params.row.createdDate ? formatDate(params.row.createdDate) : "----",
+  // },
   {
     field: "status",
     headerName: "Trạng thái",
@@ -166,7 +166,7 @@ export default function HistoryPayment() {
     setRows(data.data);
     setLoading(false);
   };
-  //   console.log("rows", rows);
+  // console.log("rows", rows);
 
   if (loading) {
     // Render the Skeleton components or any other loading indicator
