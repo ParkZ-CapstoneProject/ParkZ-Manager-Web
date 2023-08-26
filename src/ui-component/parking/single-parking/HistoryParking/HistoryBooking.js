@@ -31,7 +31,7 @@ const BoxContent = ({ name, value }) => {
 };
 
 const HistoryBooking = () => {
-  const { parkingId } = useParams();
+  const { id } = useParams();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalBooking, setTotalBooking] = useState(0);
@@ -54,7 +54,7 @@ const HistoryBooking = () => {
   const fetchData = async () => {
     setLoading(true);
     const response = await fetch(
-      `${apiUrl}/booking-management/parkings/${parkingId}?pageNo=1&pageSize=11`,
+      `${apiUrl}/booking-management/parkings/${id}?pageNo=1&pageSize=11`,
       requestOptions
     );
     const data = await response.json();
@@ -65,7 +65,7 @@ const HistoryBooking = () => {
   const fetchBookingDoneCancel = async () => {
     setLoading(true);
     const response = await fetch(
-      `${apiUrl}/chart/pie/parkings/${parkingId}/done-cancel-booking`,
+      `${apiUrl}/chart/pie/parkings/${id}/done-cancel-booking`,
       requestOptions
     );
     const data = await response.json();
@@ -77,7 +77,7 @@ const HistoryBooking = () => {
   const fetchBookingDayWatting = async () => {
     setLoading(true);
     const response = await fetch(
-      `${apiUrl}/chart/card/parkings/${parkingId}/statistic-card`,
+      `${apiUrl}/chart/card/parkings/${id}/statistic-card`,
       requestOptions
     );
     const data = await response.json();

@@ -160,8 +160,8 @@ export default function DataTable(props) {
 
   useEffect(() => {
     setFilteredRows(
-      rows.filter((row) =>
-        row.customerName.toLowerCase().includes(value.toLowerCase())
+      rows?.filter((row) =>
+        row.customerName?.toLowerCase().includes(value.toLowerCase())
       )
     );
   }, [rows, value]);

@@ -107,7 +107,7 @@ const Dashboard = () => {
       <Grid item xs={12} md={6} lg={8}>
         <LineChart
           title="Doanh thu"
-          subheader="Theo tháng"
+          subheader="Theo ngày trong tháng"
           chartData={revenueData}
         />
       </Grid>

@@ -182,7 +182,7 @@ export default function Staff() {
   useEffect(() => {
     setFilteredRows(
       rows?.filter((row) =>
-        row.name.toLowerCase().includes(value.toLowerCase())
+        row.name?.toLowerCase().includes(value.toLowerCase())
       )
     );
   }, [rows, value]);
