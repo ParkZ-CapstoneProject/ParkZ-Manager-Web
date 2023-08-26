@@ -11,8 +11,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 const icon = L.icon({
-  iconUrl: "./placeholder.png",
-  iconSize: [45, 45],
+  iconUrl: "./location.png",
+  iconSize: [75, 75],
 });
 
 const position = [10.80122, 106.7937];
