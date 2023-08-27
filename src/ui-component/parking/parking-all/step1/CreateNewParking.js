@@ -140,8 +140,8 @@ const CreateNewParking = () => {
     } else {
       Swal.fire({
         title: "Xác nhận?",
-        text: "Bạn có chắc chắn muốn thay đổi!",
-        icon: "warning",
+        text: "Tổng số vị trí và vị trí dự phòng không thể thay đổi sau khi lưu! Bạn có chắc chắn muốn lưu!",
+        icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
