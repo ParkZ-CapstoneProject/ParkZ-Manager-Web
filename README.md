@@ -44,7 +44,8 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 My website is deployed on vercel server [https://vercel.com](https://vercel.com)\
 And this website has an limit is not responsive for many screen.
 
-After login will navigate to dashboard, my dashboard like this:
+After login will navigate to dashboard, my dashboard like this:\
+
 ![](public/dashboard.png)
 
 My Website using many component and css from:
@@ -57,3 +58,25 @@ My Website using many component and css from:
 
 This Website using Redux/toolkit and combine with SignalR to realtime for changed data avoid to reload page\
 And push notification to back ground PC with message is sent from Firebase Message Cloud [https://firebase.google.com/](https://firebase.google.com/)
+
+This website will have many function and manage many tab like:
+
+- Manage Profile of manager with tab "Hồ Sơ"
+- Manage Booking from Customer in tab "Lịch Đặt"
+- Manage list of Parking and Parking price
+
+* With tab parking will manage list of Parking:\
+
+![](public/parkings.png)
+
+- When create new parking will update position on the maps, using react-leaflet and leaflet:\
+
+![](public/maps.png)
+
+- And Will change physical modal of each floor relatively so that nearly the same with the position of slots that floor. Each slot wil be drag and drop but this can not make in perfect way to create a physical modal of parking, it will provide easy way to customer and manager can manage slot in good way:\
+
+![](public/modals.png)
+
+- Manage Wallet\
+
+![](public/wallets.png)
