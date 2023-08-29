@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm start/yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -39,32 +39,21 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## My ParkZ Web Application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+My website is deployed on vercel server [https://vercel.com](https://vercel.com)\
+And this website has an limit is not responsive for many screen.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+After login will navigate to dashboard, my dashboard like this:
+![](public/dashboard.png)
 
-### Code Splitting
+My Website using many component and css from:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Ant design [https://ant.design/](https://ant.design/)
+- Material UI [https://mui.com/](https://mui.com/)
+- Tailwind CSS [https://tailwindcss.com/](https://tailwindcss.com/)
+- Button we get from [https://uiverse.io/buttons](https://uiverse.io/buttons)
+- Alert we using Sweet Alert [https://sweetalert2.github.io/](https://sweetalert2.github.io/)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This Website using Redux/toolkit and combine with SignalR to realtime for changed data avoid to reload page\
+And push notification to back ground PC with message is sent from Firebase Message Cloud [https://firebase.google.com/](https://firebase.google.com/)
