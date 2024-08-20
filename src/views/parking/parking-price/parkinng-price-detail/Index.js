@@ -9,7 +9,7 @@ const PriceDetail = () => {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
-  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
+  const signalRUrl = "https://parkzapi.azurewebsites.net/parkz";
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
@@ -33,7 +33,7 @@ const PriceDetail = () => {
     };
   }, []);
 
-  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const apiUrl = "https://parkzapi.azurewebsites.net/api";
 
   const requestOptions = {
     method: "GET",

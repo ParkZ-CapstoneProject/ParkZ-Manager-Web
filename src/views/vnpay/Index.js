@@ -8,8 +8,8 @@ const VNPay = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
-  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
+  const apiUrl = "https://parkzapi.azurewebsites.net/api";
+  const signalRUrl = "https://parkzapi.azurewebsites.net/parkz";
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);

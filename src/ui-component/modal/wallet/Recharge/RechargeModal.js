@@ -38,7 +38,7 @@ const RechargeModal = (props) => {
 
   //   const navigate = useNavigate();
 
-  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const apiUrl = "https://parkzapi.azurewebsites.net/api";
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);

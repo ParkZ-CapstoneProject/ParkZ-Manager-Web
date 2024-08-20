@@ -36,7 +36,7 @@ const DisableModal = (props) => {
   const [date, setDate] = useState();
   const [reason, setReason] = useState("");
 
-  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const apiUrl = "https://parkzapi.azurewebsites.net/api";
 
   const handleClose = () => {
     setIsOpen(false);

@@ -5,7 +5,7 @@ import * as signalR from "@microsoft/signalr";
 const ParkingPrice = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
-  const signalRUrl = "https://parkzserver-001-site1.btempurl.com/parkz";
+  const signalRUrl = "https://parkzapi.azurewebsites.net/parkz";
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
@@ -33,7 +33,7 @@ const ParkingPrice = () => {
   const user = localStorage.getItem("user"); // Set the authentication status here
   const userData = JSON.parse(user);
 
-  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const apiUrl = "https://parkzapi.azurewebsites.net/api";
 
   const requestOptions = {
     method: "GET",

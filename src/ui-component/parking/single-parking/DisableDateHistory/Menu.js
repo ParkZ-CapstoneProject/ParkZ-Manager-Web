@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const Menu = ({ setIsOpen, setIsDelete }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  //   const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  //   const apiUrl = "https://parkzapi.azurewebsites.net/api";
   //   const token = localStorage.getItem("token");
 
   const handleClick = (event) => {

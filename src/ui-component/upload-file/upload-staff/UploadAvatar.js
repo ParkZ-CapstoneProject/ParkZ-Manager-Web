@@ -13,7 +13,7 @@ const UploadAvatar = (props) => {
   const [image, setImage] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const apiUrl = "https://parkzserver-001-site1.btempurl.com/api";
+  const apiUrl = "https://parkzapi.azurewebsites.net/api";
 
   // const clientId = "053414b7c8fa0c7";
 
